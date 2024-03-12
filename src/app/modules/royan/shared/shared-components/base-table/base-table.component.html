@@ -1,0 +1,62 @@
+<div class="example-container mat-elevation-z8">
+    <mat-table [dataSource]="tableDataSource">
+        <ng-container matColumnDef="select" *ngIf="baseTableModel.hasSelection">
+            <mat-header-cell *matHeaderCellDef>{{'SHARED.CHOOSE' | translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                              [class.mat-checkbox-checked.mat-accent]="selection.isSelected(row)"
+                              [class.mat-checkbox-disabled:not(.mat-checkbox-checked)]="!selection.isSelected(row)"
+                              [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="position">
+            <mat-header-cell *matHeaderCellDef>{{'SHARED.ROW' | translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index ">
+              <span class="size-mobile row-number">
+          {{'SHARED.ROW' | translate}} :
+        </span>
+                {{i + 1}} </mat-cell>
+        </ng-container>
+        <ng-container *ngFor="let tableColumn of baseTableModel.tableColumns"
+                      [matColumnDef]="tableColumn.columnDefinitionName">
+            <ng-container>
+                <mat-header-cell *matHeaderCellDef>
+                    {{tableColumn.columnName_Fa}}
+                </mat-header-cell>
+            </ng-container>
+            <mat-cell *matCellDef="let element" [class.text-right]="true">
+        <span class="size-mobile">
+          {{tableColumn.columnName_Fa}}  :
+        </span>
+                <span>
+        {{element | dataPropertyGetter: tableColumn}}
+        </span>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="action"
+                      *ngIf="baseTableModel.hasGridAction&&baseTableModel.gridActions&&baseTableModel.gridActions.length>0">
+            <mat-header-cell *matHeaderCellDef>{{'SHARED.ACTION' | translate}}</mat-header-cell>
+            <mat-cell class="text-end action-list" *matCellDef="let element; let i = index">
+                <div class="btn btn-icon btn-active-color-primary" [matMenuTriggerFor]="menu"
+                     aria-label="Example icon-button with a menu">
+                    <app-keenicon name="burger-menu-6" class="fs-2x"></app-keenicon>
+                </div>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item *ngFor="let action of baseTableModel.gridActions"
+                            (click)="action.actionFunction(element,i)">
+                        <app-keenicon [name]="action.actionIcon"
+                                      class="fs-1 btn btn-icon btn-active-color">
+                        </app-keenicon>
+                        <span class="font">{{action.actionName}}</span>
+                    </button>
+                </mat-menu>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"
+                 [ngClass]="baseTableModel.selectable?'element-row':''"
+                 (click)="selectRow(row)"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" class="font" showFirstLastButtons></mat-paginator>
+</div>

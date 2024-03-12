@@ -1,0 +1,64 @@
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {UserModel} from '../../models/user.model';
+import {environment} from '../../../../../environments/environment';
+import {AuthModel} from '../../models/auth.model';
+import {loginModel} from "../../components/login/login.model";
+import {map} from "rxjs/operators";
+
+const API_USERS_URL = `${environment.apiUrl}/auth`;
+
+@Injectable({
+    providedIn: 'root',
+})
+export class AuthHTTPService {
+
+    constructor(private http: HttpClient) {
+    }
+
+    login(email: string, password: string): Observable<any> {
+        const notFoundError = new Error('Not Found');
+        if (!email || !password) {
+            return of(notFoundError);
+        }
+        const defaultAuth = {
+            userName: email,
+            userPassword: password,
+        };
+        return this.http.post<loginModel>(environment.loginUrl, defaultAuth)
+            .pipe(map((loginModel: loginModel) => {
+                        const auth = new AuthModel();
+                        auth.token = loginModel.token;
+                        auth.name = loginModel.name;
+                        return auth;
+                    },
+                    (err: Error) => {
+                        return notFoundError;
+                    }
+                )
+            );
+    }
+
+    // CREATE =>  POST: add a new user to the server
+    createUser(user: UserModel): Observable<UserModel> {
+        return this.http.post<UserModel>('environment.getCustomerById', user);
+    }
+
+    // Your server should check email => If email exists send link to the user and return true | If email doesn't exist return false
+    forgotPassword(email: string): Observable<boolean> {
+        return this.http.post<boolean>(`${'environment.getCustomerById'}/forgot-password`, {
+            email,
+        });
+    }
+
+    getUserByToken(token: string): Observable<UserModel> {
+        // return this.http.get<UserModel>(environment.getUserByToken, {
+        //     headers: httpHeaders,
+        // });
+        const defaultAuth = {
+            param: token
+        };
+        return this.http.post<UserModel>(environment.getUserByToken, defaultAuth);
+    }
+}

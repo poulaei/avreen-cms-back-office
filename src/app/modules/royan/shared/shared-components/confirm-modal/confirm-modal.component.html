@@ -1,0 +1,16 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4">{{confirmTitle}}</div>
+    </div>
+    <div class="cursor-default modal-body">
+        <p>{{confirmMessage}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="sendYes()">
+            {{'SHARED.YES' | translate}}
+        </button>
+        <button type="button" class="btn btn-danger mr-2" (click)="sendNo()">
+            {{'SHARED.NO' | translate}}
+        </button>
+    </div>
+</div>

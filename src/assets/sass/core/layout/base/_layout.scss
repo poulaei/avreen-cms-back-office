@@ -1,0 +1,29 @@
+//
+// App Layout
+//
+
+@import "/assets/sass/core/layout/base/mixins/layout-minimize";
+@import "/assets/sass/core/layout/base/mixins/layout-transition";
+@import "/assets/sass/core/layout/base/root";
+@import "/assets/sass/core/layout/base/reboot";
+@import "/assets/sass/core/layout/base/page";
+@import "/assets/sass/core/layout/base/page-loader";
+@import "/assets/sass/core/layout/base/container";
+@import "/assets/sass/core/layout/base/print";
+@import "/assets/sass/core/layout/base/navbar";
+@import "/assets/sass/core/layout/base/header/header";
+@import "/assets/sass/core/layout/base/header/header-primary";
+@import "/assets/sass/core/layout/base/header/header-secondary";
+@import "/assets/sass/core/layout/base/header/header-tertiary";
+@import "/assets/sass/core/layout/base/toolbar";
+@import "/assets/sass/core/layout/base/hero";
+@import "/assets/sass/core/layout/base/sidebar/sidebar";
+@import "/assets/sass/core/layout/base/sidebar/sidebar-primary";
+@import "/assets/sass/core/layout/base/sidebar/sidebar-secondary";
+@import "/assets/sass/core/layout/base/sidebar/sidebar-panel";
+@import "/assets/sass/core/layout/base/aside/aside";
+@import "/assets/sass/core/layout/base/wrapper";
+@import "/assets/sass/core/layout/base/main";
+@import "/assets/sass/core/layout/base/content";
+@import "/assets/sass/core/layout/base/footer";
+@import "/assets/sass/core/layout/base/layout-builder";

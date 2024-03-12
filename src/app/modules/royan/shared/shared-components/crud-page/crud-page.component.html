@@ -1,0 +1,16 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">{{crudPageModel.crudPageHeader}}</h3>
+        </div>
+        <div class="card-toolbar">
+            <button *ngFor="let action of crudPageModel.pageActions" type="button" class="btn btn-success mr-2"
+                    (click)="action.actionFunction()">{{action.actionName}}</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <base-table-component [initTableData]="crudPageTableModel" [doSearch]="doSearch" #crudPageTable>
+
+        </base-table-component>
+    </div>
+</div>
