@@ -1,1 +1,82 @@
-<p>edit-box-item works!</p>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4">{{'افزودن آیتم جدید' | translate}}</div>
+    </div>
+    <div class="cursor-default modal-body">
+        <form [formGroup]="editBoxItemForm">
+            <div class="form-group row">
+                <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">عنوان آیتم</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(editBoxItemForm,'title')"
+                           [class.is-valid]="formControlService.isControlValid(editBoxItemForm,'title')"
+                           formControlName="title" placeholder="عنوان آیتم"/>
+                </div>
+                <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">توضیحات آیتم</label>
+                    <textarea class="form-control form-control-lg form-control-solid"
+                              autocomplete="off"
+                              rows="5"
+                              [class.is-invalid]="formControlService.isControlInvalid(editBoxItemForm,'summary')"
+                              [class.is-valid]="formControlService.isControlValid(editBoxItemForm,'summary')"
+                              formControlName="summary" placeholder="توضیحات آیتم">
+                    </textarea>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">نام عملیات</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(editBoxItemForm,'action')"
+                           [class.is-valid]="formControlService.isControlValid(editBoxItemForm,'action')"
+                           formControlName="action" placeholder="عملیات"/>
+                </div>
+                <div class="col-lg-8 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">آدرس عملیات</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(editBoxItemForm,'actionUrl')"
+                           [class.is-valid]="formControlService.isControlValid(editBoxItemForm,'actionUrl')"
+                           formControlName="actionUrl" placeholder="آدرس عملیات"/>
+                </div>
+                <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-10 d-xs-block col-xs-10">
+                            <mat-form-field>
+                                <mat-toolbar>
+                                    <input matInput placeholder="فایل مدیا را انتخاب کنید" class="font"
+                                           style="font-size: 1rem !important;"/>
+                                </mat-toolbar>
+                                <input type="file" id="fileInput" name="fileInput" accept="image/*" multiple
+                                       (change)="selectFiles($event)"/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-2 d-xs-block col-xs-2 p-0">
+                            <div>
+                                <img *ngFor='let preview of previews' [src]="preview" class="preview" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-7 col-sm-7 d-xs-block col-xs-7 pb-6">
+                    <label class="form-label">توضیحات</label>
+                    <textarea class="form-control form-control-lg form-control-solid"
+                              autocomplete="off"
+                              [class.is-invalid]="formControlService.isControlInvalid(editBoxItemForm,'description')"
+                              [class.is-valid]="formControlService.isControlValid(editBoxItemForm,'description')"
+                              formControlName="description" placeholder="توضیحات">
+                    </textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger mr-2" (click)="modal.dismiss()">
+            {{'SHARED.CANCEL' | translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="editBoxItem()"
+                [disabled]="editBoxItemForm.invalid">
+            {{'SHARED.EDIT' | translate}}
+        </button>
+    </div>
+</div>

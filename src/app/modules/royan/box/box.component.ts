@@ -128,7 +128,7 @@ export class BoxComponent implements OnInit {
             if (isDeleted) {
                 this.boxService.deleteBox(element.id).subscribe({
                     next: (response: any): void => {
-                        if (!response) {
+                        if (response) {
                             this.toasterService.success('بخش مورد نظر با موفقیت حذف شد');
                             this.crudPage.crudPageTable.refreshTableData();
                         } else {
@@ -136,8 +136,10 @@ export class BoxComponent implements OnInit {
                         }
                     },
                     error: (exception): void => {
-                        if (exception.error != null) {
-                            this.toasterService.error(exception.error.message);
+                        if (exception && exception.status == 404) {
+                            this.toasterService.error('یافت نشد');
+                        } else {
+                            this.toasterService.error('خطای سیستمی');
                         }
                     }
                 });

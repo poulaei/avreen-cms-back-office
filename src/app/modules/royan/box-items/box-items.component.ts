@@ -11,6 +11,8 @@ import {Observable} from "rxjs";
 import {BoxItemsService} from "./box-items.service";
 import {BoxLookupComponent} from "../box/box-lookup/box-lookup.component";
 import {AddNewBoxItemComponent} from "./add-new-box-item/add-new-box-item.component";
+import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
+import {EditBoxItemComponent} from "./edit-box-item/edit-box-item.component";
 
 @Component({
     selector: 'app-box-items',
@@ -106,36 +108,50 @@ export class BoxItemsComponent implements OnInit {
     }
 
     editBoxItem = (element: any): void => {
-        // this.router.navigate(["/shaliSoft/editBuyFactor", element.id]);
+        const modalRef: NgbModalRef = this.modalService.open(EditBoxItemComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.componentInstance.boxItemId = element.id;
+        modalRef.result.then((isUpdated: boolean): void => {
+            if (isUpdated) {
+                this.toasterService.success('آیتم مورد نظر با موفقیت ویرایش شد');
+                this.boxItemsTable.refreshTableData(true, 'boxItem');
+            }
+        }, () => {
+
+        });
     }
 
     deleteBoxItem = (element: any): void => {
-        // const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
-        //     centered: true
-        // });
-        // modalRef.componentInstance.confirmTitle = this.translate.instant('BUY_FACTOR.DELETE');
-        // modalRef.componentInstance.confirmMessage = this.translate.instant('BUY_FACTOR.MESSAGES.DELETE_CONFIRM', {param1: element.code});
-        // modalRef.result.then((isDeleted: boolean) => {
-        //     if (isDeleted) {
-        //         this.buyFactorService.deleteBuyFactor(element.id).subscribe({
-        //             next: (response: ShaliSoftResponseBaseModel) => {
-        //                 if (response.isSuccess) {
-        //                     this.toasterService.success(this.translate.instant('BUY_FACTOR.MESSAGES.DELETE_OK'));
-        //                     this.buyFactorTable.refreshTableData();
-        //                 } else {
-        //                     this.toasterService.error(response.message);
-        //                 }
-        //             },
-        //             error: (exception) => {
-        //                 if (exception.error != null) {
-        //                     this.toasterService.error(exception.error.message);
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }, () => {
-        //
-        // });
+        const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
+            centered: true
+        });
+        modalRef.componentInstance.confirmTitle = 'حذف آیتم بخش';
+        modalRef.componentInstance.confirmMessage = 'آیا از حذف ' + element.title + ' مطمئن هستید؟';
+        modalRef.result.then((isDeleted: boolean) => {
+            if (isDeleted) {
+                this.boxItemsService.deleteBoxItem(element.id).subscribe({
+                    next: (response: any): void => {
+                        if (response) {
+                            this.toasterService.success('آیتم مورد نظر با موفقیت حذف شد');
+                            this.boxItemsTable.refreshTableData(true, 'boxItem');
+                        } else {
+                            this.toasterService.error(response.error.message);
+                        }
+                    },
+                    error: (exception): void => {
+                        if (exception && exception.status == 404) {
+                            this.toasterService.error('یافت نشد');
+                        } else {
+                            this.toasterService.error('خطای سیستمی');
+                        }
+                    }
+                });
+            }
+        }, () => {
+
+        });
     }
 
     searchSection(): void {

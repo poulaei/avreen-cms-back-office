@@ -22,7 +22,7 @@ export class BoxService {
     }
 
     deleteBox(boxId: string): Observable<any> {
-        return this.httpClient.delete<any>(environment.deleteBox + boxId);
+        return this.httpClient.post<any>(environment.deleteBox + boxId + "/hazf", {});
     }
 
     getBoxInfo(boxId: string): Observable<any> {

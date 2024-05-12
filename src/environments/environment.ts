@@ -17,13 +17,17 @@ export const environment = {
     //BOX ITEMS SERVICES//
     addNewBoxItem: '/api/app/box-item-admin',
     getBoxItems: '/api/app/box-admin/box-items/',
+    deleteBoxItem: '/api/app/box-item-admin/',
     uploadMedia: '/api/cms-kit-admin/media/Box',
+    downloadMedia: '/api/cms-kit/media/',
+    getBoxItemInfo: '/api/app/box-item-admin/',
+    editBoxItem: '/api/app/box-item-admin/',
     //BOX SERVICES//
-    deleteBox: '/api/app/box/',
+    deleteBox: '/api/app/box-admin/',
     getAllBoxes: '/api/app/box-admin',
     addNewBox: '/api/app/box-admin',
-    getBoxInfo: '/api/app/box/',
-    editBox: '/api/app/box/',
+    getBoxInfo: '/api/app/box-admin/',
+    editBox: '/api/app/box-admin/',
     //USER SERVICES//
     getAllUsers: '/api/identity/users',
     //ROLE SERVICES//
