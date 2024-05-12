@@ -1,24 +1,24 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Box} from "../landing.model";
-import {LandingService} from "../landing.service";
 import {ToastrService} from "ngx-toastr";
 import {FormControlService} from "../../shared/shared-service/form-control.service";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {BoxService} from "../box.service";
+import {Box} from "../box.model";
 
 @Component({
-    selector: 'app-edit-section',
-    templateUrl: './edit-section.component.html',
-    styleUrls: ['./edit-section.component.scss']
+    selector: 'app-edit-box',
+    templateUrl: './edit-box.component.html',
+    styleUrls: ['./edit-box.component.scss']
 })
-export class EditSectionComponent implements OnInit {
+export class EditBoxComponent implements OnInit {
 
-    @Input() sectionId: string;
-    editSectionForm: FormGroup;
+    @Input() boxId: string;
+    editBoxForm: FormGroup;
     boxInfo: Box = new Box();
 
     constructor(public formBuilder: FormBuilder,
-                public landingService: LandingService,
+                public boxService: BoxService,
                 public toasterService: ToastrService,
                 public formControlService: FormControlService,
                 public modal: NgbActiveModal) {
@@ -26,12 +26,12 @@ export class EditSectionComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.initEditSectionForm();
-        this.loadSectionInfo();
+        this.initEditBoxForm();
+        this.loadBoxInfo();
     }
 
-    initEditSectionForm() {
-        this.editSectionForm = this.formBuilder.group({
+    initEditBoxForm() {
+        this.editBoxForm = this.formBuilder.group({
             section: [''],
             title: [''],
             action: [''],
@@ -41,8 +41,8 @@ export class EditSectionComponent implements OnInit {
         });
     }
 
-    loadSectionInfo(): void {
-        this.landingService.getSectionInfo(this.sectionId).subscribe({
+    loadBoxInfo(): void {
+        this.boxService.getBoxInfo(this.boxId).subscribe({
             next: (response: any): void => {
                 if (!response.error) {
                     this.setFormValue(response);
@@ -58,8 +58,8 @@ export class EditSectionComponent implements OnInit {
         });
     }
 
-    editSection(): void {
-        this.landingService.editSection(this.getFormValue(), this.sectionId).subscribe({
+    editBox(): void {
+        this.boxService.editBox(this.getFormValue(), this.boxId).subscribe({
             next: (response: any): void => {
                 if (response.id) {
                     this.modal.close(true);
@@ -76,22 +76,23 @@ export class EditSectionComponent implements OnInit {
     }
 
     getFormValue(): Box {
-        this.boxInfo.section = this.editSectionForm.controls['section'].value;
-        this.boxInfo.title = this.editSectionForm.controls['title'].value;
-        this.boxInfo.action = this.editSectionForm.controls['action'].value;
-        this.boxInfo.actionUrl = this.editSectionForm.controls['actionUrl'].value;
-        this.boxInfo.summary = this.editSectionForm.controls['summary'].value;
-        this.boxInfo.description = this.editSectionForm.controls['description'].value;
+        this.boxInfo.section = this.editBoxForm.controls['section'].value;
+        this.boxInfo.title = this.editBoxForm.controls['title'].value;
+        this.boxInfo.action = this.editBoxForm.controls['action'].value;
+        this.boxInfo.actionUrl = this.editBoxForm.controls['actionUrl'].value;
+        this.boxInfo.summary = this.editBoxForm.controls['summary'].value;
+        this.boxInfo.description = this.editBoxForm.controls['description'].value;
+        this.boxInfo.id = this.boxId;
         return this.boxInfo;
     }
 
     setFormValue(boxInfo: Box): void {
-        this.editSectionForm.controls['section'].setValue(boxInfo.section);
-        this.editSectionForm.controls['title'].setValue(boxInfo.title);
-        this.editSectionForm.controls['action'].setValue(boxInfo.action);
-        this.editSectionForm.controls['actionUrl'].setValue(boxInfo.actionUrl);
-        this.editSectionForm.controls['summary'].setValue(boxInfo.summary);
-        this.editSectionForm.controls['description'].setValue(boxInfo.description);
+        this.editBoxForm.controls['section'].setValue(boxInfo.section);
+        this.editBoxForm.controls['title'].setValue(boxInfo.title);
+        this.editBoxForm.controls['action'].setValue(boxInfo.action);
+        this.editBoxForm.controls['actionUrl'].setValue(boxInfo.actionUrl);
+        this.editBoxForm.controls['summary'].setValue(boxInfo.summary);
+        this.editBoxForm.controls['description'].setValue(boxInfo.description);
         this.boxInfo.concurrencyStamp = boxInfo.concurrencyStamp;
     }
 }

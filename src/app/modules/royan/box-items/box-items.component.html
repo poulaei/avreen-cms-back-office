@@ -5,7 +5,7 @@
         </div>
         <div class="card-toolbar">
             <button type="button" class="btn btn-success mr-2"
-                    (click)="addNewItem()">افزودن آیتم جدید
+                    (click)="addNewBoxItem()">افزودن آیتم جدید
             </button>
         </div>
     </div>
@@ -18,7 +18,7 @@
                             <label class="form-label">نام بخش</label>
                             <input type="text" class="form-control form-control-lg form-control-solid"
                                    autocomplete="off"
-                                   formControlName="sectionId"
+                                   formControlName="boxId"
                                    readonly
                                    placeholder="نام بخش"/>
                         </div>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </form>
-        <base-table-component #sectionItemsTable [initTableData]="sectionItemsTableModel"
+        <base-table-component #boxItemsTable [initTableData]="boxItemsTableModel"
                               [doSearch]="doSearch"></base-table-component>
     </div>
 </div>

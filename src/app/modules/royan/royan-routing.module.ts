@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {RoyanComponent} from "./royan.component";
-import {LandingComponent} from "./landing/landing.component";
 import {UserManagementComponent} from "./user-management/user-management.component";
-import {SectionItemsComponent} from "./landing/section-items/section-items.component";
 import {MenuManagementComponent} from "./menu-management/menu-management.component";
 import {SystemRoleComponent} from "./system-role/system-role.component";
+import {BoxComponent} from "./box/box.component";
+import {BoxItemsComponent} from "./box-items/box-items.component";
 
 const routes: Routes = [
     {
@@ -13,12 +13,12 @@ const routes: Routes = [
         component: RoyanComponent,
         children: [
             {
-                path: 'section',
-                component: LandingComponent
+                path: 'box',
+                component: BoxComponent
             },
             {
-                path: 'items',
-                component: SectionItemsComponent
+                path: 'boxItems',
+                component: BoxItemsComponent
             },
             {
                 path: 'users',

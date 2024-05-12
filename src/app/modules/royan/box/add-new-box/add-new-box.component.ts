@@ -1,23 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Box} from "../landing.model";
-import {LandingService} from "../landing.service";
 import {ToastrService} from "ngx-toastr";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormControlService} from "../../shared/shared-service/form-control.service";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {Box} from "../box.model";
+import {BoxService} from "../box.service";
 
 @Component({
-    selector: 'app-add-new-section',
-    templateUrl: './add-new-section.component.html',
-    styleUrls: ['./add-new-section.component.scss']
+    selector: 'app-add-new-box',
+    templateUrl: './add-new-box.component.html',
+    styleUrls: ['./add-new-box.component.scss']
 })
-export class AddNewSectionComponent implements OnInit {
+export class AddNewBoxComponent implements OnInit {
 
-    addNewSectionForm: FormGroup;
+    addNewBoxForm: FormGroup;
     boxInfo: Box = new Box();
 
     constructor(public formBuilder: FormBuilder,
-                public landingService: LandingService,
+                public boxService: BoxService,
                 public toasterService: ToastrService,
                 public formControlService: FormControlService,
                 public modal: NgbActiveModal) {
@@ -25,11 +25,11 @@ export class AddNewSectionComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.initAddNewSectionForm();
+        this.initAddNewBoxForm();
     }
 
-    initAddNewSectionForm(): void {
-        this.addNewSectionForm = this.formBuilder.group({
+    initAddNewBoxForm(): void {
+        this.addNewBoxForm = this.formBuilder.group({
             section: [''],
             title: [''],
             action: [''],
@@ -39,8 +39,8 @@ export class AddNewSectionComponent implements OnInit {
         });
     }
 
-    addNewSection(): void {
-        this.landingService.addNewSection(this.getFormValue()).subscribe({
+    addNewBox(): void {
+        this.boxService.addNewBox(this.getFormValue()).subscribe({
             next: (response: any): void => {
                 if (response.id) {
                     this.modal.close(true);
@@ -57,12 +57,12 @@ export class AddNewSectionComponent implements OnInit {
     }
 
     getFormValue(): Box {
-        this.boxInfo.section = this.addNewSectionForm.controls['section'].value;
-        this.boxInfo.title = this.addNewSectionForm.controls['title'].value;
-        this.boxInfo.action = this.addNewSectionForm.controls['action'].value;
-        this.boxInfo.actionUrl = this.addNewSectionForm.controls['actionUrl'].value;
-        this.boxInfo.summary = this.addNewSectionForm.controls['summary'].value;
-        this.boxInfo.description = this.addNewSectionForm.controls['description'].value;
+        this.boxInfo.section = this.addNewBoxForm.controls['section'].value;
+        this.boxInfo.title = this.addNewBoxForm.controls['title'].value;
+        this.boxInfo.action = this.addNewBoxForm.controls['action'].value;
+        this.boxInfo.actionUrl = this.addNewBoxForm.controls['actionUrl'].value;
+        this.boxInfo.summary = this.addNewBoxForm.controls['summary'].value;
+        this.boxInfo.description = this.addNewBoxForm.controls['description'].value;
         return this.boxInfo;
     }
 }

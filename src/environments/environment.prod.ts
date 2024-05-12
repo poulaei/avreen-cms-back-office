@@ -13,12 +13,12 @@ export const environment = {
     appPreviewChangelogUrl: 'https://preview.keenthemes.com/metronic8/angular/docs/changelog',
     loginUrl: '/api/ums/usr/login',
     getUserByToken: '/api/ums/usr/getUserByToken',
-    getAllSections: '/api/app/box/detailed-list',
-    addNewSection: '/api/app/box',
-    deleteSection: '/api/app/box',
-    getSectionInfo: '/api/app/box',
-    editSection: '/api/app/box',
-    getSectionItems: '/api/app/box/box-by-section',
+    getAllBoxes: '/api/app/box/detailed-list',
+    addNewBox: '/api/app/box',
+    deleteBox: '/api/app/box',
+    getBoxInfo: '/api/app/box',
+    editBox: '/api/app/box',
+    getBoxItems: '/api/app/box/box-by-section',
     appDemos: {
         demo1: {
             title: 'Demo 1',

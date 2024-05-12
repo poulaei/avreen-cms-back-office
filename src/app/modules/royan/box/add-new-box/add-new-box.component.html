@@ -1,24 +1,24 @@
 <div class="modal-content">
     <div class="modal-header">
-        <div class="modal-title h4">ویرایش بخش</div>
+        <div class="modal-title h4">{{'افزودن بخش جدید' | translate}}</div>
     </div>
     <div class="cursor-default modal-body">
-        <form [formGroup]="editSectionForm">
+        <form [formGroup]="addNewBoxForm">
             <div class="form-group row">
                 <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
                     <label class="form-label">شناسه بخش</label>
                     <input type="text" class="form-control form-control-lg form-control-solid"
                            autocomplete="off"
-                           [class.is-invalid]="formControlService.isControlInvalid(editSectionForm,'section')"
-                           [class.is-valid]="formControlService.isControlValid(editSectionForm,'section')"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewBoxForm,'section')"
+                           [class.is-valid]="formControlService.isControlValid(addNewBoxForm,'section')"
                            formControlName="section" placeholder="شناسه بخش"/>
                 </div>
                 <div class="col-lg-8 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
                     <label class="form-label">عنوان بخش</label>
                     <input type="text" class="form-control form-control-lg form-control-solid"
                            autocomplete="off"
-                           [class.is-invalid]="formControlService.isControlInvalid(editSectionForm,'title')"
-                           [class.is-valid]="formControlService.isControlValid(editSectionForm,'title')"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewBoxForm,'title')"
+                           [class.is-valid]="formControlService.isControlValid(addNewBoxForm,'title')"
                            formControlName="title" placeholder="عنوان بخش"/>
                 </div>
                 <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
@@ -26,8 +26,8 @@
                     <textarea class="form-control form-control-lg form-control-solid"
                               autocomplete="off"
                               rows="5"
-                              [class.is-invalid]="formControlService.isControlInvalid(editSectionForm,'summary')"
-                              [class.is-valid]="formControlService.isControlValid(editSectionForm,'summary')"
+                              [class.is-invalid]="formControlService.isControlInvalid(addNewBoxForm,'summary')"
+                              [class.is-valid]="formControlService.isControlValid(addNewBoxForm,'summary')"
                               formControlName="summary" placeholder="توضیحات بخش">
                     </textarea>
                 </div>
@@ -35,24 +35,24 @@
                     <label class="form-label">نام عملیات</label>
                     <input type="text" class="form-control form-control-lg form-control-solid"
                            autocomplete="off"
-                           [class.is-invalid]="formControlService.isControlInvalid(editSectionForm,'action')"
-                           [class.is-valid]="formControlService.isControlValid(editSectionForm,'action')"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewBoxForm,'action')"
+                           [class.is-valid]="formControlService.isControlValid(addNewBoxForm,'action')"
                            formControlName="action" placeholder="عملیات"/>
                 </div>
                 <div class="col-lg-8 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
                     <label class="form-label">آدرس عملیات</label>
                     <input type="text" class="form-control form-control-lg form-control-solid"
                            autocomplete="off"
-                           [class.is-invalid]="formControlService.isControlInvalid(editSectionForm,'actionUrl')"
-                           [class.is-valid]="formControlService.isControlValid(editSectionForm,'actionUrl')"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewBoxForm,'actionUrl')"
+                           [class.is-valid]="formControlService.isControlValid(addNewBoxForm,'actionUrl')"
                            formControlName="actionUrl" placeholder="آدرس عملیات"/>
                 </div>
                 <div class="col-lg-12 col-md-7 col-sm-7 d-xs-block col-xs-7 pb-6">
                     <label class="form-label">توضیحات</label>
                     <textarea class="form-control form-control-lg form-control-solid"
                               autocomplete="off"
-                              [class.is-invalid]="formControlService.isControlInvalid(editSectionForm,'description')"
-                              [class.is-valid]="formControlService.isControlValid(editSectionForm,'description')"
+                              [class.is-invalid]="formControlService.isControlInvalid(addNewBoxForm,'description')"
+                              [class.is-valid]="formControlService.isControlValid(addNewBoxForm,'description')"
                               formControlName="description" placeholder="توضیحات">
                     </textarea>
                 </div>
@@ -63,9 +63,9 @@
         <button type="button" class="btn btn-danger mr-2" (click)="modal.dismiss()">
             {{'SHARED.CANCEL' | translate}}
         </button>
-        <button type="submit" class="btn btn-primary" (click)="editSection()"
-                [disabled]="editSectionForm.invalid">
-            {{'SHARED.EDIT' | translate}}
+        <button type="submit" class="btn btn-primary" (click)="addNewBox()"
+                [disabled]="addNewBoxForm.invalid">
+            {{'SHARED.SAVE' | translate}}
         </button>
     </div>
 </div>

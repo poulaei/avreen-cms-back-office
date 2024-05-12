@@ -58,7 +58,7 @@ export class BaseTableComponent implements OnInit, AfterViewInit {
         this.doSearch().subscribe({
             next: (response: any) => {
                 if (!response.error) {
-                    if (hasChild && type && type == 'sectionItem') {
+                    if (hasChild && type && type == 'boxItem') {
                         if (response.items && response.items.length > 0) {
                             this.tableDataSource.data = response.items[0].boxItems;
                             if (response.items[0].boxItems.length == 0) {
@@ -72,8 +72,7 @@ export class BaseTableComponent implements OnInit, AfterViewInit {
                     this.toasterService.error(response.error.message);
                 }
             },
-            error: (exception) => {
-                console.log(exception);
+            error: (exception): void => {
                 if (exception.status == 404) {
                     this.toasterService.warning('آیتم مورد نظر یافت نشد');
                 } else {

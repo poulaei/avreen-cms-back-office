@@ -25,22 +25,22 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {DataPropertyGetterPipe} from "./shared/shared-components/base-table/data-property-getter.pipe";
 import {CrudPageComponent} from "./shared/shared-components/crud-page/crud-page.component";
 import {ConfirmModalComponent} from "./shared/shared-components/confirm-modal/confirm-modal.component";
-import {LandingComponent} from './landing/landing.component';
-import { UserManagementComponent } from './user-management/user-management.component';
-import { AddNewSectionComponent } from './landing/add-new-section/add-new-section.component';
-import { EditSectionComponent } from './landing/edit-section/edit-section.component';
-import { SectionItemsComponent } from './landing/section-items/section-items.component';
-import { SectionLookupComponent } from './landing/section-lookup/section-lookup.component';
-import { AddNewItemComponent } from './landing/section-items/add-new-item/add-new-item.component';
-import { EditItemComponent } from './landing/section-items/edit-item/edit-item.component';
-import { UploadImageComponent } from './shared/shared-components/upload-image/upload-image.component';
+import {UserManagementComponent} from './user-management/user-management.component';
+import {UploadImageComponent} from './shared/shared-components/upload-image/upload-image.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
-import { MenuManagementComponent } from './menu-management/menu-management.component';
-import { SystemRoleComponent } from './system-role/system-role.component';
-import { AddNewUserComponent } from './user-management/add-new-user/add-new-user.component';
-import { EditUserComponent } from './user-management/edit-user/edit-user.component';
-import { AddNewRoleComponent } from './system-role/add-new-role/add-new-role.component';
-import { EditRoleComponent } from './system-role/edit-role/edit-role.component';
+import {MenuManagementComponent} from './menu-management/menu-management.component';
+import {SystemRoleComponent} from './system-role/system-role.component';
+import {AddNewUserComponent} from './user-management/add-new-user/add-new-user.component';
+import {EditUserComponent} from './user-management/edit-user/edit-user.component';
+import {AddNewRoleComponent} from './system-role/add-new-role/add-new-role.component';
+import {EditRoleComponent} from './system-role/edit-role/edit-role.component';
+import {BoxComponent} from './box/box.component';
+import {BoxItemsComponent} from './box-items/box-items.component';
+import {AddNewBoxComponent} from './box/add-new-box/add-new-box.component';
+import {EditBoxComponent} from './box/edit-box/edit-box.component';
+import {BoxLookupComponent} from './box/box-lookup/box-lookup.component';
+import {AddNewBoxItemComponent} from './box-items/add-new-box-item/add-new-box-item.component';
+import {EditBoxItemComponent} from './box-items/edit-box-item/edit-box-item.component';
 
 
 @NgModule({
@@ -49,21 +49,21 @@ import { EditRoleComponent } from './system-role/edit-role/edit-role.component';
         CrudPageComponent,
         ConfirmModalComponent,
         DataPropertyGetterPipe,
-        LandingComponent,
         UserManagementComponent,
-        AddNewSectionComponent,
-        EditSectionComponent,
-        SectionItemsComponent,
-        SectionLookupComponent,
-        AddNewItemComponent,
-        EditItemComponent,
         UploadImageComponent,
         MenuManagementComponent,
         SystemRoleComponent,
         AddNewUserComponent,
         EditUserComponent,
         AddNewRoleComponent,
-        EditRoleComponent
+        EditRoleComponent,
+        BoxComponent,
+        BoxItemsComponent,
+        AddNewBoxComponent,
+        EditBoxComponent,
+        BoxLookupComponent,
+        AddNewBoxItemComponent,
+        EditBoxItemComponent
     ],
     imports: [
         CommonModule,

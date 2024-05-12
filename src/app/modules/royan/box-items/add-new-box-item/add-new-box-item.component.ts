@@ -1,20 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {BoxItem} from "../../landing.model";
-import {LandingService} from "../../landing.service";
+import {FileUploadService} from "../../shared/shared-components/upload-image/file-upload.service";
 import {ToastrService} from "ngx-toastr";
-import {FormControlService} from "../../../shared/shared-service/form-control.service";
+import {FormControlService} from "../../shared/shared-service/form-control.service";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {FileUploadService} from "../../../shared/shared-components/upload-image/file-upload.service";
+import {BoxItemsService} from "../box-items.service";
+import {BoxItem} from "../box-items.model";
 
 @Component({
-    selector: 'app-add-new-item',
-    templateUrl: './add-new-item.component.html',
-    styleUrls: ['./add-new-item.component.scss']
+    selector: 'app-add-new-box-item',
+    templateUrl: './add-new-box-item.component.html',
+    styleUrls: ['./add-new-box-item.component.scss']
 })
-export class AddNewItemComponent implements OnInit {
+export class AddNewBoxItemComponent implements OnInit {
 
-    addNewSectionItemForm: FormGroup;
+    @Input() boxId: string;
+    addNewBoxItemForm: FormGroup;
     boxItem: BoxItem = new BoxItem();
     selectedFiles?: FileList;
     selectedFileNames: string[] = [];
@@ -23,7 +24,7 @@ export class AddNewItemComponent implements OnInit {
     previews: string[] = [];
 
     constructor(public formBuilder: FormBuilder,
-                public landingService: LandingService,
+                public boxItemsService: BoxItemsService,
                 public uploadService: FileUploadService,
                 public toasterService: ToastrService,
                 public formControlService: FormControlService,
@@ -32,11 +33,11 @@ export class AddNewItemComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.initAddNewSectionItemForm();
+        this.initAddNewBoxItemForm();
     }
 
-    initAddNewSectionItemForm(): void {
-        this.addNewSectionItemForm = this.formBuilder.group({
+    initAddNewBoxItemForm(): void {
+        this.addNewBoxItemForm = this.formBuilder.group({
             mediaId: [''],
             title: [''],
             action: [''],
@@ -47,11 +48,12 @@ export class AddNewItemComponent implements OnInit {
     }
 
     getFormValue(): BoxItem {
-        this.boxItem.title = this.addNewSectionItemForm.controls['title'].value;
-        this.boxItem.action = this.addNewSectionItemForm.controls['action'].value;
-        this.boxItem.actionUrl = this.addNewSectionItemForm.controls['actionUrl'].value;
-        this.boxItem.summary = this.addNewSectionItemForm.controls['summary'].value;
-        this.boxItem.description = this.addNewSectionItemForm.controls['description'].value;
+        this.boxItem.title = this.addNewBoxItemForm.controls['title'].value;
+        this.boxItem.action = this.addNewBoxItemForm.controls['action'].value;
+        this.boxItem.actionUrl = this.addNewBoxItemForm.controls['actionUrl'].value;
+        this.boxItem.summary = this.addNewBoxItemForm.controls['summary'].value;
+        this.boxItem.description = this.addNewBoxItemForm.controls['description'].value;
+        this.boxItem.boxId = this.boxId;
         return this.boxItem;
     }
 
@@ -62,11 +64,10 @@ export class AddNewItemComponent implements OnInit {
         this.selectedFiles = event.target.files;
         this.previews = [];
         if (this.selectedFiles && this.selectedFiles[0]) {
-            const numberOfFiles = this.selectedFiles.length;
-            for (let i = 0; i < numberOfFiles; i++) {
-                const reader = new FileReader();
+            const numberOfFiles: number = this.selectedFiles.length;
+            for (let i: number = 0; i < numberOfFiles; i++) {
+                const reader: FileReader = new FileReader();
                 reader.onload = (e: any) => {
-                    console.log(e.target.result);
                     this.previews.push(e.target.result);
                 };
                 reader.readAsDataURL(this.selectedFiles[i]);
@@ -89,9 +90,9 @@ export class AddNewItemComponent implements OnInit {
         if (file) {
             this.uploadService.upload(file).subscribe({
                 next: (response: any): void => {
-                    if (response.id) {
-                        this.boxItem.mediaId = response.id;
-                        this.landingService.addNewSectionItem(this.getFormValue()).subscribe({
+                    if (response && response.body && response.body.id) {
+                        this.boxItem.mediaId = response.body.id;
+                        this.boxItemsService.addNewBoxItem(this.getFormValue()).subscribe({
                             next: (response: any): void => {
                                 if (response.id) {
                                     this.modal.close(true);
@@ -105,7 +106,7 @@ export class AddNewItemComponent implements OnInit {
                                 }
                             }
                         });
-                    } else {
+                    } else if (response && response.body && !response.body.id) {
                         this.toasterService.error('بارگذاری مدیا ناموفق');
                     }
                 },

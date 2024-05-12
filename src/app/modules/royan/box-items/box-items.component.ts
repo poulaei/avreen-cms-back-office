@@ -1,49 +1,48 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
-import {BaseTableActionModel} from "../../shared/shared-components/base-table/base-table-action.model";
-import {BaseTableComponent} from "../../shared/shared-components/base-table/base-table.component";
-import {BaseTableModel} from "../../shared/shared-components/base-table/base-table.model";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {BaseTableComponent} from "../shared/shared-components/base-table/base-table.component";
+import {BaseTableModel} from "../shared/shared-components/base-table/base-table.model";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {TranslateService} from "@ngx-translate/core";
-import {LandingService} from "../landing.service";
-import {BaseTableColumnModel} from "../../shared/shared-components/base-table/base-table-column.model";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {BaseTableColumnModel} from "../shared/shared-components/base-table/base-table-column.model";
+import {BaseTableActionModel} from "../shared/shared-components/base-table/base-table-action.model";
 import {Observable} from "rxjs";
-import {SectionLookupComponent} from "../section-lookup/section-lookup.component";
-import {AddNewItemComponent} from "./add-new-item/add-new-item.component";
+import {BoxItemsService} from "./box-items.service";
+import {BoxLookupComponent} from "../box/box-lookup/box-lookup.component";
+import {AddNewBoxItemComponent} from "./add-new-box-item/add-new-box-item.component";
 
 @Component({
-    selector: 'app-section-items',
-    templateUrl: './section-items.component.html',
-    styleUrls: ['./section-items.component.scss']
+    selector: 'app-box-items',
+    templateUrl: './box-items.component.html',
+    styleUrls: ['./box-items.component.scss']
 })
-export class SectionItemsComponent implements OnInit {
+export class BoxItemsComponent implements OnInit {
 
-    @ViewChild("sectionItemsTable") sectionItemsTable: BaseTableComponent;
-    sectionItemsTableModel: BaseTableModel = new BaseTableModel();
+    @ViewChild("boxItemsTable") boxItemsTable: BaseTableComponent;
+    boxItemsTableModel: BaseTableModel = new BaseTableModel();
     filterForm: FormGroup;
-    sectionId: string;
+    boxId: string;
 
     constructor(public formBuilder: FormBuilder,
-                public changeDetectorRef: ChangeDetectorRef,
                 public toasterService: ToastrService,
                 public translate: TranslateService,
-                public landingService: LandingService,
+                public boxItemsService: BoxItemsService,
                 public modalService: NgbModal) {
     }
 
     ngOnInit(): void {
         this.createFilterForm();
-        this.initializeSectionItemsTable();
+        this.initializeBoxItemsTable();
     }
 
     createFilterForm(): void {
         this.filterForm = this.formBuilder.group({
-            sectionId: ['']
+            boxId: ['']
         });
     }
 
-    initializeSectionItemsTable(): void {
+    initializeBoxItemsTable(): void {
         let tableColumns: BaseTableColumnModel[];
         tableColumns = [
             {
@@ -67,35 +66,36 @@ export class SectionItemsComponent implements OnInit {
             {
                 actionName: this.translate.instant('SHARED.ACTIONS.EDIT'),
                 actionIcon: 'pencil',
-                actionFunction: this.editItem
+                actionFunction: this.editBoxItem
             },
             {
                 actionName: this.translate.instant('SHARED.ACTIONS.DELETE'),
                 actionIcon: 'trash',
-                actionFunction: this.deleteItem
+                actionFunction: this.deleteBoxItem
             }
         ]
-        this.sectionItemsTableModel.hasGridAction = true
-        this.sectionItemsTableModel.selectable = false;
-        this.sectionItemsTableModel.autoSearch = false;
-        this.sectionItemsTableModel.tableColumns = tableColumns;
-        this.sectionItemsTableModel.gridActions = gridActions;
+        this.boxItemsTableModel.hasGridAction = true
+        this.boxItemsTableModel.selectable = false;
+        this.boxItemsTableModel.autoSearch = false;
+        this.boxItemsTableModel.tableColumns = tableColumns;
+        this.boxItemsTableModel.gridActions = gridActions;
     }
 
     doSearch = (): Observable<any> => {
-        return this.landingService.getSectionItems(this.sectionId);
+        return this.boxItemsService.getBoxItems(this.boxId);
     }
 
-    addNewItem(): void {
-        if (this.sectionId) {
-            const modalRef: NgbModalRef = this.modalService.open(AddNewItemComponent, {
+    addNewBoxItem(): void {
+        if (this.boxId) {
+            const modalRef: NgbModalRef = this.modalService.open(AddNewBoxItemComponent, {
                 centered: true,
                 size: 'xl'
             });
+            modalRef.componentInstance.boxId = this.boxId;
             modalRef.result.then((isCreate: boolean): void => {
                 if (isCreate) {
                     this.toasterService.success('آیتم جدید با موفقیت اضافه شد');
-                    this.sectionItemsTable.refreshTableData(true, 'sectionItem');
+                    this.boxItemsTable.refreshTableData(true, 'boxItem');
                 }
             }, (): void => {
 
@@ -105,11 +105,11 @@ export class SectionItemsComponent implements OnInit {
         }
     }
 
-    editItem = (element: any): void => {
+    editBoxItem = (element: any): void => {
         // this.router.navigate(["/shaliSoft/editBuyFactor", element.id]);
     }
 
-    deleteItem = (element: any): void => {
+    deleteBoxItem = (element: any): void => {
         // const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
         //     centered: true
         // });
@@ -139,17 +139,17 @@ export class SectionItemsComponent implements OnInit {
     }
 
     searchSection(): void {
-        const modalRef: NgbModalRef = this.modalService.open(SectionLookupComponent, {
+        const modalRef: NgbModalRef = this.modalService.open(BoxLookupComponent, {
             centered: true,
             size: 'xl'
         });
-        modalRef.result.then((sectionInfo: any): void => {
-            if (sectionInfo) {
-                this.filterForm.controls['sectionId'].setValue(sectionInfo.section);
-                this.sectionId = sectionInfo.section;
-                this.sectionItemsTable.refreshTableData(true, 'sectionItem');
+        modalRef.result.then((boxInfo: any): void => {
+            if (boxInfo) {
+                this.filterForm.controls['boxId'].setValue(boxInfo.section);
+                this.boxId = boxInfo.id;
+                this.boxItemsTable.refreshTableData(true, 'boxItem');
             }
-        }, () => {
+        }, (): void => {
 
         });
     }

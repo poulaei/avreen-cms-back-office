@@ -11,16 +11,19 @@ export const environment = {
     appPreviewAngularUrl: 'https://preview.keenthemes.com/metronic8/angular/demo1',
     appPreviewDocsUrl: 'https://preview.keenthemes.com/metronic8/angular/docs',
     appPreviewChangelogUrl: 'https://preview.keenthemes.com/metronic8/angular/docs/changelog',
+    //AUTH SERVICES//
     loginUrl: '/api/account/login',
     getUserByToken: '/api/account/my-profile',
-    getAllSections: '/api/app/box-admin',
-    addNewSection: '/api/app/box-admin',
-    addNewSectionItem: '/api/app/box-item',
-    deleteSection: '/api/app/box',
-    getSectionInfo: '/api/app/box',
-    editSection: '/api/app/box',
-    getSectionItems: '/app/box-admin/by-section',
+    //BOX ITEMS SERVICES//
+    addNewBoxItem: '/api/app/box-item-admin',
+    getBoxItems: '/api/app/box-admin/box-items/',
     uploadMedia: '/api/cms-kit-admin/media/Box',
+    //BOX SERVICES//
+    deleteBox: '/api/app/box/',
+    getAllBoxes: '/api/app/box-admin',
+    addNewBox: '/api/app/box-admin',
+    getBoxInfo: '/api/app/box/',
+    editBox: '/api/app/box/',
     //USER SERVICES//
     getAllUsers: '/api/identity/users',
     //ROLE SERVICES//

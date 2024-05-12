@@ -3,30 +3,30 @@ import {CrudPageComponent} from "../shared/shared-components/crud-page/crud-page
 import {CrudPageModel} from "../shared/shared-components/crud-page/crud-page.model";
 import {BaseTableModel} from "../shared/shared-components/base-table/base-table.model";
 import {TranslateService} from "@ngx-translate/core";
-import {LandingService} from "./landing.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ToastrService} from "ngx-toastr";
 import {PageActionModel} from "../shared/shared-components/crud-page/page-action.model";
 import {BaseTableColumnModel} from "../shared/shared-components/base-table/base-table-column.model";
 import {BaseTableActionModel} from "../shared/shared-components/base-table/base-table-action.model";
 import {Observable} from "rxjs";
-import {AddNewSectionComponent} from "./add-new-section/add-new-section.component";
 import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
-import {EditSectionComponent} from "./edit-section/edit-section.component";
+import {BoxService} from "./box.service";
+import {AddNewBoxComponent} from "./add-new-box/add-new-box.component";
+import {EditBoxComponent} from "./edit-box/edit-box.component";
 
 @Component({
-    selector: 'app-landing',
-    templateUrl: './landing.component.html',
-    styleUrls: ['./landing.component.scss']
+    selector: 'app-box',
+    templateUrl: './box.component.html',
+    styleUrls: ['./box.component.scss']
 })
-export class LandingComponent implements OnInit {
+export class BoxComponent implements OnInit {
 
     @ViewChild("crudPage") crudPage: CrudPageComponent;
     crudPageModel: CrudPageModel = new CrudPageModel();
     tableModel: BaseTableModel = new BaseTableModel();
 
     constructor(public translate: TranslateService,
-                public landingService: LandingService,
+                public boxService: BoxService,
                 public modalService: NgbModal,
                 public toasterService: ToastrService) {
 
@@ -42,7 +42,7 @@ export class LandingComponent implements OnInit {
         pageActions = [
             {
                 actionName: 'افزودن بخش جدید',
-                actionFunction: this.addNewSection
+                actionFunction: this.addNewBox
             }
         ]
         this.crudPageModel.crudPageHeader = 'مدیریت بخش های صفحه';
@@ -68,12 +68,12 @@ export class LandingComponent implements OnInit {
             {
                 actionName: this.translate.instant('SHARED.ACTIONS.EDIT'),
                 actionIcon: 'pencil',
-                actionFunction: this.editHeater
+                actionFunction: this.editBox
             },
             {
                 actionName: this.translate.instant('SHARED.ACTIONS.DELETE'),
                 actionIcon: 'trash',
-                actionFunction: this.deleteHeater
+                actionFunction: this.deleteBox
             }
         ]
         this.tableModel.hasGridAction = true;
@@ -84,11 +84,11 @@ export class LandingComponent implements OnInit {
     }
 
     doSearch = (): Observable<any> => {
-        return this.landingService.getAllSections();
+        return this.boxService.getAllBoxes();
     }
 
-    addNewSection = (): void => {
-        const modalRef: NgbModalRef = this.modalService.open(AddNewSectionComponent, {
+    addNewBox = (): void => {
+        const modalRef: NgbModalRef = this.modalService.open(AddNewBoxComponent, {
             centered: true,
             size: 'xl'
         });
@@ -102,13 +102,13 @@ export class LandingComponent implements OnInit {
         });
     }
 
-    editHeater = (element: any): void => {
-        const modalRef: NgbModalRef = this.modalService.open(EditSectionComponent, {
+    editBox = (element: any): void => {
+        const modalRef: NgbModalRef = this.modalService.open(EditBoxComponent, {
             centered: true,
             size: 'xl'
         });
-        modalRef.componentInstance.sectionId = element.id;
-        modalRef.result.then((isUpdated: boolean) => {
+        modalRef.componentInstance.boxId = element.id;
+        modalRef.result.then((isUpdated: boolean): void => {
             if (isUpdated) {
                 this.toasterService.success('بخش مورد نظر با موفقیت ویرایش شد');
                 this.crudPage.crudPageTable.refreshTableData();
@@ -118,7 +118,7 @@ export class LandingComponent implements OnInit {
         });
     }
 
-    deleteHeater = (element: any): void => {
+    deleteBox = (element: any): void => {
         const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
             centered: true
         });
@@ -126,7 +126,7 @@ export class LandingComponent implements OnInit {
         modalRef.componentInstance.confirmMessage = 'آیا از حذف بخش ' + element.section + ' مطمئن هستید؟';
         modalRef.result.then((isDeleted: boolean) => {
             if (isDeleted) {
-                this.landingService.deleteSection(element.id).subscribe({
+                this.boxService.deleteBox(element.id).subscribe({
                     next: (response: any): void => {
                         if (!response) {
                             this.toasterService.success('بخش مورد نظر با موفقیت حذف شد');
