@@ -11,8 +11,20 @@ export const environment = {
     appPreviewAngularUrl: 'https://preview.keenthemes.com/metronic8/angular/demo1',
     appPreviewDocsUrl: 'https://preview.keenthemes.com/metronic8/angular/docs',
     appPreviewChangelogUrl: 'https://preview.keenthemes.com/metronic8/angular/docs/changelog',
-    loginUrl: '/api/ums/usr/login',
-    getUserByToken: '/api/ums/usr/getUserByToken',
+    loginUrl: '/api/account/login',
+    getUserByToken: '/api/account/my-profile',
+    getAllSections: '/api/app/box-admin',
+    addNewSection: '/api/app/box-admin',
+    addNewSectionItem: '/api/app/box-item',
+    deleteSection: '/api/app/box',
+    getSectionInfo: '/api/app/box',
+    editSection: '/api/app/box',
+    getSectionItems: '/app/box-admin/by-section',
+    uploadMedia: '/api/cms-kit-admin/media/Box',
+    //USER SERVICES//
+    getAllUsers: '/api/identity/users',
+    //ROLE SERVICES//
+    getAllRoles: '/api/identity/roles',
     appDemos: {
         demo1: {
             title: 'Demo 1',
@@ -20,5 +32,11 @@ export const environment = {
             published: true,
             thumbnail: './assets/media/demos/demo1.png',
         }
+    },
+    apis: {
+        default: {
+            url: '', // <- should be empty string, not '/'
+            // ...
+        },
     }
 };

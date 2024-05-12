@@ -54,22 +54,32 @@ export class BaseTableComponent implements OnInit, AfterViewInit {
         }
     }
 
-    refreshTableData(): void {
+    refreshTableData(hasChild?: boolean, type?: string): void {
         this.doSearch().subscribe({
             next: (response: any) => {
-                if (response.isSuccess) {
-                    if (Array.isArray(response.data)) {
-                        this.tableDataSource.data = response.data;
+                if (!response.error) {
+                    if (hasChild && type && type == 'sectionItem') {
+                        if (response.items && response.items.length > 0) {
+                            this.tableDataSource.data = response.items[0].boxItems;
+                            if (response.items[0].boxItems.length == 0) {
+                                this.toasterService.warning('برای این بخش آیتمی تعریف نشده است');
+                            }
+                        }
                     } else {
-                        this.tableDataSource.data = response.data.data;
+                        this.tableDataSource.data = response.items;
                     }
                 } else {
-                    this.toasterService.error(response.message);
+                    this.toasterService.error(response.error.message);
                 }
             },
             error: (exception) => {
-                if (exception.error) {
-                    this.toasterService.error(exception.error.message);
+                console.log(exception);
+                if (exception.status == 404) {
+                    this.toasterService.warning('آیتم مورد نظر یافت نشد');
+                } else {
+                    if (exception.error) {
+                        this.toasterService.error(exception.error.error.message);
+                    }
                 }
             }
         });

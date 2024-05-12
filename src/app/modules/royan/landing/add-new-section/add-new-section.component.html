@@ -1,0 +1,71 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4">{{'افزودن بخش جدید' | translate}}</div>
+    </div>
+    <div class="cursor-default modal-body">
+        <form [formGroup]="addNewSectionForm">
+            <div class="form-group row">
+                <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">شناسه بخش</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewSectionForm,'section')"
+                           [class.is-valid]="formControlService.isControlValid(addNewSectionForm,'section')"
+                           formControlName="section" placeholder="شناسه بخش"/>
+                </div>
+                <div class="col-lg-8 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">عنوان بخش</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewSectionForm,'title')"
+                           [class.is-valid]="formControlService.isControlValid(addNewSectionForm,'title')"
+                           formControlName="title" placeholder="عنوان بخش"/>
+                </div>
+                <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">توضیحات بخش</label>
+                    <textarea class="form-control form-control-lg form-control-solid"
+                              autocomplete="off"
+                              rows="5"
+                              [class.is-invalid]="formControlService.isControlInvalid(addNewSectionForm,'summary')"
+                              [class.is-valid]="formControlService.isControlValid(addNewSectionForm,'summary')"
+                              formControlName="summary" placeholder="توضیحات بخش">
+                    </textarea>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">نام عملیات</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewSectionForm,'action')"
+                           [class.is-valid]="formControlService.isControlValid(addNewSectionForm,'action')"
+                           formControlName="action" placeholder="عملیات"/>
+                </div>
+                <div class="col-lg-8 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">آدرس عملیات</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewSectionForm,'actionUrl')"
+                           [class.is-valid]="formControlService.isControlValid(addNewSectionForm,'actionUrl')"
+                           formControlName="actionUrl" placeholder="آدرس عملیات"/>
+                </div>
+                <div class="col-lg-12 col-md-7 col-sm-7 d-xs-block col-xs-7 pb-6">
+                    <label class="form-label">توضیحات</label>
+                    <textarea class="form-control form-control-lg form-control-solid"
+                              autocomplete="off"
+                              [class.is-invalid]="formControlService.isControlInvalid(addNewSectionForm,'description')"
+                              [class.is-valid]="formControlService.isControlValid(addNewSectionForm,'description')"
+                              formControlName="description" placeholder="توضیحات">
+                    </textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger mr-2" (click)="modal.dismiss()">
+            {{'SHARED.CANCEL' | translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="addNewSection()"
+                [disabled]="addNewSectionForm.invalid">
+            {{'SHARED.SAVE' | translate}}
+        </button>
+    </div>
+</div>

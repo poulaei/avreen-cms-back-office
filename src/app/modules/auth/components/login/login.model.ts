@@ -1,4 +1,4 @@
 export class loginModel {
-    token: string;
-    name: string;
+    result: string;
+    description: string;
 }

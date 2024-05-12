@@ -58562,6 +58562,11 @@ body,
     font-family: IRANSans !important;
 }
 
+.font-size {
+    font-weight: normal;
+    font-size: 5px;
+}
+
 .pl-10{
     padding-left: 10px;
 }

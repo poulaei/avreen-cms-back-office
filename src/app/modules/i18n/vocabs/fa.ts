@@ -4,7 +4,7 @@ export const locale = {
         SHARED: {
             CANCEL: 'بستن',
             SAVE: 'ذخیره',
-            EDIT: 'ذخیره',
+            EDIT: 'ویرایش',
             ROW: 'ردیف',
             ACTION: 'عملیات',
             SEARCH: 'جستجو',

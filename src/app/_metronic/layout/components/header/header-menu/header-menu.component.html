@@ -1,14 +1,58 @@
+<div class="menu-item menu-lg-down-accordion me-lg-1" data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+     data-kt-menu-placement="bottom-end">
+    <span class="menu-link py-3">
+        <span class="menu-title">مدیریت کاربران</span>
+        <span class="menu-arrow d-lg-none"></span>
+    </span>
+    <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px"
+         data-kt-menu-dismiss="true">
+        <div class="menu-item menu-lg-down-accordion me-lg-1" data-kt-menu-trigger="{default:'click', lg: 'hover'}"
+             data-kt-menu-placement="left-start">
+            <div class="menu-item me-lg-1">
+                <a class="menu-link py-3" routerLinkActive="active" routerLink="royan/users"><span
+                        class="menu-bullet"><span class="bullet bullet-dot"></span></span><span
+                        class="menu-title">کاربران سیستم</span>
+                </a>
+            </div>
+            <div class="menu-item me-lg-1">
+                <a class="menu-link py-3" routerLinkActive="active" routerLink="royan/roles"><span
+                        class="menu-bullet"><span class="bullet bullet-dot"></span></span><span
+                        class="menu-title">نقش های سیستم</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="menu-item me-lg-1">
-    <a class="menu-link py-3" routerLinkActive="active menu-here" routerLink="royan/users">
+    <a class="menu-link py-3" routerLinkActive="active menu-here" routerLink="royan/menu">
         <span class="menu-title">
-            {{'MENU.USERS' | translate}}
+            مدیریت منو
         </span>
     </a>
 </div>
-<div class="menu-item me-lg-1">
-    <a class="menu-link py-3" routerLinkActive="active menu-here" routerLink="royan/landing">
-        <span class="menu-title">
-            {{'MENU.LANDING' | translate}}
-        </span>
-    </a>
+<div class="menu-item menu-lg-down-accordion me-lg-1" data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+     data-kt-menu-placement="bottom-end">
+    <span class="menu-link py-3">
+        <span class="menu-title">مدیریت صفحه اصلی</span>
+        <span class="menu-arrow d-lg-none"></span>
+    </span>
+    <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px"
+         data-kt-menu-dismiss="true">
+        <div class="menu-item menu-lg-down-accordion me-lg-1" data-kt-menu-trigger="{default:'click', lg: 'hover'}"
+             data-kt-menu-placement="left-start">
+            <div class="menu-item me-lg-1">
+                <a class="menu-link py-3" routerLinkActive="active" routerLink="royan/section"><span
+                        class="menu-bullet"><span class="bullet bullet-dot"></span></span><span
+                        class="menu-title">مدیریت بخش های صفحه</span>
+                </a>
+            </div>
+            <div class="menu-item me-lg-1">
+                <a class="menu-link py-3" routerLinkActive="active" routerLink="royan/items"><span
+                        class="menu-bullet"><span class="bullet bullet-dot"></span></span><span
+                        class="menu-title">مدیریت آیتم های بخش</span>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

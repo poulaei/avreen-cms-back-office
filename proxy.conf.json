@@ -1,12 +1,6 @@
 {
   "/api": {
-    "target": "https://oa.avreenco.com:8080",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/report": {
-    "target": "https://oa.avreenco.com:8080",
+    "target": "http://172.16.10.71:3003",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

@@ -23,14 +23,15 @@ export class AuthHTTPService {
             return of(notFoundError);
         }
         const defaultAuth = {
-            userName: email,
-            userPassword: password,
+            userNameOrEmailAddress: email,
+            password: password,
+            rememberMe: true,
         };
         return this.http.post<loginModel>(environment.loginUrl, defaultAuth)
             .pipe(map((loginModel: loginModel) => {
                         const auth = new AuthModel();
-                        auth.token = loginModel.token;
-                        auth.name = loginModel.name;
+                        auth.result = loginModel.result;
+                        auth.description = loginModel.description;
                         return auth;
                     },
                     (err: Error) => {
@@ -52,13 +53,11 @@ export class AuthHTTPService {
         });
     }
 
-    getUserByToken(token: string): Observable<UserModel> {
+    getUserByToken(): Observable<UserModel> {
         // return this.http.get<UserModel>(environment.getUserByToken, {
         //     headers: httpHeaders,
         // });
-        const defaultAuth = {
-            param: token
-        };
-        return this.http.post<UserModel>(environment.getUserByToken, defaultAuth);
+        const defaultAuth = {};
+        return this.http.get<UserModel>(environment.getUserByToken, defaultAuth);
     }
 }

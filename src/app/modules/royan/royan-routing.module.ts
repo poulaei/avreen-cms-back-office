@@ -3,6 +3,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {RoyanComponent} from "./royan.component";
 import {LandingComponent} from "./landing/landing.component";
 import {UserManagementComponent} from "./user-management/user-management.component";
+import {SectionItemsComponent} from "./landing/section-items/section-items.component";
+import {MenuManagementComponent} from "./menu-management/menu-management.component";
+import {SystemRoleComponent} from "./system-role/system-role.component";
 
 const routes: Routes = [
     {
@@ -10,12 +13,24 @@ const routes: Routes = [
         component: RoyanComponent,
         children: [
             {
-                path: 'landing',
+                path: 'section',
                 component: LandingComponent
+            },
+            {
+                path: 'items',
+                component: SectionItemsComponent
             },
             {
                 path: 'users',
                 component: UserManagementComponent
+            },
+            {
+                path: 'roles',
+                component: SystemRoleComponent
+            },
+            {
+                path: 'menu',
+                component: MenuManagementComponent
             },
         ]
     }

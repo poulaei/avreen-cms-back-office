@@ -1,10 +1,10 @@
 export class AuthModel {
 
-    token: string;
-    name: string;
+    result: string;
+    description: string;
 
     setAuth(auth: AuthModel) {
-        this.token = auth.token;
-        this.name = auth.name;
+        this.result = auth.result;
+        this.description = auth.description;
     }
 }
