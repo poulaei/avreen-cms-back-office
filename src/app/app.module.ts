@@ -28,6 +28,7 @@ import {SpinnerInterceptor} from "./spinne-interceptor";
 import {ToastrModule} from "ngx-toastr";
 import {MatMenuModule} from "@angular/material/menu";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
+import {EditorModule} from "@tinymce/tinymce-angular";
 
 
 const dutchRangeLabel = (page: number, pageSize: number, length: number) => {
@@ -52,6 +53,7 @@ function appInitializer(authService: AuthService) {
 @NgModule({
     declarations: [AppComponent, RoyanComponent],
     imports: [
+        EditorModule,
         HttpClientXsrfModule.withOptions({
             cookieName: 'XSRF-TOKEN',
             headerName: 'RequestVerificationToken'

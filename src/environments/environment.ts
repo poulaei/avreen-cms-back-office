@@ -28,10 +28,27 @@ export const environment = {
     addNewBox: '/api/app/box-admin',
     getBoxInfo: '/api/app/box-admin/',
     editBox: '/api/app/box-admin/',
+    //BLOG CATEGORY SERVICES//
+    getAllCategories: '/api/cms-kit-admin/blogs',
+    addNewCategory: '/api/cms-kit-admin/blogs',
+    deleteCategory: '/api/cms-kit-admin/blogs/',
+    //BLOG SERVICES//
+    getAllBlogs: '/api/cms-kit-admin/blogs/blog-posts',
+    addNewBlog: '/api/cms-kit-admin/blogs',
+    deleteBlog: '/api/cms-kit-admin/blogs/',
+    //PAGES SERVICES//
+    getAllPages: '/api/cms-kit-admin/pages',
+    addNewPage: '/api/cms-kit-admin/blogs',
+    deletePage: '/api/cms-kit-admin/blogs/',
+    // addNewBox: '/api/app/box-admin',
+    // getBoxInfo: '/api/app/box-admin/',
+    // editBox: '/api/app/box-admin/',
     //USER SERVICES//
     getAllUsers: '/api/identity/users',
     //ROLE SERVICES//
     getAllRoles: '/api/identity/roles',
+    //MENU SERVICES//
+    getAllMenus: '/api/app/menu-item-admin',
     appDemos: {
         demo1: {
             title: 'Demo 1',

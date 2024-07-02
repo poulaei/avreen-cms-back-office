@@ -1,0 +1,36 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4">{{'افزودن دسته بندی جدید' | translate}}</div>
+    </div>
+    <div class="cursor-default modal-body">
+        <form [formGroup]="addNewBlogCategoryForm">
+            <div class="form-group row">
+                <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">نام دسته بندی</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewBlogCategoryForm,'name')"
+                           [class.is-valid]="formControlService.isControlValid(addNewBlogCategoryForm,'name')"
+                           formControlName="name" placeholder="نام دسته بندی"/>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">کلید نمایش در آدرس</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewBlogCategoryForm,'slug')"
+                           [class.is-valid]="formControlService.isControlValid(addNewBlogCategoryForm,'slug')"
+                           formControlName="slug" placeholder="کلید نمایش در آدرس"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger mr-2" (click)="modal.dismiss()">
+            {{'SHARED.CANCEL' | translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="addNewBlogCategory()"
+                [disabled]="addNewBlogCategoryForm.invalid">
+            {{'SHARED.SAVE' | translate}}
+        </button>
+    </div>
+</div>

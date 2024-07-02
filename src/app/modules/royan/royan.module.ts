@@ -41,6 +41,16 @@ import {EditBoxComponent} from './box/edit-box/edit-box.component';
 import {BoxLookupComponent} from './box/box-lookup/box-lookup.component';
 import {AddNewBoxItemComponent} from './box-items/add-new-box-item/add-new-box-item.component';
 import {EditBoxItemComponent} from './box-items/edit-box-item/edit-box-item.component';
+import {EditorComponent} from "@tinymce/tinymce-angular";
+import { BlogComponent } from './cms/blog/blog.component';
+import { BlogCategoryComponent } from './cms/blog-category/blog-category.component';
+import { PageViewComponent } from './cms/page-view/page-view.component';
+import { AddNewBlogCategoryComponent } from './cms/blog-category/add-new-blog-category/add-new-blog-category.component';
+import { EditBlogCategoryComponent } from './cms/blog-category/edit-blog-category/edit-blog-category.component';
+import { AddNewBlogComponent } from './cms/blog/add-new-blog/add-new-blog.component';
+import { EditBlogComponent } from './cms/blog/edit-blog/edit-blog.component';
+import { AddNewPageViewComponent } from './cms/page-view/add-new-page-view/add-new-page-view.component';
+import { EditPageViewComponent } from './cms/page-view/edit-page-view/edit-page-view.component';
 
 
 @NgModule({
@@ -63,7 +73,16 @@ import {EditBoxItemComponent} from './box-items/edit-box-item/edit-box-item.comp
         EditBoxComponent,
         BoxLookupComponent,
         AddNewBoxItemComponent,
-        EditBoxItemComponent
+        EditBoxItemComponent,
+        BlogComponent,
+        BlogCategoryComponent,
+        PageViewComponent,
+        AddNewBlogCategoryComponent,
+        EditBlogCategoryComponent,
+        AddNewBlogComponent,
+        EditBlogComponent,
+        AddNewPageViewComponent,
+        EditPageViewComponent
     ],
     imports: [
         CommonModule,
@@ -92,6 +111,7 @@ import {EditBoxItemComponent} from './box-items/edit-box-item/edit-box-item.comp
         MatCardModule,
         MatToolbarModule,
         NgOptimizedImage,
+        EditorComponent,
     ]
 })
 export class RoyanModule {

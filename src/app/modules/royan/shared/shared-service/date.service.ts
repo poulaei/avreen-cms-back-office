@@ -7,7 +7,7 @@ import * as moment from "jalali-moment";
 export class DateService {
 
     calcDateTo(birthDate: any): string {
-        const localDate = moment(birthDate).locale('fa').format('YYYY/MM/DD');
+        const localDate = moment(birthDate).locale('fa').format('YYYY/MM/DD HH:mm:ss');
         return localDate.toString();
     }
 

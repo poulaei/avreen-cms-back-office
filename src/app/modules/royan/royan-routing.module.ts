@@ -6,6 +6,9 @@ import {MenuManagementComponent} from "./menu-management/menu-management.compone
 import {SystemRoleComponent} from "./system-role/system-role.component";
 import {BoxComponent} from "./box/box.component";
 import {BoxItemsComponent} from "./box-items/box-items.component";
+import {BlogComponent} from "./cms/blog/blog.component";
+import {BlogCategoryComponent} from "./cms/blog-category/blog-category.component";
+import {PageViewComponent} from "./cms/page-view/page-view.component";
 
 const routes: Routes = [
     {
@@ -32,6 +35,18 @@ const routes: Routes = [
                 path: 'menu',
                 component: MenuManagementComponent
             },
+            {
+                path: 'blog',
+                component: BlogComponent
+            },
+            {
+                path: 'blogCategory',
+                component: BlogCategoryComponent
+            },
+            {
+                path: 'pageView',
+                component: PageViewComponent
+            }
         ]
     }
 ];
