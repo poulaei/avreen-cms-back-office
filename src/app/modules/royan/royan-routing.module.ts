@@ -9,6 +9,7 @@ import {BoxItemsComponent} from "./box-items/box-items.component";
 import {BlogComponent} from "./cms/blog/blog.component";
 import {BlogCategoryComponent} from "./cms/blog-category/blog-category.component";
 import {PageViewComponent} from "./cms/page-view/page-view.component";
+import {BoxManagementComponent} from "./box-management/box-management.component";
 
 const routes: Routes = [
     {
@@ -46,6 +47,10 @@ const routes: Routes = [
             {
                 path: 'pageView',
                 component: PageViewComponent
+            },
+            {
+                path: 'boxManagement',
+                component: BoxManagementComponent
             }
         ]
     }

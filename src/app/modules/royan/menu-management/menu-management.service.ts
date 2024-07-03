@@ -15,4 +15,8 @@ export class MenuManagementService {
     getAllMenus(): Observable<any> {
         return this.httpClient.get<any>(environment.getAllMenus, {});
     }
+
+    getMenuTree(): Observable<any> {
+        return this.httpClient.get<any>(environment.getMenuTree, {});
+    }
 }

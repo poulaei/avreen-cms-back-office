@@ -18,19 +18,19 @@ export class PageViewService {
         return this.httpClient.get<any>(environment.getAllPages, {});
     }
 
-    addNewCategory(blogCategoryModel: BlogCategoryModel): Observable<any> {
+    addNewPage(blogCategoryModel: BlogCategoryModel): Observable<any> {
         return this.httpClient.post<any>(environment.addNewCategory, blogCategoryModel);
     }
 
-    deleteCategory(categoryId: string): Observable<any> {
+    deletePage(categoryId: string): Observable<any> {
         return this.httpClient.delete<any>(environment.deleteCategory + categoryId, {});
     }
 
-    getBoxInfo(boxId: string): Observable<any> {
+    getPageInfo(boxId: string): Observable<any> {
         return this.httpClient.get<any>(environment.getBoxInfo + boxId, {});
     }
 
-    editBox(boxInfo: Box, boxId: string): Observable<any> {
+    editPage(boxInfo: Box, boxId: string): Observable<any> {
         return this.httpClient.put<any>(environment.editBox + boxId, boxInfo);
     }
 

@@ -11,6 +11,8 @@ import {BaseTableActionModel} from "../../shared/shared-components/base-table/ba
 import {Observable} from "rxjs";
 import {PageViewService} from "./page-view.service";
 import {AddNewPageViewComponent} from "./add-new-page-view/add-new-page-view.component";
+import {EditPageViewComponent} from "./edit-page-view/edit-page-view.component";
+import {ConfirmModalComponent} from "../../shared/shared-components/confirm-modal/confirm-modal.component";
 
 @Component({
     selector: 'app-page-view',
@@ -107,49 +109,49 @@ export class PageViewComponent implements OnInit {
     }
 
     editPage = (element: any): void => {
-        // const modalRef: NgbModalRef = this.modalService.open(EditBoxComponent, {
-        //     centered: true,
-        //     size: 'xl'
-        // });
-        // modalRef.componentInstance.boxId = element.id;
-        // modalRef.result.then((isUpdated: boolean): void => {
-        //     if (isUpdated) {
-        //         this.toasterService.success('بخش مورد نظر با موفقیت ویرایش شد');
-        //         this.crudPage.crudPageTable.refreshTableData();
-        //     }
-        // }, () => {
-        //
-        // });
+        const modalRef: NgbModalRef = this.modalService.open(EditPageViewComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.componentInstance.boxId = element.id;
+        modalRef.result.then((isUpdated: boolean): void => {
+            if (isUpdated) {
+                this.toasterService.success('صفحه مورد نظر با موفقیت ویرایش شد');
+                this.crudPage.crudPageTable.refreshTableData();
+            }
+        }, () => {
+
+        });
     }
 
     deletePage = (element: any): void => {
-        // const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
-        //     centered: true
-        // });
-        // modalRef.componentInstance.confirmTitle = 'حذف دسته بندی';
-        // modalRef.componentInstance.confirmMessage = 'آیا از حذف دسته بندی ' + element.name + ' مطمئن هستید؟';
-        // modalRef.result.then((isDeleted: boolean) => {
-        //     if (isDeleted) {
-        //         this.blogService.deleteCategory(element.id).subscribe({
-        //             next: (response: any): void => {
-        //                 if (response) {
-        //                     this.toasterService.success('دسته بندی مورد نظر با موفقیت حذف شد');
-        //                     this.crudPage.crudPageTable.refreshTableData();
-        //                 } else {
-        //                     this.toasterService.error(response.error.message);
-        //                 }
-        //             },
-        //             error: (exception): void => {
-        //                 if (exception && exception.status == 404) {
-        //                     this.toasterService.error('یافت نشد');
-        //                 } else {
-        //                     this.toasterService.error('خطای سیستمی');
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }, () => {
-        //
-        // });
+        const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
+            centered: true
+        });
+        modalRef.componentInstance.confirmTitle = 'حذف صفحه';
+        modalRef.componentInstance.confirmMessage = 'آیا از حذف صفحه ' + element.name + ' مطمئن هستید؟';
+        modalRef.result.then((isDeleted: boolean) => {
+            if (isDeleted) {
+                this.pageViewService.deletePage(element.id).subscribe({
+                    next: (response: any): void => {
+                        if (response) {
+                            this.toasterService.success('صفحه مورد نظر با موفقیت حذف شد');
+                            this.crudPage.crudPageTable.refreshTableData();
+                        } else {
+                            this.toasterService.error(response.error.message);
+                        }
+                    },
+                    error: (exception): void => {
+                        if (exception && exception.status == 404) {
+                            this.toasterService.error('یافت نشد');
+                        } else {
+                            this.toasterService.error('خطای سیستمی');
+                        }
+                    }
+                });
+            }
+        }, () => {
+
+        });
     }
 }

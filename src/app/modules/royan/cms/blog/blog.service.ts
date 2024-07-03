@@ -14,23 +14,23 @@ export class BlogService {
 
     }
 
-    getAllBlogs(): Observable<any> {
+    getAllBlogPosts(): Observable<any> {
         return this.httpClient.get<any>(environment.getAllBlogs, {});
     }
 
-    addNewCategory(blogCategoryModel: BlogCategoryModel): Observable<any> {
+    addNewBlogPost(blogCategoryModel: BlogCategoryModel): Observable<any> {
         return this.httpClient.post<any>(environment.addNewCategory, blogCategoryModel);
     }
 
-    deleteCategory(categoryId: string): Observable<any> {
+    deleteBlogPost(categoryId: string): Observable<any> {
         return this.httpClient.delete<any>(environment.deleteCategory + categoryId, {});
     }
 
-    getBoxInfo(boxId: string): Observable<any> {
+    getBlogPostInfo(boxId: string): Observable<any> {
         return this.httpClient.get<any>(environment.getBoxInfo + boxId, {});
     }
 
-    editBox(boxInfo: Box, boxId: string): Observable<any> {
+    editBlogPost(boxInfo: Box, boxId: string): Observable<any> {
         return this.httpClient.put<any>(environment.editBox + boxId, boxInfo);
     }
 }

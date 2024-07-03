@@ -1,6 +1,50 @@
-<crud-page [initCrudPage]="crudPageModel" [crudPageTableModel]="tableModel" [doSearch]="doSearch"
-           #crudPage></crud-page>
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">مدیریت منو</h3>
+        </div>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-success mr-2" (click)="addBaseMenu()">افزودن منو جدید</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="font">
+                <!-- use a disabled button to provide padding for tree leaf -->
+                <button mat-icon-button disabled></button>
+                {{node.name}}
+                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="addSubMenu(node)">
+                    <app-keenicon name="add-item" class="fs-2x"></app-keenicon>
+                </b>
+                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="editMenu(node)">
+                    <app-keenicon name="pencil" class="fs-2x"></app-keenicon>
+                </b>
+                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="deleteMenu(node)">
+                    <app-keenicon name="trash" class="fs-2x"></app-keenicon>
+                </b>
+            </mat-tree-node>
+            <!-- This is the tree node template for expandable nodes -->
+            <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding class="font">
+                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                    <app-keenicon name="left" class="fs-1hx" *ngIf="!treeControl.isExpanded(node)">
 
-<editor apiKey="xhdza4d0xgej95gnvihbtfshnegoqhhb359prvf0j8f1iizt"
-        [init]="{plugins:'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',images_upload_handler:editorConfig.images_upload_handler}">
-</editor>
+                    </app-keenicon>
+                    <app-keenicon name="down" class="fs-1hx" *ngIf="treeControl.isExpanded(node)">
+
+                    </app-keenicon>
+                </button>
+                {{node.name}}
+                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="addSubMenu(node)">
+                    <app-keenicon name="add-item" class="fs-2x"></app-keenicon>
+                </b>
+                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="editMenu(node)">
+                    <app-keenicon name="pencil" class="fs-2x"></app-keenicon>
+                </b>
+                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="deleteMenu(node)">
+                    <app-keenicon name="trash" class="fs-2x"></app-keenicon>
+                </b>
+            </mat-tree-node>
+        </mat-tree>
+    </div>
+</div>

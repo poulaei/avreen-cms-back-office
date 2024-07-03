@@ -12,6 +12,7 @@ import {BaseTableActionModel} from "../../shared/shared-components/base-table/ba
 import {Observable} from "rxjs";
 import {AddNewBlogCategoryComponent} from "./add-new-blog-category/add-new-blog-category.component";
 import {ConfirmModalComponent} from "../../shared/shared-components/confirm-modal/confirm-modal.component";
+import {EditBlogCategoryComponent} from "./edit-blog-category/edit-blog-category.component";
 
 @Component({
     selector: 'app-blog-category',
@@ -101,19 +102,18 @@ export class BlogCategoryComponent implements OnInit {
     }
 
     editCategory = (element: any): void => {
-        // const modalRef: NgbModalRef = this.modalService.open(EditBoxComponent, {
-        //     centered: true,
-        //     size: 'xl'
-        // });
-        // modalRef.componentInstance.boxId = element.id;
-        // modalRef.result.then((isUpdated: boolean): void => {
-        //     if (isUpdated) {
-        //         this.toasterService.success('بخش مورد نظر با موفقیت ویرایش شد');
-        //         this.crudPage.crudPageTable.refreshTableData();
-        //     }
-        // }, () => {
-        //
-        // });
+        const modalRef: NgbModalRef = this.modalService.open(EditBlogCategoryComponent, {
+            centered: true
+        });
+        modalRef.componentInstance.categoryId = element.id;
+        modalRef.result.then((isUpdated: boolean): void => {
+            if (isUpdated) {
+                this.toasterService.success('دسته بندی مورد نظر با موفقیت ویرایش شد');
+                this.crudPage.crudPageTable.refreshTableData();
+            }
+        }, () => {
+
+        });
     }
 
     deleteCategory = (element: any): void => {
@@ -126,12 +126,8 @@ export class BlogCategoryComponent implements OnInit {
             if (isDeleted) {
                 this.blogCategoryService.deleteCategory(element.id).subscribe({
                     next: (response: any): void => {
-                        if (response) {
-                            this.toasterService.success('دسته بندی مورد نظر با موفقیت حذف شد');
-                            this.crudPage.crudPageTable.refreshTableData();
-                        } else {
-                            this.toasterService.error(response.error.message);
-                        }
+                        this.toasterService.success('دسته بندی مورد نظر با موفقیت حذف شد');
+                        this.crudPage.crudPageTable.refreshTableData();
                     },
                     error: (exception): void => {
                         if (exception && exception.status == 404) {

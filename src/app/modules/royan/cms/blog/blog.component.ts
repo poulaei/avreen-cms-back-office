@@ -11,6 +11,8 @@ import {BaseTableActionModel} from "../../shared/shared-components/base-table/ba
 import {Observable} from "rxjs";
 import {BlogService} from "./blog.service";
 import {AddNewBlogComponent} from "./add-new-blog/add-new-blog.component";
+import {EditBlogComponent} from "./edit-blog/edit-blog.component";
+import {ConfirmModalComponent} from "../../shared/shared-components/confirm-modal/confirm-modal.component";
 
 @Component({
     selector: 'app-blog',
@@ -93,7 +95,7 @@ export class BlogComponent implements OnInit {
     }
 
     doSearch = (): Observable<any> => {
-        return this.blogService.getAllBlogs();
+        return this.blogService.getAllBlogPosts();
     }
 
     addBlog = (): void => {
@@ -111,49 +113,49 @@ export class BlogComponent implements OnInit {
     }
 
     editBlog = (element: any): void => {
-        // const modalRef: NgbModalRef = this.modalService.open(EditBoxComponent, {
-        //     centered: true,
-        //     size: 'xl'
-        // });
-        // modalRef.componentInstance.boxId = element.id;
-        // modalRef.result.then((isUpdated: boolean): void => {
-        //     if (isUpdated) {
-        //         this.toasterService.success('بخش مورد نظر با موفقیت ویرایش شد');
-        //         this.crudPage.crudPageTable.refreshTableData();
-        //     }
-        // }, () => {
-        //
-        // });
+        const modalRef: NgbModalRef = this.modalService.open(EditBlogComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.componentInstance.boxId = element.id;
+        modalRef.result.then((isUpdated: boolean): void => {
+            if (isUpdated) {
+                this.toasterService.success('پست مورد نظر با موفقیت ویرایش شد');
+                this.crudPage.crudPageTable.refreshTableData();
+            }
+        }, () => {
+
+        });
     }
 
     deleteBlog = (element: any): void => {
-        // const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
-        //     centered: true
-        // });
-        // modalRef.componentInstance.confirmTitle = 'حذف دسته بندی';
-        // modalRef.componentInstance.confirmMessage = 'آیا از حذف دسته بندی ' + element.name + ' مطمئن هستید؟';
-        // modalRef.result.then((isDeleted: boolean) => {
-        //     if (isDeleted) {
-        //         this.blogService.deleteCategory(element.id).subscribe({
-        //             next: (response: any): void => {
-        //                 if (response) {
-        //                     this.toasterService.success('دسته بندی مورد نظر با موفقیت حذف شد');
-        //                     this.crudPage.crudPageTable.refreshTableData();
-        //                 } else {
-        //                     this.toasterService.error(response.error.message);
-        //                 }
-        //             },
-        //             error: (exception): void => {
-        //                 if (exception && exception.status == 404) {
-        //                     this.toasterService.error('یافت نشد');
-        //                 } else {
-        //                     this.toasterService.error('خطای سیستمی');
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }, () => {
-        //
-        // });
+        const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
+            centered: true
+        });
+        modalRef.componentInstance.confirmTitle = 'حذف پست';
+        modalRef.componentInstance.confirmMessage = 'آیا از حذف پست ' + element.name + ' مطمئن هستید؟';
+        modalRef.result.then((isDeleted: boolean) => {
+            if (isDeleted) {
+                this.blogService.deleteBlogPost(element.id).subscribe({
+                    next: (response: any): void => {
+                        if (response) {
+                            this.toasterService.success('پست مورد نظر با موفقیت حذف شد');
+                            this.crudPage.crudPageTable.refreshTableData();
+                        } else {
+                            this.toasterService.error(response.error.message);
+                        }
+                    },
+                    error: (exception): void => {
+                        if (exception && exception.status == 404) {
+                            this.toasterService.error('یافت نشد');
+                        } else {
+                            this.toasterService.error('خطای سیستمی');
+                        }
+                    }
+                });
+            }
+        }, () => {
+
+        });
     }
 }

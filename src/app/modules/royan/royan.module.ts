@@ -51,6 +51,8 @@ import { AddNewBlogComponent } from './cms/blog/add-new-blog/add-new-blog.compon
 import { EditBlogComponent } from './cms/blog/edit-blog/edit-blog.component';
 import { AddNewPageViewComponent } from './cms/page-view/add-new-page-view/add-new-page-view.component';
 import { EditPageViewComponent } from './cms/page-view/edit-page-view/edit-page-view.component';
+import {MatTreeModule} from "@angular/material/tree";
+import { BoxManagementComponent } from './box-management/box-management.component';
 
 
 @NgModule({
@@ -82,7 +84,8 @@ import { EditPageViewComponent } from './cms/page-view/edit-page-view/edit-page-
         AddNewBlogComponent,
         EditBlogComponent,
         AddNewPageViewComponent,
-        EditPageViewComponent
+        EditPageViewComponent,
+        BoxManagementComponent
     ],
     imports: [
         CommonModule,
@@ -112,6 +115,7 @@ import { EditPageViewComponent } from './cms/page-view/edit-page-view/edit-page-
         MatToolbarModule,
         NgOptimizedImage,
         EditorComponent,
+        MatTreeModule,
     ]
 })
 export class RoyanModule {

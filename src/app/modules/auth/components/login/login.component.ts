@@ -6,6 +6,8 @@ import {UserModel} from '../../models/user.model';
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControlService} from "../../../royan/shared/shared-service/form-control.service";
+import {environment} from "../../../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
     selector: 'app-login',
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     constructor(private fb: FormBuilder,
                 private authService: AuthService,
+                private httpClient: HttpClient,
                 private route: ActivatedRoute,
                 private router: Router,
                 private changeDetectorRef: ChangeDetectorRef,
@@ -72,12 +75,20 @@ export class LoginComponent implements OnInit, OnDestroy {
         });
     }
 
-    submit() {
+    submit(): void {
         this.hasError = false;
-        const loginSubscr = this.authService.login(this.f.email.value, this.f.password.value).pipe(first()).subscribe({
-            next: (user: UserModel | undefined) => {
+        const loginSubscription: Subscription = this.authService.login(this.f.email.value, this.f.password.value).pipe(first()).subscribe({
+            next: (user: UserModel | undefined): void => {
                 if (user) {
                     this.router.navigate([this.returnUrl]);
+                    this.httpClient.get<any>(environment.getConfiguration, {}).subscribe({
+                        next: (response: any): void => {
+                            console.log(response);
+                        },
+                        error: (exception: any): void => {
+
+                        }
+                    });
                 } else {
                     this.hasError = true;
                 }
@@ -86,10 +97,26 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.hasError = true;
             }
         });
-        this.unsubscribe.push(loginSubscr);
+        let cookie = this.getCookie('XSRF-TOKEN');
+        console.log(cookie);
+        this.unsubscribe.push(loginSubscription);
     }
 
     ngOnDestroy() {
-        this.unsubscribe.forEach((sb) => sb.unsubscribe());
+        this.unsubscribe.forEach((sb: Subscription) => sb.unsubscribe());
+    }
+
+    private getCookie(name: string) {
+        let ca: Array<string> = document.cookie.split(';');
+        let caLen: number = ca.length;
+        let cookieName = `${name}=`;
+        let c: string;
+        for (let i: number = 0; i < caLen; i += 1) {
+            c = ca[i].replace(/^\s+/g, '');
+            if (c.indexOf(cookieName) == 0) {
+                return c.substring(cookieName.length, c.length);
+            }
+        }
+        return '';
     }
 }

@@ -13,6 +13,7 @@ export const environment = {
     appPreviewChangelogUrl: 'https://preview.keenthemes.com/metronic8/angular/docs/changelog',
     //AUTH SERVICES//
     loginUrl: '/api/account/login',
+    getConfiguration: '/Abp/ApplicationConfigurationScript',
     getUserByToken: '/api/account/my-profile',
     //BOX ITEMS SERVICES//
     addNewBoxItem: '/api/app/box-item-admin',
@@ -32,6 +33,8 @@ export const environment = {
     getAllCategories: '/api/cms-kit-admin/blogs',
     addNewCategory: '/api/cms-kit-admin/blogs',
     deleteCategory: '/api/cms-kit-admin/blogs/',
+    getCategory: '/api/cms-kit-admin/blogs/',
+    editCategory: '/api/cms-kit-admin/blogs/',
     //BLOG SERVICES//
     getAllBlogs: '/api/cms-kit-admin/blogs/blog-posts',
     addNewBlog: '/api/cms-kit-admin/blogs',
@@ -49,6 +52,7 @@ export const environment = {
     getAllRoles: '/api/identity/roles',
     //MENU SERVICES//
     getAllMenus: '/api/app/menu-item-admin',
+    getMenuTree: '/api/cms-kit-public/menu-items/get-tree',
     appDemos: {
         demo1: {
             title: 'Demo 1',
