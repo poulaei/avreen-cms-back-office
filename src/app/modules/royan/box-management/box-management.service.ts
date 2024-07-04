@@ -25,6 +25,14 @@ export class BoxManagementService {
         return this.httpClient.post<any>(environment.addNewContentBox, contentBoxModel);
     }
 
+    deleteContentBox(contentBoxId: string): Observable<any> {
+        let cookie = this.getCookie('XSRF-TOKEN');
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            RequestVerificationToken: cookie
+        });
+        return this.httpClient.delete<any>(environment.deleteContentBox + contentBoxId, {});
+    }
+
     private getCookie(name: string) {
         let ca: Array<string> = document.cookie.split(';');
         let caLen: number = ca.length;

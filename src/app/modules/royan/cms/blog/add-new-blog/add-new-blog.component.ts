@@ -72,7 +72,24 @@ export class AddNewBlogComponent implements OnInit {
     }
 
     addNewBlogPost(): void {
-        this.uploadFiles();
+        if (this.selectedFiles && this.selectedFiles[0]) {
+            this.uploadFiles();
+        } else {
+            this.blogPostService.addNewBlogPost(this.getFormValue()).subscribe({
+                next: (response: any): void => {
+                    if (response.id) {
+                        this.modal.close(true);
+                    } else {
+                        this.toasterService.error(response.error.message);
+                    }
+                },
+                error: (exception): void => {
+                    if (exception.error != null) {
+                        this.toasterService.error(exception.error.message);
+                    }
+                }
+            });
+        }
     }
 
     uploadFiles(): void {
@@ -136,5 +153,13 @@ export class AddNewBlogComponent implements OnInit {
                 }
             }
         });
+    }
+
+    deleteMedia(): void {
+        this.message = [];
+        this.progressInfos = [];
+        this.selectedFileNames = [];
+        this.selectedFiles = undefined;
+        this.previews = [];
     }
 }

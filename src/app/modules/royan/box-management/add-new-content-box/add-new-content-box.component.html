@@ -1,0 +1,133 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4">افزودن باکس جدید</div>
+    </div>
+    <div class="cursor-default modal-body">
+        <form [formGroup]="addNewContentBoxForm">
+            <div class="form-group row">
+                <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-10 d-xs-block col-xs-10">
+                            <mat-form-field>
+                                <mat-toolbar>
+                                    <input matInput placeholder="تصویر باکس" class="font"
+                                           style="font-size: 1rem !important;"/>
+                                </mat-toolbar>
+                                <input type="file" id="fileInput" name="fileInput" accept="image/*" multiple
+                                       (change)="selectFiles($event)"/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-sm-2 d-xs-block col-xs-2 p-0">
+                            <div>
+                                <img *ngFor='let preview of previews' [src]="preview" class="preview" alt=""
+                                     style="width: 100px;height: 100px">
+                                <app-keenicon *ngIf="selectedFiles" (click)="deleteMedia()" name="trash"
+                                              class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">شناسه باکس</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewContentBoxForm,'section')"
+                           [class.is-valid]="formControlService.isControlValid(addNewContentBoxForm,'section')"
+                           formControlName="section" placeholder="شناسه بخش"/>
+                </div>
+                <div class="col-lg-8 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">عنوان باکس</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewContentBoxForm,'title')"
+                           [class.is-valid]="formControlService.isControlValid(addNewContentBoxForm,'title')"
+                           formControlName="title" placeholder="عنوان بخش"/>
+                </div>
+                <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">توضیحات کوتاه باکس</label>
+                    <textarea class="form-control form-control-lg form-control-solid"
+                              autocomplete="off"
+                              rows="5"
+                              [class.is-invalid]="formControlService.isControlInvalid(addNewContentBoxForm,'summary')"
+                              [class.is-valid]="formControlService.isControlValid(addNewContentBoxForm,'summary')"
+                              formControlName="summary" placeholder="توضیحات بخش">
+                    </textarea>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">نوع عملیات</label>
+                    <select class="form-control form-control-lg form-control-solid"
+                            formControlName="actionType" (change)="actionTypeSelectionChange($event)">
+                        <option value="BlogPost">
+                            {{'BlogPost'}}
+                        </option>
+                        <option value="Page">
+                            {{'Page'}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">نام عملیات</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewContentBoxForm,'action')"
+                           [class.is-valid]="formControlService.isControlValid(addNewContentBoxForm,'action')"
+                           formControlName="action" placeholder="عملیات"/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6"
+                     *ngIf="selectedActionType&&selectedActionType=='BlogPost'">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 d-xs-block col-xs-10">
+                            <label class="form-label">آدرس عملیات</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                   autocomplete="off"
+                                   formControlName="actionUrl"
+                                   readonly
+                                   placeholder="آدرس عملیات"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 d-xs-block col-xs-2 p-0">
+                            <a (click)="searchBlogPost()" class="btn btn-icon btn-active-color-info btn-sm mt-9">
+                                <app-keenicon name="filter" class="fs-3x"></app-keenicon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6"
+                     *ngIf="selectedActionType&&selectedActionType=='Page'">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 d-xs-block col-xs-10">
+                            <label class="form-label">آدرس عملیات</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                   autocomplete="off"
+                                   formControlName="actionUrl"
+                                   readonly
+                                   placeholder="آدرس عملیات"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 d-xs-block col-xs-2 p-0">
+                            <a (click)="searchPage()" class="btn btn-icon btn-active-color-info btn-sm mt-9">
+                                <app-keenicon name="filter" class="fs-3x"></app-keenicon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-7 col-sm-7 d-xs-block col-xs-7 pb-6">
+                    <label class="form-label">توضیحات</label>
+                    <textarea class="form-control form-control-lg form-control-solid"
+                              autocomplete="off"
+                              [class.is-invalid]="formControlService.isControlInvalid(addNewContentBoxForm,'description')"
+                              [class.is-valid]="formControlService.isControlValid(addNewContentBoxForm,'description')"
+                              formControlName="description" placeholder="توضیحات">
+                    </textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger mr-2" (click)="modal.dismiss()">
+            {{'SHARED.CANCEL' | translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="addContentBox()"
+                [disabled]="addNewContentBoxForm.invalid">
+            {{'SHARED.SAVE' | translate}}
+        </button>
+    </div>
+</div>

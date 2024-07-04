@@ -134,17 +134,13 @@ export class BlogComponent implements OnInit {
             centered: true
         });
         modalRef.componentInstance.confirmTitle = 'حذف پست';
-        modalRef.componentInstance.confirmMessage = 'آیا از حذف پست ' + element.name + ' مطمئن هستید؟';
+        modalRef.componentInstance.confirmMessage = 'آیا از حذف پست ' + element.title + ' مطمئن هستید؟';
         modalRef.result.then((isDeleted: boolean) => {
             if (isDeleted) {
                 this.blogService.deleteBlogPost(element.id).subscribe({
                     next: (response: any): void => {
-                        if (response) {
-                            this.toasterService.success('پست مورد نظر با موفقیت حذف شد');
-                            this.crudPage.crudPageTable.refreshTableData();
-                        } else {
-                            this.toasterService.error(response.error.message);
-                        }
+                        this.toasterService.success('پست مورد نظر با موفقیت حذف شد');
+                        this.crudPage.crudPageTable.refreshTableData();
                     },
                     error: (exception): void => {
                         if (exception && exception.status == 404) {

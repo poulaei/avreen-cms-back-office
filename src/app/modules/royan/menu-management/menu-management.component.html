@@ -14,15 +14,24 @@
                 <!-- use a disabled button to provide padding for tree leaf -->
                 <button mat-icon-button disabled></button>
                 {{node.name}}
-                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="addSubMenu(node)">
-                    <app-keenicon name="add-item" class="fs-2x"></app-keenicon>
-                </b>
-                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="editMenu(node)">
-                    <app-keenicon name="pencil" class="fs-2x"></app-keenicon>
-                </b>
-                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="deleteMenu(node)">
-                    <app-keenicon name="trash" class="fs-2x"></app-keenicon>
-                </b>
+                <div class="btn btn-icon btn-active-color-primary" [matMenuTriggerFor]="menu"
+                     aria-label="Example icon-button with a menu">
+                    <app-keenicon name="burger-menu-6" class="fs-2x"></app-keenicon>
+                </div>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="addSubMenu(node)">
+                        <app-keenicon name="add-item" class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
+                        <span class="font">افزودن زیر منو</span>
+                    </button>
+                    <button mat-menu-item (click)="editMenu(node)">
+                        <app-keenicon name="pencil" class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
+                        <span class="font">ویرایش</span>
+                    </button>
+                    <button mat-menu-item (click)="deleteMenu(node)">
+                        <app-keenicon name="trash" class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
+                        <span class="font">حذف</span>
+                    </button>
+                </mat-menu>
             </mat-tree-node>
             <!-- This is the tree node template for expandable nodes -->
             <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding class="font">
@@ -35,15 +44,24 @@
                     </app-keenicon>
                 </button>
                 {{node.name}}
-                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="addSubMenu(node)">
-                    <app-keenicon name="add-item" class="fs-2x"></app-keenicon>
-                </b>
-                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="editMenu(node)">
-                    <app-keenicon name="pencil" class="fs-2x"></app-keenicon>
-                </b>
-                <b class="btn btn-icon btn-active-color-info btn-sm" (click)="deleteMenu(node)">
-                    <app-keenicon name="trash" class="fs-2x"></app-keenicon>
-                </b>
+                <div class="btn btn-icon btn-active-color-primary" [matMenuTriggerFor]="menu"
+                     aria-label="Example icon-button with a menu">
+                    <app-keenicon name="burger-menu-6" class="fs-2x"></app-keenicon>
+                </div>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="addSubMenu(node)">
+                        <app-keenicon name="add-item" class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
+                        <span class="font">افزودن زیر منو</span>
+                    </button>
+                    <button mat-menu-item (click)="editMenu(node)">
+                        <app-keenicon name="pencil" class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
+                        <span class="font">ویرایش</span>
+                    </button>
+                    <button mat-menu-item (click)="deleteMenu(node)">
+                        <app-keenicon name="trash" class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
+                        <span class="font">حذف</span>
+                    </button>
+                </mat-menu>
             </mat-tree-node>
         </mat-tree>
     </div>

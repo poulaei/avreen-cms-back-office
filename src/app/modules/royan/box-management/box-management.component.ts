@@ -5,6 +5,8 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
 import {BoxManagementService} from "./box-management.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {AddSubBoxComponent} from "./add-sub-box/add-sub-box.component";
+import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
+import {AddNewContentBoxComponent} from "./add-new-content-box/add-new-content-box.component";
 
 /**
  * Food data with nested structure.
@@ -66,7 +68,7 @@ export class BoxManagementComponent {
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
     ngOnInit(): void {
-        this.getMenuTree();
+        this.getBoxTree();
     }
 
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
@@ -80,22 +82,45 @@ export class BoxManagementComponent {
         modalRef.result.then((isCreate: boolean) => {
             if (isCreate) {
                 this.toasterService.success('زیرمجموعه جدید با موفقیت اضافه شد');
-                this.getMenuTree();
+                this.getBoxTree();
             }
         }, (): void => {
 
         });
     }
 
-    editMenu(node: FoodNode): void {
+    editBox(node: FoodNode): void {
         console.log('EDIT', node);
     }
 
-    deleteMenu(node: FoodNode): void {
-        console.log('DELETE', node);
+    deleteBox(node: FoodNode): void {
+        const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
+            centered: true
+        });
+        modalRef.componentInstance.confirmTitle = 'حذف باکس';
+        modalRef.componentInstance.confirmMessage = 'آیا از حذف باکس مطمئن هستید؟';
+        modalRef.result.then((isDeleted: boolean) => {
+            if (isDeleted) {
+                this.boxManagementService.deleteContentBox(node.id).subscribe({
+                    next: (response: any): void => {
+                        this.toasterService.success('باکس مورد نظر با موفقیت حذف شد');
+                        this.getBoxTree();
+                    },
+                    error: (exception): void => {
+                        if (exception && exception.status == 404) {
+                            this.toasterService.error('یافت نشد');
+                        } else {
+                            this.toasterService.error('خطای سیستمی');
+                        }
+                    }
+                });
+            }
+        }, () => {
+
+        });
     }
 
-    getMenuTree(): void {
+    getBoxTree(): void {
         this.boxManagementService.getContentBoxTree().subscribe({
             next: (response: any): void => {
                 if (!response.error) {
@@ -117,6 +142,17 @@ export class BoxManagementComponent {
     }
 
     addNewBox(): void {
+        const modalRef: NgbModalRef = this.modalService.open(AddNewContentBoxComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.result.then((isCreate: boolean) => {
+            if (isCreate) {
+                this.toasterService.success('باکس جدید با موفقیت اضافه شد');
+                this.getBoxTree();
+            }
+        }, (): void => {
 
+        });
     }
 }

@@ -21,6 +21,8 @@
                             <div>
                                 <img *ngFor='let preview of previews' [src]="preview" class="preview" alt=""
                                      style="width: 100px;height: 100px">
+                                <app-keenicon *ngIf="selectedFiles" (click)="deleteMedia()" name="trash"
+                                              class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
                             </div>
                         </div>
                     </div>
@@ -50,7 +52,7 @@
                     <label class="form-label">کلید نمایش در آدرس</label>
                     <input type="text" class="form-control form-control-lg form-control-solid"
                            autocomplete="off"
-                           formControlName="title" placeholder="کلید نمایش در آدرس"/>
+                           formControlName="slug" placeholder="کلید نمایش در آدرس"/>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
                     <label class="form-label">توضیحات</label>

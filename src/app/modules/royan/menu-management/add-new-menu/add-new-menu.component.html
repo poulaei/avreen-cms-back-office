@@ -1,0 +1,84 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4">افزودن منو</div>
+    </div>
+    <div class="cursor-default modal-body">
+        <form [formGroup]="addNewMenuForm">
+            <div class="form-group row">
+                <div class="col-lg-6 col-md-6 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">نام منو</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewMenuForm,'displayName')"
+                           [class.is-valid]="formControlService.isControlValid(addNewMenuForm,'displayName')"
+                           formControlName="displayName" placeholder="نام منو"/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">آدرس</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewMenuForm,'url')"
+                           [class.is-valid]="formControlService.isControlValid(addNewMenuForm,'url')"
+                           formControlName="url" placeholder="آدرس"/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">نوع منو</label>
+                    <select class="form-control form-control-lg form-control-solid"
+                            formControlName="Group" (change)="menuTypeSelectionChange($event)">
+                        <option value="pageView">
+                            {{'pageView'}}
+                        </option>
+                        <option value="instantView">
+                            {{'instantView'}}
+                        </option>
+                        <option value="blogView">
+                            {{'blogView'}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 d-xs-block col-xs-12 pb-6"
+                     *ngIf="(selectedMenuType)&&(selectedMenuType=='pageView'||selectedMenuType=='instantView')">
+                    <label class="form-label">باکس</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           [class.is-invalid]="formControlService.isControlInvalid(addNewMenuForm,'boxId')"
+                           [class.is-valid]="formControlService.isControlValid(addNewMenuForm,'boxId')"
+                           formControlName="boxId" placeholder="باکس"/>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">مکان منو</label>
+                    <select class="form-control form-control-lg form-control-solid"
+                            formControlName="DisplayPlace">
+                        <option value="C1">
+                            {{'ستون اول'}}
+                        </option>
+                        <option value="C2">
+                            {{'ستون دوم'}}
+                        </option>
+                        <option value="C3">
+                            {{'ستون سوم'}}
+                        </option>
+                        <option value="C4">
+                            {{'ستون چهارم'}}
+                        </option>
+                        <option value="C5">
+                            {{'ستون پنجم'}}
+                        </option>
+                        <option value="C6">
+                            {{'ستون ششم'}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger mr-2" (click)="modal.dismiss()">
+            {{'SHARED.CANCEL' | translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="addNewMenu()"
+                [disabled]="addNewMenuForm.invalid">
+            {{'SHARED.SAVE' | translate}}
+        </button>
+    </div>
+</div>

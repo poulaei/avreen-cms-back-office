@@ -38,7 +38,7 @@ export const environment = {
     //BLOG SERVICES//
     getAllBlogPosts: '/api/cms-kit-admin/blogs/blog-posts',
     addNewBlogPost: '/api/cms-kit-admin/blogs/blog-posts/create-and-publish',
-    deleteBlog: '/api/cms-kit-admin/blogs/',
+    deleteBlogPost: '/api/cms-kit-admin/blogs/blog-posts/',
     //PAGES SERVICES//
     getAllPages: '/api/cms-kit-admin/pages',
     addNewPage: '/api/cms-kit-admin/blogs',
@@ -53,9 +53,12 @@ export const environment = {
     //MENU SERVICES//
     getAllMenus: '/api/app/menu-item-admin',
     getMenuTree: '/api/cms-kit-public/menu-items/get-tree',
+    addNewMenu: '/api/cms-kit-admin/menu-items',
+    deleteMenu: '/api/cms-kit-admin/menu-items/',
     //CONTENT BOX SERVICES//
     getContentBoxTree: '/api/cms-kit-public/contentBoxes/get-tree',
     addNewContentBox: '/api/cms-kit-admin/contentBoxes',
+    deleteContentBox: '/api/cms-kit-admin/contentBoxes/',
     appDemos: {
         demo1: {
             title: 'Demo 1',

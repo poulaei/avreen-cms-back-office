@@ -31,7 +31,7 @@ export class BlogPostService {
         const httpHeaders: HttpHeaders = new HttpHeaders({
             RequestVerificationToken: cookie
         });
-        return this.httpClient.delete<any>(environment.deleteCategory + categoryId, {});
+        return this.httpClient.delete<any>(environment.deleteBlogPost + categoryId, {});
     }
 
     getBlogPostInfo(boxId: string): Observable<any> {
