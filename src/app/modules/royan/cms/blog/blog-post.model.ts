@@ -1,4 +1,4 @@
-export class BlogModel {
+export class BlogPostModel {
     id: string;
     blogId: string;
     blogName: string;

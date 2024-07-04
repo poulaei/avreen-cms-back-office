@@ -9,7 +9,7 @@ import {PageActionModel} from "../../shared/shared-components/crud-page/page-act
 import {BaseTableColumnModel} from "../../shared/shared-components/base-table/base-table-column.model";
 import {BaseTableActionModel} from "../../shared/shared-components/base-table/base-table-action.model";
 import {Observable} from "rxjs";
-import {BlogService} from "./blog.service";
+import {BlogPostService} from "./blog-post.service";
 import {AddNewBlogComponent} from "./add-new-blog/add-new-blog.component";
 import {EditBlogComponent} from "./edit-blog/edit-blog.component";
 import {ConfirmModalComponent} from "../../shared/shared-components/confirm-modal/confirm-modal.component";
@@ -26,7 +26,7 @@ export class BlogComponent implements OnInit {
     tableModel: BaseTableModel = new BaseTableModel();
 
     constructor(public translate: TranslateService,
-                public blogService: BlogService,
+                public blogService: BlogPostService,
                 public modalService: NgbModal,
                 public toasterService: ToastrService) {
 
@@ -100,7 +100,8 @@ export class BlogComponent implements OnInit {
 
     addBlog = (): void => {
         const modalRef: NgbModalRef = this.modalService.open(AddNewBlogComponent, {
-            centered: true
+            centered: true,
+            size: 'xl'
         });
         modalRef.result.then((isCreate: boolean) => {
             if (isCreate) {

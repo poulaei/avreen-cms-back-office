@@ -19,7 +19,7 @@ export const environment = {
     addNewBoxItem: '/api/app/box-item-admin',
     getBoxItems: '/api/app/box-admin/box-items/',
     deleteBoxItem: '/api/app/box-item-admin/',
-    uploadMedia: '/api/cms-kit-admin/media/Box',
+    uploadMedia: '/api/cms-kit-admin/media/GalleryImage',
     downloadMedia: '/api/cms-kit/media/',
     getBoxItemInfo: '/api/app/box-item-admin/',
     editBoxItem: '/api/app/box-item-admin/',
@@ -36,8 +36,8 @@ export const environment = {
     getCategory: '/api/cms-kit-admin/blogs/',
     editCategory: '/api/cms-kit-admin/blogs/',
     //BLOG SERVICES//
-    getAllBlogs: '/api/cms-kit-admin/blogs/blog-posts',
-    addNewBlog: '/api/cms-kit-admin/blogs',
+    getAllBlogPosts: '/api/cms-kit-admin/blogs/blog-posts',
+    addNewBlogPost: '/api/cms-kit-admin/blogs/blog-posts/create-and-publish',
     deleteBlog: '/api/cms-kit-admin/blogs/',
     //PAGES SERVICES//
     getAllPages: '/api/cms-kit-admin/pages',
@@ -53,6 +53,9 @@ export const environment = {
     //MENU SERVICES//
     getAllMenus: '/api/app/menu-item-admin',
     getMenuTree: '/api/cms-kit-public/menu-items/get-tree',
+    //CONTENT BOX SERVICES//
+    getContentBoxTree: '/api/cms-kit-public/contentBoxes/get-tree',
+    addNewContentBox: '/api/cms-kit-admin/contentBoxes',
     appDemos: {
         demo1: {
             title: 'Demo 1',

@@ -1,1 +1,79 @@
-<p>add-new-blog works!</p>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4">{{'افزودن پست جدید' | translate}}</div>
+    </div>
+    <div class="cursor-default modal-body">
+        <form [formGroup]="addNewBlogPostForm">
+            <div class="form-group row">
+                <div class="col-lg-12 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-10 d-xs-block col-xs-10">
+                            <mat-form-field>
+                                <mat-toolbar>
+                                    <input matInput placeholder="تصویر جلد" class="font"
+                                           style="font-size: 1rem !important;"/>
+                                </mat-toolbar>
+                                <input type="file" id="fileInput" name="fileInput" accept="image/*" multiple
+                                       (change)="selectFiles($event)"/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-sm-2 d-xs-block col-xs-2 p-0">
+                            <div>
+                                <img *ngFor='let preview of previews' [src]="preview" class="preview" alt=""
+                                     style="width: 100px;height: 100px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">نام دسته بندی</label>
+                    <select class="form-control form-control-lg form-control-solid"
+                            formControlName="blogCategory">
+                        <option *ngFor="let type of blogCategoryList" [value]="type.id">
+                            {{type.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                    <label class="form-label">برچسب ها</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           formControlName="tags" placeholder="نام دسته بندی"/>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">عنوان</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           formControlName="title" placeholder="عنوان"/>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">کلید نمایش در آدرس</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           formControlName="title" placeholder="کلید نمایش در آدرس"/>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">توضیحات</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           formControlName="description" placeholder="توضیحات"/>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
+                    <label class="form-label">متن پست</label>
+                    <input type="text" class="form-control form-control-lg form-control-solid"
+                           autocomplete="off"
+                           formControlName="content" placeholder="متن پست"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger mr-2" (click)="modal.dismiss()">
+            {{'SHARED.CANCEL' | translate}}
+        </button>
+        <button type="submit" class="btn btn-primary" (click)="addNewBlogPost()"
+                [disabled]="addNewBlogPostForm.invalid">
+            {{'SHARED.SAVE' | translate}}
+        </button>
+    </div>
+</div>

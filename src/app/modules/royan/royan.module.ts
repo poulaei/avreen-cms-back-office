@@ -53,6 +53,9 @@ import { AddNewPageViewComponent } from './cms/page-view/add-new-page-view/add-n
 import { EditPageViewComponent } from './cms/page-view/edit-page-view/edit-page-view.component';
 import {MatTreeModule} from "@angular/material/tree";
 import { BoxManagementComponent } from './box-management/box-management.component';
+import { AddSubBoxComponent } from './box-management/add-sub-box/add-sub-box.component';
+import { BlogLookupComponent } from './cms/blog/blog-lookup/blog-lookup.component';
+import { PageLookupComponent } from './cms/page-view/page-lookup/page-lookup.component';
 
 
 @NgModule({
@@ -85,7 +88,10 @@ import { BoxManagementComponent } from './box-management/box-management.componen
         EditBlogComponent,
         AddNewPageViewComponent,
         EditPageViewComponent,
-        BoxManagementComponent
+        BoxManagementComponent,
+        AddSubBoxComponent,
+        BlogLookupComponent,
+        PageLookupComponent
     ],
     imports: [
         CommonModule,
