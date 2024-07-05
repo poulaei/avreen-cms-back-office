@@ -55,6 +55,8 @@ export const environment = {
     getMenuTree: '/api/cms-kit-public/menu-items/get-tree',
     addNewMenu: '/api/cms-kit-admin/menu-items',
     deleteMenu: '/api/cms-kit-admin/menu-items/',
+    getMenuInfo: '/api/cms-kit-admin/menu-items/',
+    editMenu: '/api/cms-kit-admin/menu-items/',
     //CONTENT BOX SERVICES//
     getContentBoxTree: '/api/cms-kit-public/contentBoxes/get-tree',
     addNewContentBox: '/api/cms-kit-admin/contentBoxes',

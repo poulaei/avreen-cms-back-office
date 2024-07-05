@@ -13,10 +13,6 @@ export class MenuManagementService {
 
     }
 
-    getAllMenus(): Observable<any> {
-        return this.httpClient.get<any>(environment.getAllMenus, {});
-    }
-
     getMenuTree(): Observable<any> {
         return this.httpClient.get<any>(environment.getMenuTree, {});
     }
@@ -35,6 +31,22 @@ export class MenuManagementService {
             RequestVerificationToken: cookie
         });
         return this.httpClient.delete<any>(environment.deleteMenu + menuId + '/pak', {headers: httpHeaders});
+    }
+
+    getMenuInfo(menuId: string): Observable<any> {
+        let cookie = this.getCookie('XSRF-TOKEN');
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            RequestVerificationToken: cookie
+        });
+        return this.httpClient.get<any>(environment.getMenuInfo + menuId, {headers: httpHeaders});
+    }
+
+    editMenu(menuManagementModel: MenuManagementModel, menuId: string): Observable<any> {
+        let cookie = this.getCookie('XSRF-TOKEN');
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            RequestVerificationToken: cookie
+        });
+        return this.httpClient.put<any>(environment.editMenu + menuId, menuManagementModel, {headers: httpHeaders});
     }
 
     private getCookie(name: string) {

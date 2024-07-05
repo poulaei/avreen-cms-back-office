@@ -7,6 +7,7 @@ import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {AddNewMenuComponent} from "./add-new-menu/add-new-menu.component";
 import {AddSubMenuComponent} from "./add-sub-menu/add-sub-menu.component";
 import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
+import {EditMenuComponent} from "./edit-menu/edit-menu.component";
 
 /**
  * Food data with nested structure.
@@ -86,7 +87,19 @@ export class MenuManagementComponent implements OnInit {
     }
 
     editMenu(node: FoodNode): void {
-        console.log('EDIT', node);
+        const modalRef: NgbModalRef = this.modalService.open(EditMenuComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.componentInstance.menuId = node.id;
+        modalRef.result.then((isCreate: boolean) => {
+            if (isCreate) {
+                this.toasterService.success('منو با موفقیت ویرایش شد');
+                this.getMenuTree();
+            }
+        }, (): void => {
+
+        });
     }
 
     deleteMenu(node: FoodNode): void {
