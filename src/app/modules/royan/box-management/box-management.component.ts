@@ -7,6 +7,7 @@ import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {AddSubBoxComponent} from "./add-sub-box/add-sub-box.component";
 import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
 import {AddNewContentBoxComponent} from "./add-new-content-box/add-new-content-box.component";
+import {EditContentBoxComponent} from "./edit-content-box/edit-content-box.component";
 
 /**
  * Food data with nested structure.
@@ -90,7 +91,19 @@ export class BoxManagementComponent {
     }
 
     editBox(node: FoodNode): void {
-        console.log('EDIT', node);
+        const modalRef: NgbModalRef = this.modalService.open(EditContentBoxComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.componentInstance.contentBoxId = node.id;
+        modalRef.result.then((isCreate: boolean) => {
+            if (isCreate) {
+                this.toasterService.success('باکس با موفقیت ویرایش شد');
+                this.getBoxTree();
+            }
+        }, (): void => {
+
+        });
     }
 
     deleteBox(node: FoodNode): void {

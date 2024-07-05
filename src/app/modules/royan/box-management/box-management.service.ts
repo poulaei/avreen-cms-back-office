@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {ContentBoxModel} from "./box-management.model";
+import {switchMap} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root',
@@ -33,6 +34,27 @@ export class BoxManagementService {
         return this.httpClient.delete<any>(environment.deleteContentBox + contentBoxId, {});
     }
 
+    getContentBox(contentBoxId: string): Observable<any> {
+        let cookie = this.getCookie('XSRF-TOKEN');
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            RequestVerificationToken: cookie
+        });
+        return this.httpClient.get<any>(environment.getContentBox + contentBoxId, {headers: httpHeaders});
+    }
+
+    getBoxItemMedia(mediaId: string): Observable<string> {
+        return this.httpClient.get(environment.downloadMedia + mediaId, {responseType: "blob"})
+            .pipe(switchMap(response => this.readFile(response)));
+    }
+
+    editContentBox(contentBoxModel: ContentBoxModel, contentBoxId: string): Observable<any> {
+        let cookie = this.getCookie('XSRF-TOKEN');
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            RequestVerificationToken: cookie
+        });
+        return this.httpClient.put<any>(environment.editContentBox + contentBoxId, contentBoxModel, {headers: httpHeaders});
+    }
+
     private getCookie(name: string) {
         let ca: Array<string> = document.cookie.split(';');
         let caLen: number = ca.length;
@@ -45,5 +67,17 @@ export class BoxManagementService {
             }
         }
         return '';
+    }
+
+    private readFile(blob: Blob): Observable<string> {
+        // @ts-ignore
+        return Observable.create(obs => {
+            const reader = new FileReader();
+            reader.onerror = err => obs.error(err);
+            reader.onabort = err => obs.error(err);
+            reader.onload = () => obs.next(reader.result);
+            reader.onloadend = () => obs.complete();
+            return reader.readAsDataURL(blob);
+        });
     }
 }

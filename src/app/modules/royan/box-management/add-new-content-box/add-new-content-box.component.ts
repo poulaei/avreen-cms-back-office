@@ -144,7 +144,6 @@ export class AddNewContentBoxComponent implements OnInit {
         this.contentBoxModel.actionUrl = this.actionUri;
         this.contentBoxModel.summary = this.addNewContentBoxForm.controls['summary'].value;
         this.contentBoxModel.description = this.addNewContentBoxForm.controls['description'].value;
-        console.log(this.contentBoxModel);
         return this.contentBoxModel;
     }
 

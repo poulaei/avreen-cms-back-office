@@ -61,6 +61,8 @@ export const environment = {
     getContentBoxTree: '/api/cms-kit-public/contentBoxes/get-tree',
     addNewContentBox: '/api/cms-kit-admin/contentBoxes',
     deleteContentBox: '/api/cms-kit-admin/contentBoxes/',
+    getContentBox: '/api/cms-kit-admin/contentBoxes/',
+    editContentBox: '/api/cms-kit-admin/contentBoxes/',
     appDemos: {
         demo1: {
             title: 'Demo 1',
