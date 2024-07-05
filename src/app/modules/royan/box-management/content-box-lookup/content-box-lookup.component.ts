@@ -30,25 +30,19 @@ export class ContentBoxLookupComponent implements OnInit {
         let tableColumns: BaseTableColumnModel[];
         tableColumns = [
             {
-                columnDefinitionName: 'blogName',
-                columnName_Fa: 'نام دسته بندی',
-                dataKey: 'blogName'
+                columnDefinitionName: 'section',
+                columnName_Fa: 'شناسه باکس',
+                dataKey: 'section'
             },
             {
-                columnDefinitionName: 'title',
-                columnName_Fa: 'عنوان پست',
-                dataKey: 'title'
+                columnDefinitionName: 'boxType',
+                columnName_Fa: 'نوع باکس',
+                dataKey: 'boxType'
             },
             {
-                columnDefinitionName: 'creationTime',
-                columnName_Fa: 'زمان ایجاد',
-                type: 'date',
-                dataKey: 'creationTime'
-            },
-            {
-                columnDefinitionName: 'status',
-                columnName_Fa: 'وضعیت',
-                dataKey: 'status'
+                columnDefinitionName: 'description',
+                columnName_Fa: 'توضیحات',
+                dataKey: 'description'
             }
         ]
         let gridActions: BaseTableActionModel[];

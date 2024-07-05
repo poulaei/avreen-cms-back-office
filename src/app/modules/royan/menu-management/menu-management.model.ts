@@ -21,4 +21,5 @@ export class MenuManagementModel {
 export class ExtraProperties {
     DisplayPlace: string;
     Group: string;
+    ContentBoxId: string;
 }

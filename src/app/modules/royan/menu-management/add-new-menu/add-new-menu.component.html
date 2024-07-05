@@ -36,14 +36,23 @@
                         </option>
                     </select>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 d-xs-block col-xs-12 pb-6"
+                <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6"
                      *ngIf="(selectedMenuType)&&(selectedMenuType=='pageView'||selectedMenuType=='instantView')">
-                    <label class="form-label">باکس</label>
-                    <input type="text" class="form-control form-control-lg form-control-solid"
-                           autocomplete="off"
-                           [class.is-invalid]="formControlService.isControlInvalid(addNewMenuForm,'boxId')"
-                           [class.is-valid]="formControlService.isControlValid(addNewMenuForm,'boxId')"
-                           formControlName="boxId" placeholder="باکس"/>
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 d-xs-block col-xs-10">
+                            <label class="form-label">باکس</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                   autocomplete="off"
+                                   [class.is-invalid]="formControlService.isControlInvalid(addNewMenuForm,'boxId')"
+                                   [class.is-valid]="formControlService.isControlValid(addNewMenuForm,'boxId')"
+                                   formControlName="boxId" placeholder="باکس"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 d-xs-block col-xs-2 p-0">
+                            <a (click)="searchBox()" class="btn btn-icon btn-active-color-info btn-sm mt-9">
+                                <app-keenicon name="filter" class="fs-3x"></app-keenicon>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
                     <label class="form-label">مکان منو</label>

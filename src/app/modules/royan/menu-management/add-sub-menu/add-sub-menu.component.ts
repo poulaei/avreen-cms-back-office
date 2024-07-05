@@ -66,6 +66,7 @@ export class AddSubMenuComponent implements OnInit {
         this.menuManagementModel.url = this.addNewMenuForm.controls['url'].value;
         let group = this.addNewMenuForm.controls['Group'].value;
         let displayPlace = this.addNewMenuForm.controls['DisplayPlace'].value;
+        let contentBoxId = this.addNewMenuForm.controls['boxId'].value;
         let extraProperties: ExtraProperties = new ExtraProperties();
         if (group) {
             extraProperties.Group = group;
@@ -73,11 +74,15 @@ export class AddSubMenuComponent implements OnInit {
         if (displayPlace) {
             extraProperties.DisplayPlace = displayPlace;
         }
+        if (contentBoxId) {
+            extraProperties.ContentBoxId = contentBoxId;
+        }
         this.menuManagementModel.extraProperties = extraProperties;
         return this.menuManagementModel;
     }
 
     menuTypeSelectionChange(event: Event): void {
+        this.addNewMenuForm.controls['boxId'].setValue('');
         this.selectedMenuType = ((event.target as HTMLInputElement).value);
     }
 

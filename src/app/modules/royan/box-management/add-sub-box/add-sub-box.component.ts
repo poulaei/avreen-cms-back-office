@@ -149,6 +149,7 @@ export class AddSubBoxComponent implements OnInit {
         this.contentBoxModel.actionUrl = this.actionUri;
         this.contentBoxModel.summary = this.addNewContentBoxForm.controls['summary'].value;
         this.contentBoxModel.description = this.addNewContentBoxForm.controls['description'].value;
+        this.contentBoxModel.boxType = '0';
         this.contentBoxModel.boxName = this.addNewContentBoxForm.controls['boxName'].value;
         this.contentBoxModel.content = this.addNewContentBoxForm.controls['content'].value;
         return this.contentBoxModel;
