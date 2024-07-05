@@ -47,7 +47,7 @@ export class BoxManagementComponent {
     private _transformer = (node: FoodNode, level: number) => {
         return {
             expandable: !!node.children && node.children.length > 0,
-            name: node.section + ' / ' + node.icon,
+            name: node.section + ' / ' + node.description,
             level: level,
             id: node.id,
             icon: node.icon

@@ -2,9 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {FormControlService} from "../../shared/shared-service/form-control.service";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ExtraProperties, MenuManagementModel} from "../menu-management.model";
 import {MenuManagementService} from "../menu-management.service";
+import {ContentBoxLookupComponent} from "../../box-management/content-box-lookup/content-box-lookup.component";
 
 @Component({
     selector: 'app-add-sub-menu',
@@ -17,10 +18,12 @@ export class AddSubMenuComponent implements OnInit {
     addNewMenuForm: FormGroup;
     menuManagementModel: MenuManagementModel = new MenuManagementModel();
     selectedMenuType: string = '';
+    boxId: string = '';
 
     constructor(public formBuilder: FormBuilder,
                 public menuManagementService: MenuManagementService,
                 public toasterService: ToastrService,
+                public modalService: NgbModal,
                 public formControlService: FormControlService,
                 public modal: NgbActiveModal) {
 
@@ -76,5 +79,19 @@ export class AddSubMenuComponent implements OnInit {
 
     menuTypeSelectionChange(event: Event): void {
         this.selectedMenuType = ((event.target as HTMLInputElement).value);
+    }
+
+    searchBox(): void {
+        const modalRef: NgbModalRef = this.modalService.open(ContentBoxLookupComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.result.then((pageInfo: any): void => {
+            if (pageInfo) {
+                this.addNewMenuForm.controls['boxId'].setValue(pageInfo.id);
+            }
+        }, (): void => {
+
+        });
     }
 }

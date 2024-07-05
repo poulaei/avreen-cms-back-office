@@ -14,6 +14,10 @@ export class BoxManagementService {
 
     }
 
+    getContentBoxRoot(): Observable<any> {
+        return this.httpClient.get<any>(environment.getContentBoxRoot, {});
+    }
+
     getContentBoxTree(): Observable<any> {
         return this.httpClient.get<any>(environment.getContentBoxTree, {});
     }

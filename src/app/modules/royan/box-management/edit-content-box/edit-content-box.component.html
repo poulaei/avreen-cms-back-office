@@ -23,11 +23,32 @@
                                     <div>
                                         <img *ngFor='let preview of previews' [src]="preview" class="preview" alt=""
                                              style="width: 100px;height: 100px">
-                                        <app-keenicon *ngIf="selectedFiles" (click)="deleteMedia()" name="trash"
+                                        <app-keenicon *ngIf="previews&&previews.length>0" (click)="deleteMedia()"
+                                                      name="trash"
                                                       class="fs-1 btn btn-icon btn-active-color"></app-keenicon>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                            <label class="form-label">نوع باکس</label>
+                            <select class="form-control form-control-lg form-control-solid"
+                                    formControlName="boxType">
+                                <option value="instantView">
+                                    {{'instantView'}}
+                                </option>
+                                <option value="pageView">
+                                    {{'pageView'}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-9 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
+                            <label class="form-label">نام باکس</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                   autocomplete="off"
+                                   [class.is-invalid]="formControlService.isControlInvalid(editContentBoxForm,'boxName')"
+                                   [class.is-valid]="formControlService.isControlValid(editContentBoxForm,'boxName')"
+                                   formControlName="boxName" placeholder="نام باکس"/>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
                             <label class="form-label">شناسه باکس</label>
@@ -125,7 +146,20 @@
                 </form>
             </mat-tab>
             <mat-tab labelClass="font" label="محتوا">
-
+                <form [formGroup]="editContentBoxForm" style="overflow: hidden !important;margin-top: 20px">
+                    <div class="form-group row">
+                        <div class="col-lg-12 col-md-7 col-sm-7 d-xs-block col-xs-7 pb-6">
+                            <label class="form-label">متن</label>
+                            <textarea class="form-control form-control-lg form-control-solid"
+                                      autocomplete="off"
+                                      rows="15"
+                                      [class.is-invalid]="formControlService.isControlInvalid(editContentBoxForm,'content')"
+                                      [class.is-valid]="formControlService.isControlValid(editContentBoxForm,'content')"
+                                      formControlName="content" placeholder="متن">
+                            </textarea>
+                        </div>
+                    </div>
+                </form>
             </mat-tab>
         </mat-tab-group>
     </div>

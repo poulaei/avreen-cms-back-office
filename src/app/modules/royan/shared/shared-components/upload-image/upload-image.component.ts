@@ -50,7 +50,7 @@ export class UploadImageComponent implements OnInit {
     upload(idx: number, file: File): void {
         this.progressInfos[idx] = {value: 0, fileName: file.name};
         if (file) {
-            this.uploadService.upload(file).subscribe({
+            this.uploadService.upload(file, '').subscribe({
                 next: (response: any): void => {
                     if (response.id) {
                         console.log(response);

@@ -104,7 +104,7 @@ export class AddNewBlogComponent implements OnInit {
     upload(idx: number, file: File): void {
         this.progressInfos[idx] = {value: 0, fileName: file.name};
         if (file) {
-            this.uploadService.upload(file).subscribe({
+            this.uploadService.upload(file, 'BlogPost').subscribe({
                 next: (response: any): void => {
                     if (response && response.body && response.body.id) {
                         this.blogPostModel.coverImageMediaId = response.body.id;

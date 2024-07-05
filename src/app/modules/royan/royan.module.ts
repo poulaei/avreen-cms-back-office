@@ -61,6 +61,7 @@ import {AddNewMenuComponent} from './menu-management/add-new-menu/add-new-menu.c
 import {AddSubMenuComponent} from './menu-management/add-sub-menu/add-sub-menu.component';
 import {EditMenuComponent} from './menu-management/edit-menu/edit-menu.component';
 import { EditContentBoxComponent } from './box-management/edit-content-box/edit-content-box.component';
+import { ContentBoxLookupComponent } from './box-management/content-box-lookup/content-box-lookup.component';
 
 
 @NgModule({
@@ -101,7 +102,8 @@ import { EditContentBoxComponent } from './box-management/edit-content-box/edit-
         AddNewMenuComponent,
         AddSubMenuComponent,
         EditMenuComponent,
-        EditContentBoxComponent
+        EditContentBoxComponent,
+        ContentBoxLookupComponent
     ],
     imports: [
         CommonModule,

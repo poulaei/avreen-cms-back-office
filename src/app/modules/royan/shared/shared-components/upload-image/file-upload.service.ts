@@ -14,7 +14,7 @@ export class FileUploadService {
 
     }
 
-    upload(file: File): Observable<HttpEvent<any>> {
+    upload(file: File, entityType: string): Observable<HttpEvent<any>> {
         // const formData: FormData = new FormData();
         // formData.append('File', file);
         // const params = new HttpParams().set('Name', 'media');
@@ -24,7 +24,7 @@ export class FileUploadService {
         formData.append('File', file);
         const params = new HttpParams().set('Name', 'media');
         const headers = new HttpHeaders().set('Content-Type', 'multipart/form-data');
-        const req = new HttpRequest('POST', environment.uploadMedia, formData, {
+        const req = new HttpRequest('POST', environment.uploadMedia + entityType, formData, {
             reportProgress: true,
             responseType: 'json',
             params: params

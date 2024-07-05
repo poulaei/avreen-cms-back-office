@@ -19,7 +19,7 @@ export const environment = {
     addNewBoxItem: '/api/app/box-item-admin',
     getBoxItems: '/api/app/box-admin/box-items/',
     deleteBoxItem: '/api/app/box-item-admin/',
-    uploadMedia: '/api/cms-kit-admin/media/GalleryImage',
+    uploadMedia: '/api/cms-kit-admin/media/',
     downloadMedia: '/api/cms-kit/media/',
     getBoxItemInfo: '/api/app/box-item-admin/',
     editBoxItem: '/api/app/box-item-admin/',
@@ -58,6 +58,7 @@ export const environment = {
     getMenuInfo: '/api/cms-kit-admin/menu-items/',
     editMenu: '/api/cms-kit-admin/menu-items/',
     //CONTENT BOX SERVICES//
+    getContentBoxRoot: '/api/cms-kit-public/contentBoxes/by-parent',
     getContentBoxTree: '/api/cms-kit-public/contentBoxes/get-tree',
     addNewContentBox: '/api/cms-kit-admin/contentBoxes',
     deleteContentBox: '/api/cms-kit-admin/contentBoxes/',

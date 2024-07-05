@@ -14,4 +14,12 @@ export class ContentBoxModel {
     concurrencyStamp: string;
     children: ContentBoxModel[];
     extraProperties: any;
+    boxType: string;
+    boxName: string;
+    content: string;
+}
+
+export class IdValue {
+    id: string;
+    name: string;
 }

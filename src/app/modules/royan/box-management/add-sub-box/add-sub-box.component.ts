@@ -7,7 +7,8 @@ import {ContentBoxModel} from "../box-management.model";
 import {BoxManagementService} from "../box-management.service";
 import {FileUploadService} from "../../shared/shared-components/upload-image/file-upload.service";
 import {BlogLookupComponent} from "../../cms/blog/blog-lookup/blog-lookup.component";
-import {PageLookupComponent} from "../../cms/page-view/page-lookup/page-lookup.component";
+import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-lookup.component";
+
 
 @Component({
     selector: 'app-add-sub-box',
@@ -44,6 +45,8 @@ export class AddSubBoxComponent implements OnInit {
 
     initAddNewContentBoxForm(): void {
         this.addNewContentBoxForm = this.formBuilder.group({
+            boxName: [''],
+            content: [''],
             section: [''],
             title: [''],
             summary: [''],
@@ -107,7 +110,7 @@ export class AddSubBoxComponent implements OnInit {
     upload(idx: number, file: File): void {
         this.progressInfos[idx] = {value: 0, fileName: file.name};
         if (file) {
-            this.uploadService.upload(file).subscribe({
+            this.uploadService.upload(file, 'ContentBox').subscribe({
                 next: (response: any): void => {
                     if (response && response.body && response.body.id) {
                         this.contentBoxModel.mediaId = response.body.id;
@@ -146,7 +149,8 @@ export class AddSubBoxComponent implements OnInit {
         this.contentBoxModel.actionUrl = this.actionUri;
         this.contentBoxModel.summary = this.addNewContentBoxForm.controls['summary'].value;
         this.contentBoxModel.description = this.addNewContentBoxForm.controls['description'].value;
-        console.log(this.contentBoxModel);
+        this.contentBoxModel.boxName = this.addNewContentBoxForm.controls['boxName'].value;
+        this.contentBoxModel.content = this.addNewContentBoxForm.controls['content'].value;
         return this.contentBoxModel;
     }
 
@@ -174,7 +178,7 @@ export class AddSubBoxComponent implements OnInit {
     }
 
     searchPage(): void {
-        const modalRef: NgbModalRef = this.modalService.open(PageLookupComponent, {
+        const modalRef: NgbModalRef = this.modalService.open(ContentBoxLookupComponent, {
             centered: true,
             size: 'xl'
         });

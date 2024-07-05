@@ -7,7 +7,7 @@ import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap"
 import {ContentBoxModel} from "../box-management.model";
 import {BoxManagementService} from "../box-management.service";
 import {BlogLookupComponent} from "../../cms/blog/blog-lookup/blog-lookup.component";
-import {PageLookupComponent} from "../../cms/page-view/page-lookup/page-lookup.component";
+import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-lookup.component";
 
 @Component({
     selector: 'app-edit-content-box',
@@ -45,6 +45,9 @@ export class EditContentBoxComponent implements OnInit {
 
     initContentBoxForm(): void {
         this.editContentBoxForm = this.formBuilder.group({
+            boxType: [''],
+            boxName: [''],
+            content: [''],
             section: [''],
             title: [''],
             summary: [''],
@@ -76,6 +79,7 @@ export class EditContentBoxComponent implements OnInit {
         if (this.selectedFiles && this.selectedFiles[0]) {
             this.uploadFiles();
         } else {
+            this.contentBoxModel.mediaId = '';
             this.boxManagementService.editContentBox(this.getFormValue(), this.contentBoxId).subscribe({
                 next: (response: any): void => {
                     if (response.id) {
@@ -105,7 +109,7 @@ export class EditContentBoxComponent implements OnInit {
     upload(idx: number, file: File): void {
         this.progressInfos[idx] = {value: 0, fileName: file.name};
         if (file) {
-            this.uploadService.upload(file).subscribe({
+            this.uploadService.upload(file, 'ContentBox').subscribe({
                 next: (response: any): void => {
                     if (response && response.body && response.body.id) {
                         this.contentBoxModel.mediaId = response.body.id;
@@ -163,6 +167,9 @@ export class EditContentBoxComponent implements OnInit {
         this.contentBoxModel.actionUrl = this.actionUri;
         this.contentBoxModel.summary = this.editContentBoxForm.controls['summary'].value;
         this.contentBoxModel.description = this.editContentBoxForm.controls['description'].value;
+        this.contentBoxModel.boxType = this.editContentBoxForm.controls['boxType'].value;
+        this.contentBoxModel.boxName = this.editContentBoxForm.controls['boxName'].value;
+        this.contentBoxModel.content = this.editContentBoxForm.controls['content'].value;
         this.contentBoxModel.id = this.contentBoxId;
         return this.contentBoxModel;
     }
@@ -175,6 +182,9 @@ export class EditContentBoxComponent implements OnInit {
         this.editContentBoxForm.controls['action'].setValue(contentBoxModel.action);
         this.editContentBoxForm.controls['actionUrl'].setValue(contentBoxModel.actionUrl);
         this.editContentBoxForm.controls['description'].setValue(contentBoxModel.description);
+        this.editContentBoxForm.controls['boxType'].setValue(contentBoxModel.boxType);
+        this.editContentBoxForm.controls['boxName'].setValue(contentBoxModel.boxName);
+        this.editContentBoxForm.controls['content'].setValue(contentBoxModel.content);
         if ((contentBoxModel.actionType) && (contentBoxModel.actionType == 'BlogPost' || contentBoxModel.actionType == 'Page')) {
             this.selectedActionType = contentBoxModel.actionType;
         }
@@ -227,7 +237,7 @@ export class EditContentBoxComponent implements OnInit {
     }
 
     searchPage(): void {
-        const modalRef: NgbModalRef = this.modalService.open(PageLookupComponent, {
+        const modalRef: NgbModalRef = this.modalService.open(ContentBoxLookupComponent, {
             centered: true,
             size: 'xl'
         });

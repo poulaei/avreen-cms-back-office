@@ -79,7 +79,7 @@ export class EditBoxItemComponent implements OnInit {
     upload(idx: number, file: File): void {
         this.progressInfos[idx] = {value: 0, fileName: file.name};
         if (file) {
-            this.uploadService.upload(file).subscribe({
+            this.uploadService.upload(file, 'Box').subscribe({
                 next: (response: any): void => {
                     if (response && response.body && response.body.id) {
                         this.boxItem.mediaId = response.body.id;
