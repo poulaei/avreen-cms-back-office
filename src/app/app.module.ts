@@ -28,7 +28,7 @@ import {SpinnerInterceptor} from "./spinne-interceptor";
 import {ToastrModule} from "ngx-toastr";
 import {MatMenuModule} from "@angular/material/menu";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
-import {EditorModule} from "@tinymce/tinymce-angular";
+import {EditorModule} from '@progress/kendo-angular-editor';
 
 
 const dutchRangeLabel = (page: number, pageSize: number, length: number) => {

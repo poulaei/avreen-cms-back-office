@@ -60,8 +60,16 @@ import {AddNewContentBoxComponent} from './box-management/add-new-content-box/ad
 import {AddNewMenuComponent} from './menu-management/add-new-menu/add-new-menu.component';
 import {AddSubMenuComponent} from './menu-management/add-sub-menu/add-sub-menu.component';
 import {EditMenuComponent} from './menu-management/edit-menu/edit-menu.component';
-import { EditContentBoxComponent } from './box-management/edit-content-box/edit-content-box.component';
-import { ContentBoxLookupComponent } from './box-management/content-box-lookup/content-box-lookup.component';
+import {EditContentBoxComponent} from './box-management/edit-content-box/edit-content-box.component';
+import {ContentBoxLookupComponent} from './box-management/content-box-lookup/content-box-lookup.component';
+import {EditorModule} from "@progress/kendo-angular-editor";
+import {UploadModule} from "@progress/kendo-angular-upload";
+import {DialogsModule} from "@progress/kendo-angular-dialog";
+import {DialogComponent} from "./box-management/edit-content-box/dialog.component";
+import {ImageUploadComponent} from "./box-management/edit-content-box/upload.component";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {NumericTextBoxModule} from "@progress/kendo-angular-inputs";
+import { ContentBoxDetailComponent } from './box-management/content-box-detail/content-box-detail.component';
 
 
 @NgModule({
@@ -103,7 +111,10 @@ import { ContentBoxLookupComponent } from './box-management/content-box-lookup/c
         AddSubMenuComponent,
         EditMenuComponent,
         EditContentBoxComponent,
-        ContentBoxLookupComponent
+        ContentBoxLookupComponent,
+        DialogComponent,
+        ImageUploadComponent,
+        ContentBoxDetailComponent
     ],
     imports: [
         CommonModule,
@@ -134,6 +145,17 @@ import { ContentBoxLookupComponent } from './box-management/content-box-lookup/c
         NgOptimizedImage,
         EditorComponent,
         MatTreeModule,
+        EditorModule,
+        UploadModule,
+        DialogsModule,
+        NumericTextBoxModule
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: DialogComponent,
+            multi: true
+        },
     ]
 })
 export class RoyanModule {

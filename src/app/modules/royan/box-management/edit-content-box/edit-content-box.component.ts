@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {FileUploadService} from "../../shared/shared-components/upload-image/file-upload.service";
 import {ToastrService} from "ngx-toastr";
@@ -8,6 +8,10 @@ import {ContentBoxModel} from "../box-management.model";
 import {BoxManagementService} from "../box-management.service";
 import {BlogLookupComponent} from "../../cms/blog/blog-lookup/blog-lookup.component";
 import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-lookup.component";
+import {DialogComponent} from "./dialog.component";
+import {EditorComponent} from "@progress/kendo-angular-editor";
+import {fullscreenIcon} from "@progress/kendo-svg-icons";
+
 
 @Component({
     selector: 'app-edit-content-box',
@@ -16,6 +20,7 @@ import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-looku
 })
 export class EditContentBoxComponent implements OnInit {
 
+    protected readonly fullscreenIcon = fullscreenIcon;
     @Input() contentBoxId: string;
     editContentBoxForm: FormGroup;
     contentBoxModel: ContentBoxModel = new ContentBoxModel();
@@ -26,6 +31,9 @@ export class EditContentBoxComponent implements OnInit {
     previews: string[] = [];
     selectedActionType: string = '';
     actionUri: string = '';
+    value: string = '';
+    @ViewChild("upload") public dialog: DialogComponent;
+    @Output() @ViewChild("editor") public editor: EditorComponent;
 
 
     constructor(public formBuilder: FormBuilder,
@@ -56,6 +64,38 @@ export class EditContentBoxComponent implements OnInit {
             actionUrl: [''],
             description: ['']
         });
+    }
+
+    public openImageBrowser() {
+        this.dialog.open();
+    }
+
+    public toggleFullScreen() {
+        let docEl = //document.documentElement;
+            document.querySelector("kendo-editor");
+        let fullscreenElement =
+            document.fullscreenElement;
+        // || document.mozFullScreenElement ||
+        // document.webkitFullscreenElement ||
+        // document.msFullscreenElement;
+        // @ts-ignore
+        let requestFullScreen = docEl.requestFullscreen;
+        // || docEl.msRequestFullscreen ||
+        // docEl.mozRequestFullScreen ||
+        // docEl.webkitRequestFullscreen;
+        let exitFullScreen = document.exitFullscreen;
+        // ||document.msExitFullscreen ||
+        //  document.mozCancelFullScreen ||
+        //  document.webkitExitFullscreen;
+        if (!requestFullScreen) {
+            return;
+        }
+
+        if (!fullscreenElement) {
+            requestFullScreen.call(docEl);
+        } else {
+            exitFullScreen.call(document);
+        }
     }
 
     loadContentBox(): void {
@@ -169,7 +209,9 @@ export class EditContentBoxComponent implements OnInit {
         this.contentBoxModel.description = this.editContentBoxForm.controls['description'].value;
         this.contentBoxModel.boxType = this.editContentBoxForm.controls['boxType'].value;
         this.contentBoxModel.boxName = this.editContentBoxForm.controls['boxName'].value;
-        this.contentBoxModel.content = this.editContentBoxForm.controls['content'].value;
+        // this.contentBoxModel.content = this.editContentBoxForm.controls['content'].value;
+        console.log(this.value);
+        this.contentBoxModel.content = this.value;
         this.contentBoxModel.id = this.contentBoxId;
         return this.contentBoxModel;
     }
@@ -184,7 +226,8 @@ export class EditContentBoxComponent implements OnInit {
         this.editContentBoxForm.controls['description'].setValue(contentBoxModel.description);
         this.editContentBoxForm.controls['boxType'].setValue(contentBoxModel.boxType);
         this.editContentBoxForm.controls['boxName'].setValue(contentBoxModel.boxName);
-        this.editContentBoxForm.controls['content'].setValue(contentBoxModel.content);
+        // this.editContentBoxForm.controls['content'].setValue(contentBoxModel.content);
+        this.value = contentBoxModel.content;
         if ((contentBoxModel.actionType) && (contentBoxModel.actionType == 'BlogPost' || contentBoxModel.actionType == 'Page')) {
             this.selectedActionType = contentBoxModel.actionType;
         }

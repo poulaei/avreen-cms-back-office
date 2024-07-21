@@ -1,112 +1,119 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
-import {FlatTreeControl} from "@angular/cdk/tree";
-import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
 import {BoxManagementService} from "./box-management.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
-import {AddSubBoxComponent} from "./add-sub-box/add-sub-box.component";
-import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
+import {CrudPageComponent} from "../shared/shared-components/crud-page/crud-page.component";
+import {CrudPageModel} from "../shared/shared-components/crud-page/crud-page.model";
+import {BaseTableModel} from "../shared/shared-components/base-table/base-table.model";
+import {TranslateService} from "@ngx-translate/core";
+import {PageActionModel} from "../shared/shared-components/crud-page/page-action.model";
+import {BaseTableColumnModel} from "../shared/shared-components/base-table/base-table-column.model";
+import {BaseTableActionModel} from "../shared/shared-components/base-table/base-table-action.model";
+import {Observable} from "rxjs";
 import {AddNewContentBoxComponent} from "./add-new-content-box/add-new-content-box.component";
-import {EditContentBoxComponent} from "./edit-content-box/edit-content-box.component";
-
-/**
- * Food data with nested structure.
- * Each node has a name and an optional list of children.
- */
-interface FoodNode {
-    id: string;
-    parentId: string;
-    section: string;
-    description: string;
-    icon: string;
-    children?: FoodNode[];
-}
-
-/** Flat node with expandable and level information */
-interface ExampleFlatNode {
-    expandable: boolean;
-    name: string;
-    level: number;
-    id: string;
-    icon: string;
-}
+import {Router} from "@angular/router";
+import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
 
 @Component({
     selector: 'app-box-management',
     templateUrl: './box-management.component.html',
     styleUrls: ['./box-management.component.scss']
 })
-export class BoxManagementComponent {
+export class BoxManagementComponent implements OnInit {
+
+    @ViewChild("crudPage") crudPage: CrudPageComponent;
+    crudPageModel: CrudPageModel = new CrudPageModel();
+    tableModel: BaseTableModel = new BaseTableModel();
+
 
     constructor(public boxManagementService: BoxManagementService,
                 public modalService: NgbModal,
+                public translate: TranslateService,
+                public router: Router,
                 public toasterService: ToastrService) {
 
     }
 
-    private _transformer = (node: FoodNode, level: number) => {
-        return {
-            expandable: !!node.children && node.children.length > 0,
-            name: node.section + ' / ' + node.description,
-            level: level,
-            id: node.id,
-            icon: node.icon
-        };
-    };
-
-    treeControl = new FlatTreeControl<ExampleFlatNode>(
-        node => node.level,
-        node => node.expandable,
-    );
-
-    treeFlattener = new MatTreeFlattener(
-        this._transformer,
-        node => node.level,
-        node => node.expandable,
-        node => node.children
-    );
-
-    dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
     ngOnInit(): void {
-        this.getBoxTree();
+        this.initCrudPage();
+        this.initTableModel();
     }
 
-    hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+    initCrudPage(): void {
+        let pageActions: PageActionModel[];
+        pageActions = [
+            {
+                actionName: 'افزودن باکس جدید',
+                actionFunction: this.addContentBox
+            }
+        ]
+        this.crudPageModel.crudPageHeader = 'مدیریت باکس ها';
+        this.crudPageModel.pageActions = pageActions;
+    }
 
-    addSubBox(node: FoodNode): void {
-        const modalRef: NgbModalRef = this.modalService.open(AddSubBoxComponent, {
+    initTableModel(): void {
+        let tableColumns: BaseTableColumnModel[];
+        tableColumns = [
+            {
+                columnDefinitionName: 'section',
+                columnName_Fa: 'نام باکس',
+                dataKey: 'section'
+            },
+            {
+                columnDefinitionName: 'boxType',
+                columnName_Fa: 'نوع باکس',
+                dataKey: 'boxType'
+            },
+            {
+                columnDefinitionName: 'description',
+                columnName_Fa: 'توضیحات',
+                dataKey: 'description'
+            }
+        ]
+        let gridActions: BaseTableActionModel[];
+        gridActions = [
+            {
+                actionName: this.translate.instant('SHARED.ACTIONS.INFO'),
+                actionIcon: 'pencil',
+                actionFunction: this.viewContentBoxDetail
+            },
+            {
+                actionName: this.translate.instant('SHARED.ACTIONS.DELETE'),
+                actionIcon: 'trash',
+                actionFunction: this.deleteContentBox
+            }
+        ]
+        this.tableModel.hasGridAction = true;
+        this.tableModel.selectable = false;
+        this.tableModel.autoSearch = true;
+        this.tableModel.tableColumns = tableColumns;
+        this.tableModel.gridActions = gridActions;
+    }
+
+    doSearch = (): Observable<any> => {
+        return this.boxManagementService.getContentBoxRoot();
+    }
+
+    addContentBox = (): void => {
+        const modalRef: NgbModalRef = this.modalService.open(AddNewContentBoxComponent, {
             centered: true,
             size: 'xl'
         });
-        modalRef.componentInstance.parentId = node.id;
         modalRef.result.then((isCreate: boolean) => {
             if (isCreate) {
-                this.toasterService.success('زیرمجموعه جدید با موفقیت اضافه شد');
-                this.getBoxTree();
+                this.toasterService.success('باکس جدید با موفقیت اضافه شد');
+                this.crudPage.crudPageTable.refreshTableData();
             }
         }, (): void => {
 
         });
     }
 
-    editBox(node: FoodNode): void {
-        const modalRef: NgbModalRef = this.modalService.open(EditContentBoxComponent, {
-            centered: true,
-            size: 'xl'
-        });
-        modalRef.componentInstance.contentBoxId = node.id;
-        modalRef.result.then((isCreate: boolean) => {
-            if (isCreate) {
-                this.toasterService.success('باکس با موفقیت ویرایش شد');
-                this.getBoxTree();
-            }
-        }, (): void => {
-
-        });
+    viewContentBoxDetail = (element: any): void => {
+        this.router.navigate(["/royan/boxDetail", element.id]);
     }
 
-    deleteBox(node: FoodNode): void {
+    deleteContentBox = (element: any): void => {
         const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
             centered: true
         });
@@ -114,10 +121,10 @@ export class BoxManagementComponent {
         modalRef.componentInstance.confirmMessage = 'آیا از حذف باکس مطمئن هستید؟';
         modalRef.result.then((isDeleted: boolean) => {
             if (isDeleted) {
-                this.boxManagementService.deleteContentBox(node.id).subscribe({
+                this.boxManagementService.deleteContentBox(element.id).subscribe({
                     next: (response: any): void => {
                         this.toasterService.success('باکس مورد نظر با موفقیت حذف شد');
-                        this.getBoxTree();
+                        this.crudPage.crudPageTable.refreshTableData();
                     },
                     error: (exception): void => {
                         if (exception && exception.status == 404) {
@@ -129,42 +136,6 @@ export class BoxManagementComponent {
                 });
             }
         }, () => {
-
-        });
-    }
-
-    getBoxTree(): void {
-        this.boxManagementService.getContentBoxTree().subscribe({
-            next: (response: any): void => {
-                if (!response.error) {
-                    this.fillTree(response);
-                } else {
-                    this.toasterService.error(response.error.message);
-                }
-            },
-            error: (exception: any): void => {
-                if (exception.error != null) {
-                    this.toasterService.error(exception.error.message);
-                }
-            }
-        });
-    }
-
-    fillTree(response: any): void {
-        this.dataSource.data = response;
-    }
-
-    addNewBox(): void {
-        const modalRef: NgbModalRef = this.modalService.open(AddNewContentBoxComponent, {
-            centered: true,
-            size: 'xl'
-        });
-        modalRef.result.then((isCreate: boolean) => {
-            if (isCreate) {
-                this.toasterService.success('باکس جدید با موفقیت اضافه شد');
-                this.getBoxTree();
-            }
-        }, (): void => {
 
         });
     }

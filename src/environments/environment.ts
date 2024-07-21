@@ -60,6 +60,7 @@ export const environment = {
     //CONTENT BOX SERVICES//
     getContentBoxRoot: '/api/cms-kit-public/contentBoxes/by-parent',
     getContentBoxTree: '/api/cms-kit-public/contentBoxes/get-tree',
+    getContentBoxTreeById: '/api/cms-kit-public/contentBoxes/get-tree-by-id',
     addNewContentBox: '/api/cms-kit-admin/contentBoxes',
     deleteContentBox: '/api/cms-kit-admin/contentBoxes/',
     getContentBox: '/api/cms-kit-admin/contentBoxes/',

@@ -10,6 +10,7 @@ import {BlogComponent} from "./cms/blog/blog.component";
 import {BlogCategoryComponent} from "./cms/blog-category/blog-category.component";
 import {PageViewComponent} from "./cms/page-view/page-view.component";
 import {BoxManagementComponent} from "./box-management/box-management.component";
+import {ContentBoxDetailComponent} from "./box-management/content-box-detail/content-box-detail.component";
 
 const routes: Routes = [
     {
@@ -51,6 +52,10 @@ const routes: Routes = [
             {
                 path: 'boxManagement',
                 component: BoxManagementComponent
+            },
+            {
+                path: 'boxDetail/:boxId',
+                component: ContentBoxDetailComponent
             }
         ]
     }

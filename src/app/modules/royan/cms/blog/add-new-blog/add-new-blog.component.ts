@@ -16,6 +16,13 @@ import {BlogCategoryService} from "../../blog-category/blog-category.service";
 })
 export class AddNewBlogComponent implements OnInit {
 
+    public value = '';
+    public tools = {
+        type: 'group',
+        name: 'text-tools',
+        tools: ['bold', 'italic', 'underline']
+    };
+
     addNewBlogPostForm: FormGroup;
     blogPostModel: BlogPostModel = new BlogPostModel();
     selectedFiles?: FileList;
@@ -141,7 +148,8 @@ export class AddNewBlogComponent implements OnInit {
         this.blogPostModel.title = this.addNewBlogPostForm.controls['title'].value;
         this.blogPostModel.slug = this.addNewBlogPostForm.controls['slug'].value;
         this.blogPostModel.shortDescription = this.addNewBlogPostForm.controls['description'].value;
-        this.blogPostModel.content = this.addNewBlogPostForm.controls['content'].value;
+        // this.blogPostModel.content = this.addNewBlogPostForm.controls['content'].value;
+        this.blogPostModel.content = this.value;
         return this.blogPostModel;
     }
 

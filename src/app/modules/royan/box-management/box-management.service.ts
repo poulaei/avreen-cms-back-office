@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {ContentBoxModel} from "./box-management.model";
@@ -20,6 +20,11 @@ export class BoxManagementService {
 
     getContentBoxTree(): Observable<any> {
         return this.httpClient.get<any>(environment.getContentBoxTree, {});
+    }
+
+    getContentBoxTreeById(contentBoxId: string): Observable<any> {
+        const params = new HttpParams().set('id', contentBoxId.toString());
+        return this.httpClient.get<any>(environment.getContentBoxTreeById, {params});
     }
 
     addNewContentBox(contentBoxModel: ContentBoxModel): Observable<any> {
