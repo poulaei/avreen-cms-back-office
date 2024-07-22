@@ -10,5 +10,11 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+  "/shared": {
+    "target": "http://172.16.10.71:3001",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }
