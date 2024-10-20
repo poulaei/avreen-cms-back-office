@@ -35,10 +35,20 @@ export const environment = {
     deleteCategory: '/api/cms-kit-admin/blogs/',
     getCategory: '/api/cms-kit-admin/blogs/',
     editCategory: '/api/cms-kit-admin/blogs/',
+    //BLOG TAG SERVICES//
+    getAllTags: '/api/cms-kit-admin/tags',
+    addNewTag: '/api/cms-kit-admin/tags',
+    deleteTag: '/api/cms-kit-admin/tags/',
+    getTag: '/api/cms-kit-admin/tags/',
+    editTag: '/api/cms-kit-admin/tags/',
     //BLOG SERVICES//
     getAllBlogPosts: '/api/cms-kit-admin/blogs/blog-posts',
     addNewBlogPost: '/api/cms-kit-admin/blogs/blog-posts/create-and-publish',
     deleteBlogPost: '/api/cms-kit-admin/blogs/blog-posts/',
+    editBlogPost: '/api/cms-kit-admin/blogs/blog-posts/',
+    getBlogPost: '/api/cms-kit-admin/blogs/blog-posts/',
+    getBlogPostTags: '/api/cms-kit-public/tags/',
+    submitTag: '/api/cms-kit-admin/entity-tags',
     //PAGES SERVICES//
     getAllPages: '/api/cms-kit-admin/pages',
     addNewPage: '/api/cms-kit-admin/blogs',

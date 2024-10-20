@@ -9,25 +9,27 @@ import {PageActionModel} from "../../shared/shared-components/crud-page/page-act
 import {BaseTableColumnModel} from "../../shared/shared-components/base-table/base-table-column.model";
 import {BaseTableActionModel} from "../../shared/shared-components/base-table/base-table-action.model";
 import {Observable} from "rxjs";
-import {BlogPostService} from "./blog-post.service";
+import {AddNewBlogCategoryComponent} from "../blog-category/add-new-blog-category/add-new-blog-category.component";
+import {EditBlogCategoryComponent} from "../blog-category/edit-blog-category/edit-blog-category.component";
 import {ConfirmModalComponent} from "../../shared/shared-components/confirm-modal/confirm-modal.component";
-import {Router} from "@angular/router";
+import {BlogTagsService} from "./blog-tags.service";
+import {AddNewBlogTagComponent} from "./add-new-blog-tag/add-new-blog-tag.component";
+import {EditBlogTagComponent} from "./edit-blog-tag/edit-blog-tag.component";
 
 @Component({
-    selector: 'app-blog',
-    templateUrl: './blog.component.html',
-    styleUrls: ['./blog.component.scss']
+    selector: 'app-blog-tags',
+    templateUrl: './blog-tags.component.html',
+    styleUrls: ['./blog-tags.component.scss']
 })
-export class BlogComponent implements OnInit {
+export class BlogTagsComponent implements OnInit {
 
     @ViewChild("crudPage") crudPage: CrudPageComponent;
     crudPageModel: CrudPageModel = new CrudPageModel();
     tableModel: BaseTableModel = new BaseTableModel();
 
     constructor(public translate: TranslateService,
-                public blogService: BlogPostService,
+                public blogTagsService: BlogTagsService,
                 public modalService: NgbModal,
-                public router: Router,
                 public toasterService: ToastrService) {
 
     }
@@ -41,11 +43,11 @@ export class BlogComponent implements OnInit {
         let pageActions: PageActionModel[];
         pageActions = [
             {
-                actionName: 'افزودن پست جدید',
-                actionFunction: this.addBlog
+                actionName: 'افزودن تگ جدید',
+                actionFunction: this.addTag
             }
         ]
-        this.crudPageModel.crudPageHeader = 'پست های بلاگ';
+        this.crudPageModel.crudPageHeader = 'مدیریت تگ ها';
         this.crudPageModel.pageActions = pageActions;
     }
 
@@ -53,25 +55,14 @@ export class BlogComponent implements OnInit {
         let tableColumns: BaseTableColumnModel[];
         tableColumns = [
             {
-                columnDefinitionName: 'blogName',
-                columnName_Fa: 'نام دسته بندی',
-                dataKey: 'blogName'
+                columnDefinitionName: 'name',
+                columnName_Fa: 'نام تگ',
+                dataKey: 'name'
             },
             {
-                columnDefinitionName: 'title',
-                columnName_Fa: 'عنوان پست',
-                dataKey: 'title'
-            },
-            {
-                columnDefinitionName: 'creationTime',
-                columnName_Fa: 'زمان ایجاد',
-                type: 'date',
-                dataKey: 'creationTime'
-            },
-            {
-                columnDefinitionName: 'status',
-                columnName_Fa: 'وضعیت',
-                dataKey: 'status'
+                columnDefinitionName: 'entityType',
+                columnName_Fa: 'نوع موجودیت',
+                dataKey: 'entityType'
             }
         ]
         let gridActions: BaseTableActionModel[];
@@ -79,12 +70,12 @@ export class BlogComponent implements OnInit {
             {
                 actionName: this.translate.instant('SHARED.ACTIONS.EDIT'),
                 actionIcon: 'pencil',
-                actionFunction: this.editBlog
+                actionFunction: this.editTag
             },
             {
                 actionName: this.translate.instant('SHARED.ACTIONS.DELETE'),
                 actionIcon: 'trash',
-                actionFunction: this.deleteBlog
+                actionFunction: this.deleteTag
             }
         ]
         this.tableModel.hasGridAction = true;
@@ -95,41 +86,49 @@ export class BlogComponent implements OnInit {
     }
 
     doSearch = (): Observable<any> => {
-        return this.blogService.getAllBlogPosts();
+        return this.blogTagsService.getAllTags();
     }
 
-    addBlog = (): void => {
-        this.router.navigate(["/royan/addNewBlog"]);
+    addTag = (): void => {
+        const modalRef: NgbModalRef = this.modalService.open(AddNewBlogTagComponent, {
+            centered: true
+        });
+        modalRef.result.then((isCreate: boolean) => {
+            if (isCreate) {
+                this.toasterService.success('تگ جدید با موفقیت اضافه شد');
+                this.crudPage.crudPageTable.refreshTableData();
+            }
+        }, (): void => {
+
+        });
     }
 
-    editBlog = (element: any): void => {
-        this.router.navigate(["/royan/editBlog", element.id]);
-        // const modalRef: NgbModalRef = this.modalService.open(EditBlogComponent, {
-        //     centered: true,
-        //     size: 'xl'
-        // });
-        // modalRef.componentInstance.blogPostId = element.id;
-        // modalRef.result.then((isUpdated: boolean): void => {
-        //     if (isUpdated) {
-        //         this.toasterService.success('پست مورد نظر با موفقیت ویرایش شد');
-        //         this.crudPage.crudPageTable.refreshTableData();
-        //     }
-        // }, () => {
-        //
-        // });
+    editTag = (element: any): void => {
+        const modalRef: NgbModalRef = this.modalService.open(EditBlogTagComponent, {
+            centered: true
+        });
+        modalRef.componentInstance.tagId = element.id;
+        modalRef.result.then((isUpdated: boolean): void => {
+            if (isUpdated) {
+                this.toasterService.success('تگ مورد نظر با موفقیت ویرایش شد');
+                this.crudPage.crudPageTable.refreshTableData();
+            }
+        }, () => {
+
+        });
     }
 
-    deleteBlog = (element: any): void => {
+    deleteTag = (element: any): void => {
         const modalRef: NgbModalRef = this.modalService.open(ConfirmModalComponent, {
             centered: true
         });
-        modalRef.componentInstance.confirmTitle = 'حذف پست';
-        modalRef.componentInstance.confirmMessage = 'آیا از حذف پست ' + element.title + ' مطمئن هستید؟';
+        modalRef.componentInstance.confirmTitle = 'حذف تگ';
+        modalRef.componentInstance.confirmMessage = 'آیا از حذف تگ ' + element.name + ' مطمئن هستید؟';
         modalRef.result.then((isDeleted: boolean) => {
             if (isDeleted) {
-                this.blogService.deleteBlogPost(element.id).subscribe({
+                this.blogTagsService.deleteTag(element.id).subscribe({
                     next: (response: any): void => {
-                        this.toasterService.success('پست مورد نظر با موفقیت حذف شد');
+                        this.toasterService.success('تگ مورد نظر با موفقیت حذف شد');
                         this.crudPage.crudPageTable.refreshTableData();
                     },
                     error: (exception): void => {

@@ -1,9 +1,9 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../../../environments/environment";
-import {Box} from "../../box/box.model";
 import {Injectable} from "@angular/core";
-import {BlogPostModel} from "./blog-post.model";
+import {BlogPostModel, BlogPostTagModel} from "./blog-post.model";
+import {switchMap} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root',
@@ -34,20 +34,53 @@ export class BlogPostService {
         return this.httpClient.delete<any>(environment.deleteBlogPost + categoryId, {});
     }
 
-    getBlogPostInfo(boxId: string): Observable<any> {
+    getBlogPostInfo(blogPostId: string): Observable<any> {
         let cookie = this.getCookie('XSRF-TOKEN');
         const httpHeaders: HttpHeaders = new HttpHeaders({
             RequestVerificationToken: cookie
         });
-        return this.httpClient.get<any>(environment.getBoxInfo + boxId, {});
+        return this.httpClient.get<any>(environment.getBlogPost + blogPostId, {});
     }
 
-    editBlogPost(boxInfo: Box, boxId: string): Observable<any> {
+    getBlogPostTags(entityType: string, blogPostId: string): Observable<any> {
         let cookie = this.getCookie('XSRF-TOKEN');
         const httpHeaders: HttpHeaders = new HttpHeaders({
             RequestVerificationToken: cookie
         });
-        return this.httpClient.put<any>(environment.editBox + boxId, boxInfo);
+        return this.httpClient.get<any>(environment.getBlogPostTags + entityType + "/" + blogPostId, {});
+    }
+
+    submitTags(blogPostTagModel: BlogPostTagModel): Observable<any> {
+        let cookie = this.getCookie('XSRF-TOKEN');
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            RequestVerificationToken: cookie
+        });
+        return this.httpClient.put<any>(environment.submitTag, blogPostTagModel);
+    }
+
+    editBlogPost(blogPostModel: BlogPostModel, blogPostId: string): Observable<any> {
+        let cookie = this.getCookie('XSRF-TOKEN');
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            RequestVerificationToken: cookie
+        });
+        return this.httpClient.put<any>(environment.editBlogPost + blogPostId, blogPostModel);
+    }
+
+    getItemMedia(mediaId: string): Observable<string> {
+        return this.httpClient.get(environment.downloadMedia + mediaId, {responseType: "blob"})
+            .pipe(switchMap(response => this.readFile(response)));
+    }
+
+    private readFile(blob: Blob): Observable<string> {
+        // @ts-ignore
+        return Observable.create(obs => {
+            const reader = new FileReader();
+            reader.onerror = err => obs.error(err);
+            reader.onabort = err => obs.error(err);
+            reader.onload = () => obs.next(reader.result);
+            reader.onloadend = () => obs.complete();
+            return reader.readAsDataURL(blob);
+        });
     }
 
     private getCookie(name: string) {

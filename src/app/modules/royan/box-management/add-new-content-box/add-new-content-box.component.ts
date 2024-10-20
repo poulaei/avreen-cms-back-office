@@ -1,14 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ContentBoxModel} from "../box-management.model";
 import {BoxManagementService} from "../box-management.service";
 import {ToastrService} from "ngx-toastr";
 import {FormControlService} from "../../shared/shared-service/form-control.service";
 import {FileUploadService} from "../../shared/shared-components/upload-image/file-upload.service";
-import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {BlogLookupComponent} from "../../cms/blog/blog-lookup/blog-lookup.component";
-import {PageLookupComponent} from "../../cms/page-view/page-lookup/page-lookup.component";
 import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-lookup.component";
+import {fullscreenIcon} from "@progress/kendo-svg-icons";
+import {DialogComponent} from "../edit-content-box/dialog.component";
+import {EditorComponent} from "@progress/kendo-angular-editor";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-add-new-content-box',
@@ -17,6 +20,7 @@ import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-looku
 })
 export class AddNewContentBoxComponent implements OnInit {
 
+    protected readonly fullscreenIcon = fullscreenIcon;
     addNewContentBoxForm: FormGroup;
     contentBoxModel: ContentBoxModel = new ContentBoxModel();
     selectedFiles?: FileList;
@@ -26,6 +30,9 @@ export class AddNewContentBoxComponent implements OnInit {
     previews: string[] = [];
     selectedActionType: string = '';
     actionUri: string = '';
+    value: string = '';
+    @ViewChild("upload") public dialog: DialogComponent;
+    @Output() @ViewChild("editor") public editor: EditorComponent;
 
 
     constructor(public formBuilder: FormBuilder,
@@ -34,7 +41,8 @@ export class AddNewContentBoxComponent implements OnInit {
                 public formControlService: FormControlService,
                 public uploadService: FileUploadService,
                 public modalService: NgbModal,
-                public modal: NgbActiveModal) {
+                public changeDetectorRef: ChangeDetectorRef,
+                public router: Router) {
 
     }
 
@@ -64,7 +72,8 @@ export class AddNewContentBoxComponent implements OnInit {
             this.boxManagementService.addNewContentBox(this.getFormValue()).subscribe({
                 next: (response: any): void => {
                     if (response.id) {
-                        this.modal.close(true);
+                        this.toasterService.success('باکس جدید با موفقیت اضافه شد');
+                        this.closeForm();
                     } else {
                         this.toasterService.error(response.error.message);
                     }
@@ -90,6 +99,7 @@ export class AddNewContentBoxComponent implements OnInit {
                 const reader: FileReader = new FileReader();
                 reader.onload = (e: any) => {
                     this.previews.push(e.target.result);
+                    this.changeDetectorRef.detectChanges();
                 };
                 reader.readAsDataURL(this.selectedFiles[i]);
                 this.selectedFileNames.push(this.selectedFiles[i].name);
@@ -116,7 +126,8 @@ export class AddNewContentBoxComponent implements OnInit {
                         this.boxManagementService.addNewContentBox(this.getFormValue()).subscribe({
                             next: (response: any): void => {
                                 if (response.id) {
-                                    this.modal.close(true);
+                                    this.toasterService.success('باکس جدید با موفقیت اضافه شد');
+                                    this.closeForm();
                                 } else {
                                     this.toasterService.error(response.error.message);
                                 }
@@ -150,8 +161,41 @@ export class AddNewContentBoxComponent implements OnInit {
         this.contentBoxModel.description = this.addNewContentBoxForm.controls['description'].value;
         this.contentBoxModel.boxType = this.addNewContentBoxForm.controls['boxType'].value;
         this.contentBoxModel.boxName = this.addNewContentBoxForm.controls['boxName'].value;
-        this.contentBoxModel.content = this.addNewContentBoxForm.controls['content'].value;
+        // this.contentBoxModel.content = this.addNewContentBoxForm.controls['content'].value;
+        this.contentBoxModel.content = this.value;
         return this.contentBoxModel;
+    }
+
+    public openImageBrowser() {
+        this.dialog.open();
+    }
+
+    public toggleFullScreen() {
+        let docEl = //document.documentElement;
+            document.querySelector("kendo-editor");
+        let fullscreenElement =
+            document.fullscreenElement;
+        // || document.mozFullScreenElement ||
+        // document.webkitFullscreenElement ||
+        // document.msFullscreenElement;
+        // @ts-ignore
+        let requestFullScreen = docEl.requestFullscreen;
+        // || docEl.msRequestFullscreen ||
+        // docEl.mozRequestFullScreen ||
+        // docEl.webkitRequestFullscreen;
+        let exitFullScreen = document.exitFullscreen;
+        // ||document.msExitFullscreen ||
+        //  document.mozCancelFullScreen ||
+        //  document.webkitExitFullscreen;
+        if (!requestFullScreen) {
+            return;
+        }
+
+        if (!fullscreenElement) {
+            requestFullScreen.call(docEl);
+        } else {
+            exitFullScreen.call(document);
+        }
     }
 
     deleteMedia(): void {
@@ -194,5 +238,9 @@ export class AddNewContentBoxComponent implements OnInit {
 
     actionTypeSelectionChange(event: Event): void {
         this.selectedActionType = ((event.target as HTMLInputElement).value);
+    }
+
+    closeForm(): void {
+        this.router.navigate(["/royan/boxManagement"]);
     }
 }

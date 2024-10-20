@@ -11,6 +11,12 @@ import {BlogCategoryComponent} from "./cms/blog-category/blog-category.component
 import {PageViewComponent} from "./cms/page-view/page-view.component";
 import {BoxManagementComponent} from "./box-management/box-management.component";
 import {ContentBoxDetailComponent} from "./box-management/content-box-detail/content-box-detail.component";
+import {AddNewBlogComponent} from "./cms/blog/add-new-blog/add-new-blog.component";
+import {EditBlogComponent} from "./cms/blog/edit-blog/edit-blog.component";
+import {AddNewContentBoxComponent} from "./box-management/add-new-content-box/add-new-content-box.component";
+import {AddSubBoxComponent} from "./box-management/add-sub-box/add-sub-box.component";
+import {EditContentBoxComponent} from "./box-management/edit-content-box/edit-content-box.component";
+import {BlogTagsComponent} from "./cms/blog-tags/blog-tags.component";
 
 const routes: Routes = [
     {
@@ -56,6 +62,30 @@ const routes: Routes = [
             {
                 path: 'boxDetail/:boxId',
                 component: ContentBoxDetailComponent
+            },
+            {
+                path: 'addNewBlog',
+                component: AddNewBlogComponent
+            },
+            {
+                path: 'editBlog/:blogPostId',
+                component: EditBlogComponent
+            },
+            {
+                path: 'addNewContentBox',
+                component: AddNewContentBoxComponent
+            },
+            {
+                path: 'addSubContentBox/:parentBoxId/:rootContentBoxId',
+                component: AddSubBoxComponent
+            },
+            {
+                path: 'editContentBox/:contentBoxId/:rootContentBoxId',
+                component: EditContentBoxComponent
+            },
+            {
+                path: 'tags',
+                component: BlogTagsComponent
             }
         ]
     }

@@ -1,13 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {FormControlService} from "../../shared/shared-service/form-control.service";
-import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ContentBoxModel} from "../box-management.model";
 import {BoxManagementService} from "../box-management.service";
 import {FileUploadService} from "../../shared/shared-components/upload-image/file-upload.service";
 import {BlogLookupComponent} from "../../cms/blog/blog-lookup/blog-lookup.component";
 import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-lookup.component";
+import {fullscreenIcon} from "@progress/kendo-svg-icons";
+import {DialogComponent} from "../edit-content-box/dialog.component";
+import {EditorComponent} from "@progress/kendo-angular-editor";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -17,7 +21,9 @@ import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-looku
 })
 export class AddSubBoxComponent implements OnInit {
 
-    @Input() parentId: string;
+    protected readonly fullscreenIcon = fullscreenIcon;
+    parentId: string = '';
+    rootContentBoxId: string = '';
     addNewContentBoxForm: FormGroup;
     contentBoxModel: ContentBoxModel = new ContentBoxModel();
     selectedFiles?: FileList;
@@ -27,6 +33,9 @@ export class AddSubBoxComponent implements OnInit {
     previews: string[] = [];
     selectedActionType: string = '';
     actionUri: string = '';
+    value: string = '';
+    @ViewChild("upload") public dialog: DialogComponent;
+    @Output() @ViewChild("editor") public editor: EditorComponent;
 
 
     constructor(public formBuilder: FormBuilder,
@@ -35,11 +44,17 @@ export class AddSubBoxComponent implements OnInit {
                 public formControlService: FormControlService,
                 public uploadService: FileUploadService,
                 public modalService: NgbModal,
-                public modal: NgbActiveModal) {
+                public changeDetectorRef: ChangeDetectorRef,
+                public route: ActivatedRoute,
+                public router: Router) {
 
     }
 
     ngOnInit(): void {
+        this.route.params.subscribe(params => {
+            this.parentId = params['parentBoxId'];
+            this.rootContentBoxId = params['rootContentBoxId'];
+        });
         this.initAddNewContentBoxForm();
     }
 
@@ -57,6 +72,28 @@ export class AddSubBoxComponent implements OnInit {
         });
     }
 
+    public openImageBrowser() {
+        this.dialog.open();
+    }
+
+    public toggleFullScreen() {
+        let docEl = //document.documentElement;
+            document.querySelector("kendo-editor");
+        let fullscreenElement =
+            document.fullscreenElement;
+        // @ts-ignore
+        let requestFullScreen = docEl.requestFullscreen;
+        let exitFullScreen = document.exitFullscreen;
+        if (!requestFullScreen) {
+            return;
+        }
+        if (!fullscreenElement) {
+            requestFullScreen.call(docEl);
+        } else {
+            exitFullScreen.call(document);
+        }
+    }
+
     addContentBox(): void {
         this.contentBoxModel.parentId = this.parentId;
         if (this.selectedFiles && this.selectedFiles[0]) {
@@ -65,7 +102,8 @@ export class AddSubBoxComponent implements OnInit {
             this.boxManagementService.addNewContentBox(this.getFormValue()).subscribe({
                 next: (response: any): void => {
                     if (response.id) {
-                        this.modal.close(true);
+                        this.toasterService.success('زیرمجموعه جدید با موفقیت اضافه شد');
+                        this.closeForm();
                     } else {
                         this.toasterService.error(response.error.message);
                     }
@@ -91,6 +129,7 @@ export class AddSubBoxComponent implements OnInit {
                 const reader: FileReader = new FileReader();
                 reader.onload = (e: any) => {
                     this.previews.push(e.target.result);
+                    this.changeDetectorRef.detectChanges();
                 };
                 reader.readAsDataURL(this.selectedFiles[i]);
                 this.selectedFileNames.push(this.selectedFiles[i].name);
@@ -117,7 +156,8 @@ export class AddSubBoxComponent implements OnInit {
                         this.boxManagementService.addNewContentBox(this.getFormValue()).subscribe({
                             next: (response: any): void => {
                                 if (response.id) {
-                                    this.modal.close(true);
+                                    this.toasterService.success('زیرمجموعه جدید با موفقیت اضافه شد');
+                                    this.closeForm();
                                 } else {
                                     this.toasterService.error(response.error.message);
                                 }
@@ -151,7 +191,8 @@ export class AddSubBoxComponent implements OnInit {
         this.contentBoxModel.description = this.addNewContentBoxForm.controls['description'].value;
         this.contentBoxModel.boxType = '0';
         this.contentBoxModel.boxName = this.addNewContentBoxForm.controls['boxName'].value;
-        this.contentBoxModel.content = this.addNewContentBoxForm.controls['content'].value;
+        // this.contentBoxModel.content = this.addNewContentBoxForm.controls['content'].value;
+        this.contentBoxModel.content = this.value;
         return this.contentBoxModel;
     }
 
@@ -195,5 +236,9 @@ export class AddSubBoxComponent implements OnInit {
 
     actionTypeSelectionChange(event: Event): void {
         this.selectedActionType = ((event.target as HTMLInputElement).value);
+    }
+
+    closeForm(): void {
+        this.router.navigate(["/royan/boxDetail", this.rootContentBoxId]);
     }
 }

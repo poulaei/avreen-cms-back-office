@@ -4,8 +4,6 @@ import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ToastrService} from "ngx-toastr";
 import {FlatTreeControl} from "@angular/cdk/tree";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
-import {AddSubBoxComponent} from "../add-sub-box/add-sub-box.component";
-import {EditContentBoxComponent} from "../edit-content-box/edit-content-box.component";
 import {ConfirmModalComponent} from "../../shared/shared-components/confirm-modal/confirm-modal.component";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -82,35 +80,24 @@ export class ContentBoxDetailComponent implements OnInit {
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
     addSubBox(node: FoodNode): void {
-        const modalRef: NgbModalRef = this.modalService.open(AddSubBoxComponent, {
-            centered: true,
-            size: 'xl'
-        });
-        modalRef.componentInstance.parentId = node.id;
-        modalRef.result.then((isCreate: boolean) => {
-            if (isCreate) {
-                this.toasterService.success('زیرمجموعه جدید با موفقیت اضافه شد');
-                this.getBoxTree();
-            }
-        }, (): void => {
-
-        });
+        this.router.navigate(["/royan/addSubContentBox", node.id, this.boxId]);
     }
 
     editBox(node: FoodNode): void {
-        const modalRef: NgbModalRef = this.modalService.open(EditContentBoxComponent, {
-            centered: true,
-            size: 'xl'
-        });
-        modalRef.componentInstance.contentBoxId = node.id;
-        modalRef.result.then((isCreate: boolean) => {
-            if (isCreate) {
-                this.toasterService.success('باکس با موفقیت ویرایش شد');
-                this.getBoxTree();
-            }
-        }, (): void => {
-
-        });
+        this.router.navigate(["/royan/editContentBox", node.id, this.boxId]);
+        // const modalRef: NgbModalRef = this.modalService.open(EditContentBoxComponent, {
+        //     centered: true,
+        //     size: 'xl'
+        // });
+        // modalRef.componentInstance.contentBoxId = node.id;
+        // modalRef.result.then((isCreate: boolean) => {
+        //     if (isCreate) {
+        //         this.toasterService.success('باکس با موفقیت ویرایش شد');
+        //         this.getBoxTree();
+        //     }
+        // }, (): void => {
+        //
+        // });
     }
 
     deleteBox(node: FoodNode): void {

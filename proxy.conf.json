@@ -1,18 +1,18 @@
 {
   "/api": {
-    "target": "http://172.16.10.71:3001",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  },
-  "/Abp": {
-    "target": "http://172.16.10.71:3001",
+    "target": "http://37.152.179.31:8080",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/shared": {
-    "target": "http://172.16.10.71:3001",
+    "target": "http://37.152.179.31:8080",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/Abp": {
+    "target": "http://37.152.179.31:8080",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

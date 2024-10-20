@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {FileUploadService} from "../../shared/shared-components/upload-image/file-upload.service";
 import {ToastrService} from "ngx-toastr";
 import {FormControlService} from "../../shared/shared-service/form-control.service";
-import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ContentBoxModel} from "../box-management.model";
 import {BoxManagementService} from "../box-management.service";
 import {BlogLookupComponent} from "../../cms/blog/blog-lookup/blog-lookup.component";
@@ -11,6 +11,7 @@ import {ContentBoxLookupComponent} from "../content-box-lookup/content-box-looku
 import {DialogComponent} from "./dialog.component";
 import {EditorComponent} from "@progress/kendo-angular-editor";
 import {fullscreenIcon} from "@progress/kendo-svg-icons";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -21,7 +22,8 @@ import {fullscreenIcon} from "@progress/kendo-svg-icons";
 export class EditContentBoxComponent implements OnInit {
 
     protected readonly fullscreenIcon = fullscreenIcon;
-    @Input() contentBoxId: string;
+    contentBoxId: string = '';
+    rootContentBoxId: string = '';
     editContentBoxForm: FormGroup;
     contentBoxModel: ContentBoxModel = new ContentBoxModel();
     selectedFiles?: FileList;
@@ -42,11 +44,17 @@ export class EditContentBoxComponent implements OnInit {
                 public modalService: NgbModal,
                 public toasterService: ToastrService,
                 public formControlService: FormControlService,
-                public modal: NgbActiveModal) {
+                public changeDetectorRef: ChangeDetectorRef,
+                public route: ActivatedRoute,
+                public router: Router) {
 
     }
 
     ngOnInit(): void {
+        this.route.params.subscribe(params => {
+            this.contentBoxId = params['contentBoxId'];
+            this.rootContentBoxId = params['rootContentBoxId'];
+        });
         this.initContentBoxForm();
         this.loadContentBox();
     }
@@ -75,22 +83,12 @@ export class EditContentBoxComponent implements OnInit {
             document.querySelector("kendo-editor");
         let fullscreenElement =
             document.fullscreenElement;
-        // || document.mozFullScreenElement ||
-        // document.webkitFullscreenElement ||
-        // document.msFullscreenElement;
         // @ts-ignore
         let requestFullScreen = docEl.requestFullscreen;
-        // || docEl.msRequestFullscreen ||
-        // docEl.mozRequestFullScreen ||
-        // docEl.webkitRequestFullscreen;
         let exitFullScreen = document.exitFullscreen;
-        // ||document.msExitFullscreen ||
-        //  document.mozCancelFullScreen ||
-        //  document.webkitExitFullscreen;
         if (!requestFullScreen) {
             return;
         }
-
         if (!fullscreenElement) {
             requestFullScreen.call(docEl);
         } else {
@@ -119,11 +117,11 @@ export class EditContentBoxComponent implements OnInit {
         if (this.selectedFiles && this.selectedFiles[0]) {
             this.uploadFiles();
         } else {
-            this.contentBoxModel.mediaId = '';
             this.boxManagementService.editContentBox(this.getFormValue(), this.contentBoxId).subscribe({
                 next: (response: any): void => {
                     if (response.id) {
-                        this.modal.close(true);
+                        this.toasterService.success('باکس با موفقیت ویرایش شد');
+                        this.closeForm();
                     } else {
                         this.toasterService.error(response.error.message);
                     }
@@ -156,7 +154,8 @@ export class EditContentBoxComponent implements OnInit {
                         this.boxManagementService.editContentBox(this.getFormValue(), this.contentBoxId).subscribe({
                             next: (response: any): void => {
                                 if (response.id) {
-                                    this.modal.close(true);
+                                    this.toasterService.success('باکس با موفقیت ویرایش شد');
+                                    this.closeForm();
                                 } else {
                                     this.toasterService.error(response.error.message);
                                 }
@@ -192,6 +191,7 @@ export class EditContentBoxComponent implements OnInit {
                 const reader: FileReader = new FileReader();
                 reader.onload = (e: any) => {
                     this.previews.push(e.target.result);
+                    this.changeDetectorRef.detectChanges();
                 };
                 reader.readAsDataURL(this.selectedFiles[i]);
                 this.selectedFileNames.push(this.selectedFiles[i].name);
@@ -209,8 +209,6 @@ export class EditContentBoxComponent implements OnInit {
         this.contentBoxModel.description = this.editContentBoxForm.controls['description'].value;
         this.contentBoxModel.boxType = this.editContentBoxForm.controls['boxType'].value;
         this.contentBoxModel.boxName = this.editContentBoxForm.controls['boxName'].value;
-        // this.contentBoxModel.content = this.editContentBoxForm.controls['content'].value;
-        console.log(this.value);
         this.contentBoxModel.content = this.value;
         this.contentBoxModel.id = this.contentBoxId;
         return this.contentBoxModel;
@@ -230,13 +228,16 @@ export class EditContentBoxComponent implements OnInit {
         this.value = contentBoxModel.content;
         if ((contentBoxModel.actionType) && (contentBoxModel.actionType == 'BlogPost' || contentBoxModel.actionType == 'Page')) {
             this.selectedActionType = contentBoxModel.actionType;
+            this.changeDetectorRef.detectChanges();
         }
         this.actionUri = contentBoxModel.actionUrl;
         if (contentBoxModel.mediaId) {
             this.boxManagementService.getBoxItemMedia(contentBoxModel.mediaId).subscribe({
                 next: (response: any): void => {
                     if (!response.error) {
+                        this.contentBoxModel.mediaId = contentBoxModel.mediaId;
                         this.previews.push(response);
+                        this.changeDetectorRef.detectChanges();
                     } else {
                         this.toasterService.error(response.error.message);
                     }
@@ -257,6 +258,7 @@ export class EditContentBoxComponent implements OnInit {
         this.selectedFileNames = [];
         this.selectedFiles = undefined;
         this.previews = [];
+        this.contentBoxModel.mediaId = '';
     }
 
     actionTypeSelectionChange(event: Event): void {
@@ -292,5 +294,9 @@ export class EditContentBoxComponent implements OnInit {
         }, (): void => {
 
         });
+    }
+
+    closeForm(): void {
+        this.router.navigate(["/royan/boxDetail", this.rootContentBoxId]);
     }
 }

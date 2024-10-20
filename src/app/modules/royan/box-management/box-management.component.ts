@@ -10,7 +10,6 @@ import {PageActionModel} from "../shared/shared-components/crud-page/page-action
 import {BaseTableColumnModel} from "../shared/shared-components/base-table/base-table-column.model";
 import {BaseTableActionModel} from "../shared/shared-components/base-table/base-table-action.model";
 import {Observable} from "rxjs";
-import {AddNewContentBoxComponent} from "./add-new-content-box/add-new-content-box.component";
 import {Router} from "@angular/router";
 import {ConfirmModalComponent} from "../shared/shared-components/confirm-modal/confirm-modal.component";
 
@@ -95,18 +94,7 @@ export class BoxManagementComponent implements OnInit {
     }
 
     addContentBox = (): void => {
-        const modalRef: NgbModalRef = this.modalService.open(AddNewContentBoxComponent, {
-            centered: true,
-            size: 'xl'
-        });
-        modalRef.result.then((isCreate: boolean) => {
-            if (isCreate) {
-                this.toasterService.success('باکس جدید با موفقیت اضافه شد');
-                this.crudPage.crudPageTable.refreshTableData();
-            }
-        }, (): void => {
-
-        });
+        this.router.navigate(["/royan/addNewContentBox"]);
     }
 
     viewContentBoxDetail = (element: any): void => {

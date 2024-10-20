@@ -70,6 +70,9 @@ import {ImageUploadComponent} from "./box-management/edit-content-box/upload.com
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {NumericTextBoxModule} from "@progress/kendo-angular-inputs";
 import { ContentBoxDetailComponent } from './box-management/content-box-detail/content-box-detail.component';
+import { BlogTagsComponent } from './cms/blog-tags/blog-tags.component';
+import { AddNewBlogTagComponent } from './cms/blog-tags/add-new-blog-tag/add-new-blog-tag.component';
+import { EditBlogTagComponent } from './cms/blog-tags/edit-blog-tag/edit-blog-tag.component';
 
 
 @NgModule({
@@ -114,7 +117,10 @@ import { ContentBoxDetailComponent } from './box-management/content-box-detail/c
         ContentBoxLookupComponent,
         DialogComponent,
         ImageUploadComponent,
-        ContentBoxDetailComponent
+        ContentBoxDetailComponent,
+        BlogTagsComponent,
+        AddNewBlogTagComponent,
+        EditBlogTagComponent
     ],
     imports: [
         CommonModule,

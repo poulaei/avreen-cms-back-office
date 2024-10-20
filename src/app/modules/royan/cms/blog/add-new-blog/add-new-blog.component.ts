@@ -1,13 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {FormControlService} from "../../../shared/shared-service/form-control.service";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {BlogPostModel} from "../blog-post.model";
+import {BlogPostModel, BlogPostTagModel} from "../blog-post.model";
 import {BlogPostService} from "../blog-post.service";
 import {FileUploadService} from "../../../shared/shared-components/upload-image/file-upload.service";
 import {BlogCategoryModel} from "../../blog-category/blog-category.model";
 import {BlogCategoryService} from "../../blog-category/blog-category.service";
+import {fullscreenIcon} from "@progress/kendo-svg-icons";
+import {DialogComponent} from "../../../box-management/edit-content-box/dialog.component";
+import {EditorComponent} from "@progress/kendo-angular-editor";
+import {Router} from "@angular/router";
+import {PasteCleanupSettings} from "@progress/kendo-angular-editor/common/paste-cleanup-settings";
+import {FontFamilyItem} from "@progress/kendo-angular-editor/common/font-family-item.interface";
 
 @Component({
     selector: 'app-add-new-blog',
@@ -16,13 +21,7 @@ import {BlogCategoryService} from "../../blog-category/blog-category.service";
 })
 export class AddNewBlogComponent implements OnInit {
 
-    public value = '';
-    public tools = {
-        type: 'group',
-        name: 'text-tools',
-        tools: ['bold', 'italic', 'underline']
-    };
-
+    protected readonly fullscreenIcon = fullscreenIcon;
     addNewBlogPostForm: FormGroup;
     blogPostModel: BlogPostModel = new BlogPostModel();
     selectedFiles?: FileList;
@@ -31,7 +30,10 @@ export class AddNewBlogComponent implements OnInit {
     message: string[] = [];
     previews: string[] = [];
     blogCategoryList: BlogCategoryModel[] = [];
-
+    value: string = '';
+    @ViewChild("upload") public dialog: DialogComponent;
+    @Output() @ViewChild("editor") public editor: EditorComponent;
+    public pasteSettings: PasteCleanupSettings = {};
 
     constructor(public formBuilder: FormBuilder,
                 public blogPostService: BlogPostService,
@@ -39,32 +41,37 @@ export class AddNewBlogComponent implements OnInit {
                 public toasterService: ToastrService,
                 public uploadService: FileUploadService,
                 public formControlService: FormControlService,
-                public modal: NgbActiveModal) {
-
-    }
-
-    selectFiles(event: any): void {
-        this.message = [];
-        this.progressInfos = [];
-        this.selectedFileNames = [];
-        this.selectedFiles = event.target.files;
-        this.previews = [];
-        if (this.selectedFiles && this.selectedFiles[0]) {
-            const numberOfFiles: number = this.selectedFiles.length;
-            for (let i: number = 0; i < numberOfFiles; i++) {
-                const reader: FileReader = new FileReader();
-                reader.onload = (e: any) => {
-                    this.previews.push(e.target.result);
-                };
-                reader.readAsDataURL(this.selectedFiles[i]);
-                this.selectedFileNames.push(this.selectedFiles[i].name);
-            }
-        }
+                public changeDetectorRef: ChangeDetectorRef,
+                public router: Router) {
+        this.pasteSettings = {
+            removeHtmlComments: true,
+            removeInvalidHTML: true,
+            convertMsLists: true,
+            removeMsClasses: true,
+            removeMsStyles: true,
+            removeAttributes: 'all'
+        };
     }
 
     ngOnInit(): void {
-        this.initAddNewBlogPostForm();
         this.getBLogCategoryList();
+        this.initAddNewBlogPostForm();
+    }
+
+    public fontData: FontFamilyItem[] = [
+        {fontName: 'B Nazanin', text: 'B Nazanin'},
+        {fontName: 'B Titr', text: 'B Titr'},
+    ];
+
+    getBLogCategoryList(): void {
+        this.blogCategoryService.getAllCategories().subscribe({
+            next: (response: any) => {
+                if (response.items) {
+                    this.blogCategoryList = response.items;
+                    this.changeDetectorRef.detectChanges();
+                }
+            }
+        });
     }
 
     initAddNewBlogPostForm(): void {
@@ -82,20 +89,29 @@ export class AddNewBlogComponent implements OnInit {
         if (this.selectedFiles && this.selectedFiles[0]) {
             this.uploadFiles();
         } else {
-            this.blogPostService.addNewBlogPost(this.getFormValue()).subscribe({
-                next: (response: any): void => {
-                    if (response.id) {
-                        this.modal.close(true);
-                    } else {
-                        this.toasterService.error(response.error.message);
-                    }
-                },
-                error: (exception): void => {
-                    if (exception.error != null) {
-                        this.toasterService.error(exception.error.message);
-                    }
-                }
-            });
+            this.addNewBlogApi();
+        }
+    }
+
+    public openImageBrowser(): void {
+        this.dialog.open();
+    }
+
+    public toggleFullScreen(): void {
+        let docEl = //document.documentElement;
+            document.querySelector("kendo-editor");
+        let fullscreenElement =
+            document.fullscreenElement;
+        // @ts-ignore
+        let requestFullScreen = docEl.requestFullscreen;
+        let exitFullScreen = document.exitFullscreen;
+        if (!requestFullScreen) {
+            return;
+        }
+        if (!fullscreenElement) {
+            requestFullScreen.call(docEl);
+        } else {
+            exitFullScreen.call(document);
         }
     }
 
@@ -108,17 +124,22 @@ export class AddNewBlogComponent implements OnInit {
         }
     }
 
-    upload(idx: number, file: File): void {
-        this.progressInfos[idx] = {value: 0, fileName: file.name};
-        if (file) {
-            this.uploadService.upload(file, 'BlogPost').subscribe({
-                next: (response: any): void => {
-                    if (response && response.body && response.body.id) {
-                        this.blogPostModel.coverImageMediaId = response.body.id;
-                        this.blogPostService.addNewBlogPost(this.getFormValue()).subscribe({
+    private addNewBlogApi(): void {
+        this.blogPostService.addNewBlogPost(this.getFormValue()).subscribe({
+            next: (response: any): void => {
+                if (response.id) {
+                    let insertedTags = this.addNewBlogPostForm.controls['tags'].value;
+                    let tags: string[] = insertedTags.split(',');
+                    if (tags && tags.length > 0 && tags[0]) {
+                        let blogPostTagModel: BlogPostTagModel = new BlogPostTagModel();
+                        blogPostTagModel.entityType = 'BlogPost';
+                        blogPostTagModel.entityId = response.id;
+                        blogPostTagModel.tags = tags;
+                        this.blogPostService.submitTags(blogPostTagModel).subscribe({
                             next: (response: any): void => {
-                                if (response.id) {
-                                    this.modal.close(true);
+                                if (!response.error) {
+                                    this.toasterService.success('پست جدید با موفقیت افزوده شد');
+                                    this.closeForm();
                                 } else {
                                     this.toasterService.error(response.error.message);
                                 }
@@ -129,6 +150,30 @@ export class AddNewBlogComponent implements OnInit {
                                 }
                             }
                         });
+                    } else {
+                        this.toasterService.success('پست جدید با موفقیت افزوده شد');
+                        this.closeForm();
+                    }
+                } else {
+                    this.toasterService.error(response.error.message);
+                }
+            },
+            error: (exception): void => {
+                if (exception.error != null) {
+                    this.toasterService.error(exception.error.message);
+                }
+            }
+        });
+    }
+
+    upload(idx: number, file: File): void {
+        this.progressInfos[idx] = {value: 0, fileName: file.name};
+        if (file) {
+            this.uploadService.upload(file, 'BlogPost').subscribe({
+                next: (response: any): void => {
+                    if (response && response.body && response.body.id) {
+                        this.blogPostModel.coverImageMediaId = response.body.id;
+                        this.addNewBlogApi();
                     } else if (response && response.body && !response.body.id) {
                         this.toasterService.error('بارگذاری مدیا ناموفق');
                     }
@@ -153,21 +198,35 @@ export class AddNewBlogComponent implements OnInit {
         return this.blogPostModel;
     }
 
-    getBLogCategoryList(): void {
-        this.blogCategoryService.getAllCategories().subscribe({
-            next: (response: any) => {
-                if (response.items) {
-                    this.blogCategoryList = response.items;
-                }
-            }
-        });
-    }
-
     deleteMedia(): void {
         this.message = [];
         this.progressInfos = [];
         this.selectedFileNames = [];
         this.selectedFiles = undefined;
         this.previews = [];
+    }
+
+    selectFiles(event: any): void {
+        this.message = [];
+        this.progressInfos = [];
+        this.selectedFileNames = [];
+        this.selectedFiles = event.target.files;
+        this.previews = [];
+        if (this.selectedFiles && this.selectedFiles[0]) {
+            const numberOfFiles: number = this.selectedFiles.length;
+            for (let i: number = 0; i < numberOfFiles; i++) {
+                const reader: FileReader = new FileReader();
+                reader.onload = (e: any) => {
+                    this.previews.push(e.target.result);
+                    this.changeDetectorRef.detectChanges();
+                };
+                reader.readAsDataURL(this.selectedFiles[i]);
+                this.selectedFileNames.push(this.selectedFiles[i].name);
+            }
+        }
+    }
+
+    closeForm(): void {
+        this.router.navigate(["/royan/blog"]);
     }
 }

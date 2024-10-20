@@ -29,6 +29,7 @@ import {ToastrModule} from "ngx-toastr";
 import {MatMenuModule} from "@angular/material/menu";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {EditorModule} from '@progress/kendo-angular-editor';
+import {RTL} from '@progress/kendo-angular-l10n';
 
 
 const dutchRangeLabel = (page: number, pageSize: number, length: number) => {
@@ -99,6 +100,7 @@ function appInitializer(authService: AuthService) {
             useClass: TokenInterceptor,
             multi: true
         },
+        {provide: RTL, useValue: true},
         {provide: MatPaginatorIntl, useValue: CustomPaginator()},
         {provide: DateAdapter, useClass: MaterialPersianDateAdapter, deps: [MAT_DATE_LOCALE]},
         {provide: MAT_DATE_FORMATS, useValue: PERSIAN_DATE_FORMATS},

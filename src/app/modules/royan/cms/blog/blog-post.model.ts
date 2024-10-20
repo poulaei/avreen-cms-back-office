@@ -9,5 +9,12 @@ export class BlogPostModel {
     coverImageMediaId: string;
     creationTime: string;
     lastModificationTime: string;
+    concurrencyStamp: string;
     status: number;
+}
+
+export class BlogPostTagModel {
+    tags: string[];
+    entityType: string;
+    entityId: string;
 }
