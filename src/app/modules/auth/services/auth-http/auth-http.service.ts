@@ -28,9 +28,7 @@ export class AuthHTTPService {
             password: password,
             rememberMe: true,
         };
-        const defaultAuth2 = {
-            headers: {"X-Requested-With": "XMLHttpRequest", "withCredentials": "true"}
-        };
+        const defaultAuth2 = {};
         return this.http.post<loginModel>(environment.loginUrl, defaultAuth, defaultAuth2)
             .pipe(map((loginModel: loginModel) => {
                         const auth = new AuthModel();
@@ -58,15 +56,11 @@ export class AuthHTTPService {
     }
 
     getUserByToken(): Observable<UserModel> {
-        // return this.http.get<UserModel>(environment.getUserByToken, {
-        //     headers: httpHeaders,
-        // });
         this.http.get(environment.SetCsrfCookie).subscribe(_ => {
 
         });
-        const defaultAuth = {
-            headers: {"X-Requested-With": "XMLHttpRequest", "withCredentials": "true"}
-        };
+        const defaultAuth = {};
         return this.http.get<UserModel>(environment.getUserByToken, defaultAuth);
+        // return new Observable<UserModel>();
     }
 }

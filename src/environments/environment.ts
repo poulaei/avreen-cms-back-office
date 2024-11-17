@@ -1,5 +1,5 @@
 export const apiUrl = {
-    base: '',
+    base: 'http://api.avreenco.com',
 }
 
 export const environment = {

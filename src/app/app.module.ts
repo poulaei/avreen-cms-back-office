@@ -17,7 +17,6 @@ import {MatPaginatorIntl} from "@angular/material/paginator";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {TokenInterceptor} from "./modules/royan/shared/shared-service/token-Interceptor";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {
     MaterialPersianDateAdapter,
@@ -31,6 +30,7 @@ import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {EditorModule} from '@progress/kendo-angular-editor';
 import {RTL} from '@progress/kendo-angular-l10n';
 import {AddCsrfHeaderInterceptorService} from "./modules/royan/shared/interceptor/add-crf";
+import {WithCredentialsInterceptorService} from "./with-credentials-interceptor.service";
 
 
 const dutchRangeLabel = (page: number, pageSize: number, length: number) => {
@@ -96,18 +96,14 @@ function appInitializer(authService: AuthService) {
             multi: true,
             deps: [AuthService],
         },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true
-        },
         {provide: RTL, useValue: true},
         {provide: MatPaginatorIntl, useValue: CustomPaginator()},
         {provide: DateAdapter, useClass: MaterialPersianDateAdapter, deps: [MAT_DATE_LOCALE]},
         {provide: MAT_DATE_FORMATS, useValue: PERSIAN_DATE_FORMATS},
         {provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true},
         {provide: LocationStrategy, useClass: HashLocationStrategy},
-        {provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true}
+        {provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: WithCredentialsInterceptorService, multi: true},
     ],
     bootstrap: [AppComponent],
 })
