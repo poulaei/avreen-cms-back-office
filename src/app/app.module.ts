@@ -30,6 +30,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {EditorModule} from '@progress/kendo-angular-editor';
 import {RTL} from '@progress/kendo-angular-l10n';
+import {AddCsrfHeaderInterceptorService} from "./modules/royan/shared/interceptor/add-crf";
 
 
 const dutchRangeLabel = (page: number, pageSize: number, length: number) => {
@@ -105,7 +106,8 @@ function appInitializer(authService: AuthService) {
         {provide: DateAdapter, useClass: MaterialPersianDateAdapter, deps: [MAT_DATE_LOCALE]},
         {provide: MAT_DATE_FORMATS, useValue: PERSIAN_DATE_FORMATS},
         {provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true},
-        {provide: LocationStrategy, useClass: HashLocationStrategy}
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
+        {provide: HTTP_INTERCEPTORS, useClass: AddCsrfHeaderInterceptorService, multi: true}
     ],
     bootstrap: [AppComponent],
 })

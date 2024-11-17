@@ -1,18 +1,18 @@
 {
   "/api": {
-    "target": "http://37.152.179.31:8080",
+    "target": "http://api.avreenco.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/shared": {
-    "target": "http://37.152.179.31:8080",
+    "target": "http://api.avreenco.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/Abp": {
-    "target": "http://37.152.179.31:8080",
+    "target": "http://api.avreenco.com",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
