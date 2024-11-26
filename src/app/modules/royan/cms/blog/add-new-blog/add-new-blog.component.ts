@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, OnInit, Output, ViewChild} from '@angular/
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {FormControlService} from "../../../shared/shared-service/form-control.service";
-import {BlogPostModel, BlogPostTagModel} from "../blog-post.model";
+import {BlogPostModel, BlogPostTagModel, ExtraProperties} from "../blog-post.model";
 import {BlogPostService} from "../blog-post.service";
 import {FileUploadService} from "../../../shared/shared-components/upload-image/file-upload.service";
 import {BlogCategoryModel} from "../../blog-category/blog-category.model";
@@ -13,6 +13,8 @@ import {EditorComponent} from "@progress/kendo-angular-editor";
 import {Router} from "@angular/router";
 import {PasteCleanupSettings} from "@progress/kendo-angular-editor/common/paste-cleanup-settings";
 import {FontFamilyItem} from "@progress/kendo-angular-editor/common/font-family-item.interface";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {ContentBoxLookupComponent} from "../../../box-management/content-box-lookup/content-box-lookup.component";
 
 @Component({
     selector: 'app-add-new-blog',
@@ -40,6 +42,7 @@ export class AddNewBlogComponent implements OnInit {
                 public blogCategoryService: BlogCategoryService,
                 public toasterService: ToastrService,
                 public uploadService: FileUploadService,
+                public modalService: NgbModal,
                 public formControlService: FormControlService,
                 public changeDetectorRef: ChangeDetectorRef,
                 public router: Router) {
@@ -61,6 +64,17 @@ export class AddNewBlogComponent implements OnInit {
     public fontData: FontFamilyItem[] = [
         {fontName: 'B Nazanin', text: 'B Nazanin'},
         {fontName: 'B Titr', text: 'B Titr'},
+        {fontName: 'Yekan Bakh FaNum Hairline', text: 'Yekan Bakh FaNum Hairline'},
+        {fontName: 'Yekan Bakh FaNum Thin', text: 'Yekan Bakh FaNum Thin'},
+        {fontName: 'Yekan Bakh FaNum Light', text: 'Yekan Bakh FaNum Light'},
+        {fontName: 'Yekan Bakh FaNum Medium', text: 'Yekan Bakh FaNum Medium'},
+        {fontName: 'Yekan Bakh FaNum Fat', text: 'Yekan Bakh FaNum Fat'},
+        {fontName: 'Yekan Bakh FaNum Heavy', text: 'Yekan Bakh FaNum Heavy'},
+        {fontName: 'Yekan Bakh Thin', text: 'Yekan Bakh En Thin'},
+        {fontName: 'Yekan Bakh Light', text: 'Yekan Bakh En Light'},
+        {fontName: 'Yekan Bakh Medium', text: 'Yekan Bakh En Medium'},
+        {fontName: 'Yekan Bakh Fat', text: 'Yekan Bakh En Fat'},
+        {fontName: 'Yekan Bakh Heavy', text: 'Yekan Bakh En Heavy'}
     ];
 
     getBLogCategoryList(): void {
@@ -82,6 +96,7 @@ export class AddNewBlogComponent implements OnInit {
             description: [''],
             content: [''],
             tags: [''],
+            boxId: [''],
         });
     }
 
@@ -193,8 +208,13 @@ export class AddNewBlogComponent implements OnInit {
         this.blogPostModel.title = this.addNewBlogPostForm.controls['title'].value;
         this.blogPostModel.slug = this.addNewBlogPostForm.controls['slug'].value;
         this.blogPostModel.shortDescription = this.addNewBlogPostForm.controls['description'].value;
-        // this.blogPostModel.content = this.addNewBlogPostForm.controls['content'].value;
         this.blogPostModel.content = this.value;
+        let boxId = this.addNewBlogPostForm.controls['boxId'].value;
+        let extraProperties: ExtraProperties = new ExtraProperties();
+        if (boxId) {
+            extraProperties.ContentBoxId = boxId;
+        }
+        this.blogPostModel.extraProperties = extraProperties;
         return this.blogPostModel;
     }
 
@@ -228,5 +248,19 @@ export class AddNewBlogComponent implements OnInit {
 
     closeForm(): void {
         this.router.navigate(["/royan/blog"]);
+    }
+
+    searchBox(): void {
+        const modalRef: NgbModalRef = this.modalService.open(ContentBoxLookupComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.result.then((pageInfo: any): void => {
+            if (pageInfo) {
+                this.addNewBlogPostForm.controls['boxId'].setValue(pageInfo.id);
+            }
+        }, (): void => {
+
+        });
     }
 }

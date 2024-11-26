@@ -15,7 +15,7 @@
                                     <input matInput placeholder="تصویر باکس" class="font"
                                            style="font-size: 1rem !important;"/>
                                 </mat-toolbar>
-                                <input type="file" id="fileInput" name="fileInput" accept="image/*" multiple
+                                <input type="file" id="fileInput" name="fileInput" accept="/*" multiple
                                        (change)="selectFiles($event)"/>
                             </mat-form-field>
                         </div>
@@ -65,6 +65,15 @@
                         <option value="Page">
                             {{'Page'}}
                         </option>
+                        <option value="">
+                            {{'Web'}}
+                        </option>
+                        <option value="Blog">
+                            {{'Blog'}}
+                        </option>
+                        <option value="InstantView">
+                            {{'InstantView'}}
+                        </option>
                     </select>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6">
@@ -93,20 +102,31 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6"
-                     *ngIf="selectedActionType&&selectedActionType=='Page'">
+                     *ngIf="(selectedActionType&&selectedActionType=='Page')||(selectedActionType&&selectedActionType=='InstantView')">
                     <div class="row">
                         <div class="col-lg-10 col-md-10 col-sm-10 d-xs-block col-xs-10">
                             <label class="form-label">آدرس عملیات</label>
                             <input type="text" class="form-control form-control-lg form-control-solid"
                                    autocomplete="off"
                                    formControlName="actionUrl"
-                                   readonly
                                    placeholder="آدرس عملیات"/>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-2 d-xs-block col-xs-2 p-0">
                             <a (click)="searchPage()" class="btn btn-icon btn-active-color-info btn-sm mt-9">
                                 <app-keenicon name="filter" class="fs-3x"></app-keenicon>
                             </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6"
+                     *ngIf="selectedActionType==''">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 d-xs-block col-xs-10">
+                            <label class="form-label">آدرس عملیات</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                   autocomplete="off"
+                                   formControlName="actionUrl"
+                                   placeholder="آدرس عملیات"/>
                         </div>
                     </div>
                 </div>
@@ -119,7 +139,8 @@
                     </textarea>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
-                    <kendo-editor #editor [(value)]="value" style="height: 700px;">
+                    <kendo-editor #editor [(value)]="value" style="height: 700px;"
+                                  [pasteCleanupSettings]="pasteSettings">
                         <kendo-toolbar>
                             <kendo-toolbar-buttongroup>
                                 <kendo-toolbar-button kendoEditorBoldButton></kendo-toolbar-button>
@@ -139,13 +160,12 @@
                             </kendo-toolbar-buttongroup>
                             <kendo-toolbar-dropdownlist kendoEditorFormat></kendo-toolbar-dropdownlist>
                             <kendo-toolbar-dropdownlist kendoEditorFontSize></kendo-toolbar-dropdownlist>
-                            <kendo-toolbar-dropdownlist kendoEditorFontFamily></kendo-toolbar-dropdownlist>
+                            <kendo-toolbar-dropdownlist kendoEditorFontFamily
+                                                        [data]="fontData"></kendo-toolbar-dropdownlist>
                             <kendo-toolbar-colorpicker kendoEditorForeColor></kendo-toolbar-colorpicker>
-                            <kendo-toolbar-colorpicker kendoEditorBackColor
-                                                       view="gradient"></kendo-toolbar-colorpicker>
+                            <kendo-toolbar-colorpicker kendoEditorBackColor view="gradient"></kendo-toolbar-colorpicker>
                             <kendo-toolbar-buttongroup>
-                                <kendo-toolbar-button
-                                        kendoEditorInsertUnorderedListButton></kendo-toolbar-button>
+                                <kendo-toolbar-button kendoEditorInsertUnorderedListButton></kendo-toolbar-button>
                                 <kendo-toolbar-button kendoEditorInsertOrderedListButton></kendo-toolbar-button>
                                 <kendo-toolbar-button kendoEditorIndentButton></kendo-toolbar-button>
                                 <kendo-toolbar-button kendoEditorOutdentButton></kendo-toolbar-button>
@@ -162,9 +182,7 @@
                             </kendo-toolbar-buttongroup>
                             <kendo-toolbar-button kendoEditorInsertFileButton></kendo-toolbar-button>
                             <kendo-toolbar-button kendoEditorInsertImageButton></kendo-toolbar-button>
-                            <kendo-toolbar-button
-                                    text="Upload Image"
-                                    (click)="openImageBrowser()"
+                            <kendo-toolbar-button text="Upload Image" (click)="openImageBrowser()"
                             ></kendo-toolbar-button>
                             <kendo-toolbar-button kendoEditorViewSourceButton></kendo-toolbar-button>
                             <kendo-toolbar-button kendoEditorCleanFormattingButton></kendo-toolbar-button>
@@ -185,10 +203,8 @@
                                 <kendo-toolbar-button kendoEditorSplitCellButton></kendo-toolbar-button>
                             </kendo-toolbar-buttongroup>
                             <kendo-toolbar-button kendoEditorPrintButton></kendo-toolbar-button>
-                            <kendo-toolbar-button
-                                    text="Full Screen"
-                                    [svgIcon]="fullscreenIcon"
-                                    (click)="toggleFullScreen()"
+                            <kendo-toolbar-button text="Full Screen" [svgIcon]="fullscreenIcon"
+                                                  (click)="toggleFullScreen()"
                             ></kendo-toolbar-button>
                         </kendo-toolbar>
                     </kendo-editor>

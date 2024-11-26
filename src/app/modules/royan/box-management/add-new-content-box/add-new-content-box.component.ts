@@ -12,6 +12,8 @@ import {fullscreenIcon} from "@progress/kendo-svg-icons";
 import {DialogComponent} from "../edit-content-box/dialog.component";
 import {EditorComponent} from "@progress/kendo-angular-editor";
 import {Router} from "@angular/router";
+import {PasteCleanupSettings} from "@progress/kendo-angular-editor/common/paste-cleanup-settings";
+import {FontFamilyItem} from "@progress/kendo-angular-editor/common/font-family-item.interface";
 
 @Component({
     selector: 'app-add-new-content-box',
@@ -33,6 +35,7 @@ export class AddNewContentBoxComponent implements OnInit {
     value: string = '';
     @ViewChild("upload") public dialog: DialogComponent;
     @Output() @ViewChild("editor") public editor: EditorComponent;
+    public pasteSettings: PasteCleanupSettings = {};
 
 
     constructor(public formBuilder: FormBuilder,
@@ -43,8 +46,31 @@ export class AddNewContentBoxComponent implements OnInit {
                 public modalService: NgbModal,
                 public changeDetectorRef: ChangeDetectorRef,
                 public router: Router) {
-
+        this.pasteSettings = {
+            removeHtmlComments: true,
+            removeInvalidHTML: true,
+            convertMsLists: true,
+            removeMsClasses: true,
+            removeMsStyles: true,
+            removeAttributes: 'all'
+        };
     }
+
+    public fontData: FontFamilyItem[] = [
+        {fontName: 'B Nazanin', text: 'B Nazanin'},
+        {fontName: 'B Titr', text: 'B Titr'},
+        {fontName: 'Yekan Bakh FaNum Hairline', text: 'Yekan Bakh FaNum Hairline'},
+        {fontName: 'Yekan Bakh FaNum Thin', text: 'Yekan Bakh FaNum Thin'},
+        {fontName: 'Yekan Bakh FaNum Light', text: 'Yekan Bakh FaNum Light'},
+        {fontName: 'Yekan Bakh FaNum Medium', text: 'Yekan Bakh FaNum Medium'},
+        {fontName: 'Yekan Bakh FaNum Fat', text: 'Yekan Bakh FaNum Fat'},
+        {fontName: 'Yekan Bakh FaNum Heavy', text: 'Yekan Bakh FaNum Heavy'},
+        {fontName: 'Yekan Bakh Thin', text: 'Yekan Bakh En Thin'},
+        {fontName: 'Yekan Bakh Light', text: 'Yekan Bakh En Light'},
+        {fontName: 'Yekan Bakh Medium', text: 'Yekan Bakh En Medium'},
+        {fontName: 'Yekan Bakh Fat', text: 'Yekan Bakh En Fat'},
+        {fontName: 'Yekan Bakh Heavy', text: 'Yekan Bakh En Heavy'}
+    ];
 
     ngOnInit(): void {
         this.initAddNewContentBoxForm();
@@ -156,7 +182,8 @@ export class AddNewContentBoxComponent implements OnInit {
         this.contentBoxModel.title = this.addNewContentBoxForm.controls['title'].value;
         this.contentBoxModel.actionType = this.addNewContentBoxForm.controls['actionType'].value;
         this.contentBoxModel.action = this.addNewContentBoxForm.controls['action'].value;
-        this.contentBoxModel.actionUrl = this.actionUri;
+        // this.contentBoxModel.actionUrl = this.actionUri;
+        this.contentBoxModel.actionUrl = this.addNewContentBoxForm.controls['actionUrl'].value;
         this.contentBoxModel.summary = this.addNewContentBoxForm.controls['summary'].value;
         this.contentBoxModel.description = this.addNewContentBoxForm.controls['description'].value;
         this.contentBoxModel.boxType = this.addNewContentBoxForm.controls['boxType'].value;

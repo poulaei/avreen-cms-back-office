@@ -1,18 +1,18 @@
 {
   "/api": {
-    "target": "http://api.avreenco.com",
+    "target": "http://172.16.10.71:4000",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/shared": {
-    "target": "http://api.avreenco.com",
+    "target": "http://172.16.10.71:4000",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/Abp": {
-    "target": "http://api.avreenco.com",
+    "target": "http://172.16.10.71:4000",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

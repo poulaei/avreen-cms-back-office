@@ -64,6 +64,21 @@
                            autocomplete="off"
                            formControlName="slug" placeholder="کلید نمایش در آدرس"/>
                 </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 d-xs-block col-xs-3 pb-6">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 d-xs-block col-xs-10">
+                            <label class="form-label">باکس مطالب پیشنهادی</label>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                   autocomplete="off"
+                                   formControlName="boxId" placeholder="باکس مطالب پیشنهادی"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 d-xs-block col-xs-2 p-0">
+                            <a (click)="searchBox()" class="btn btn-icon btn-active-color-info btn-sm mt-9">
+                                <app-keenicon name="filter" class="fs-3x"></app-keenicon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 d-xs-block col-xs-12 pb-6">
                     <kendo-editor #editor [(value)]="value" style="height: 700px;" [pasteCleanupSettings]="pasteSettings">
                         <kendo-toolbar>

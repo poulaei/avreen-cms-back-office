@@ -15,7 +15,6 @@ const API_USERS_URL = `${environment.apiUrl}/auth`;
 export class AuthHTTPService {
 
     constructor(private http: HttpClient) {
-
     }
 
     login(email: string, password: string): Observable<any> {
@@ -28,10 +27,7 @@ export class AuthHTTPService {
             password: password,
             rememberMe: true,
         };
-        const defaultAuth2 = {
-            headers: {"X-Requested-With": "XMLHttpRequest", "withCredentials": "true"}
-        };
-        return this.http.post<loginModel>(environment.loginUrl, defaultAuth, defaultAuth2)
+        return this.http.post<loginModel>(environment.loginUrl, defaultAuth)
             .pipe(map((loginModel: loginModel) => {
                         const auth = new AuthModel();
                         auth.result = loginModel.result;
@@ -41,7 +37,7 @@ export class AuthHTTPService {
                     (err: Error) => {
                         return notFoundError;
                     }
-                ),
+                )
             );
     }
 
@@ -61,12 +57,7 @@ export class AuthHTTPService {
         // return this.http.get<UserModel>(environment.getUserByToken, {
         //     headers: httpHeaders,
         // });
-        this.http.get(environment.SetCsrfCookie).subscribe(_ => {
-
-        });
-        const defaultAuth = {
-            headers: {"X-Requested-With": "XMLHttpRequest", "withCredentials": "true"}
-        };
+        const defaultAuth = {};
         return this.http.get<UserModel>(environment.getUserByToken, defaultAuth);
     }
 }

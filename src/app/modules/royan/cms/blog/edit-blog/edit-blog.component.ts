@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {BlogPostModel, BlogPostTagModel} from "../blog-post.model";
+import {BlogPostModel, BlogPostTagModel, ExtraProperties} from "../blog-post.model";
 import {BlogCategoryModel} from "../../blog-category/blog-category.model";
 import {DialogComponent} from "../../../box-management/edit-content-box/dialog.component";
 import {EditorComponent} from "@progress/kendo-angular-editor";
@@ -13,6 +13,9 @@ import {fullscreenIcon} from "@progress/kendo-svg-icons";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FontFamilyItem} from "@progress/kendo-angular-editor/common/font-family-item.interface";
 import {PasteCleanupSettings} from "@progress/kendo-angular-editor/common/paste-cleanup-settings";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {ContentBoxLookupComponent} from "../../../box-management/content-box-lookup/content-box-lookup.component";
+
 
 @Component({
     selector: 'app-edit-blog',
@@ -43,6 +46,7 @@ export class EditBlogComponent implements OnInit {
                 public uploadService: FileUploadService,
                 public formControlService: FormControlService,
                 public changeDetectorRef: ChangeDetectorRef,
+                public modalService: NgbModal,
                 public router: Router,
                 public route: ActivatedRoute) {
         this.pasteSettings = {
@@ -58,6 +62,17 @@ export class EditBlogComponent implements OnInit {
     public fontData: FontFamilyItem[] = [
         {fontName: 'B Nazanin', text: 'B Nazanin'},
         {fontName: 'B Titr', text: 'B Titr'},
+        {fontName: 'Yekan Bakh FaNum Hairline', text: 'Yekan Bakh FaNum Hairline'},
+        {fontName: 'Yekan Bakh FaNum Thin', text: 'Yekan Bakh FaNum Thin'},
+        {fontName: 'Yekan Bakh FaNum Light', text: 'Yekan Bakh FaNum Light'},
+        {fontName: 'Yekan Bakh FaNum Medium', text: 'Yekan Bakh FaNum Medium'},
+        {fontName: 'Yekan Bakh FaNum Fat', text: 'Yekan Bakh FaNum Fat'},
+        {fontName: 'Yekan Bakh FaNum Heavy', text: 'Yekan Bakh FaNum Heavy'},
+        {fontName: 'Yekan Bakh Thin', text: 'Yekan Bakh En Thin'},
+        {fontName: 'Yekan Bakh Light', text: 'Yekan Bakh En Light'},
+        {fontName: 'Yekan Bakh Medium', text: 'Yekan Bakh En Medium'},
+        {fontName: 'Yekan Bakh Fat', text: 'Yekan Bakh En Fat'},
+        {fontName: 'Yekan Bakh Heavy', text: 'Yekan Bakh En Heavy'}
     ];
 
     ngOnInit(): void {
@@ -77,6 +92,7 @@ export class EditBlogComponent implements OnInit {
             description: [''],
             content: [''],
             tags: [''],
+            boxId: [''],
         });
     }
 
@@ -122,6 +138,11 @@ export class EditBlogComponent implements OnInit {
                     }
                 }
             });
+        }
+        if (blogPostModel.extraProperties) {
+            if (blogPostModel.extraProperties.ContentBoxId) {
+                this.editBlogPostForm.controls['boxId'].setValue(blogPostModel.extraProperties.ContentBoxId);
+            }
         }
         this.blogPostModel.concurrencyStamp = blogPostModel.concurrencyStamp;
         this.blogPostModel.content = this.value;
@@ -282,6 +303,12 @@ export class EditBlogComponent implements OnInit {
         this.blogPostModel.slug = this.editBlogPostForm.controls['slug'].value;
         this.blogPostModel.shortDescription = this.editBlogPostForm.controls['description'].value;
         this.blogPostModel.content = this.value;
+        let boxId = this.editBlogPostForm.controls['boxId'].value;
+        let extraProperties: ExtraProperties = new ExtraProperties();
+        if (boxId) {
+            extraProperties.ContentBoxId = boxId;
+        }
+        this.blogPostModel.extraProperties = extraProperties;
         return this.blogPostModel;
     }
 
@@ -305,5 +332,19 @@ export class EditBlogComponent implements OnInit {
 
     closeForm(): void {
         this.router.navigate(["/royan/blog"]);
+    }
+
+    searchBox(): void {
+        const modalRef: NgbModalRef = this.modalService.open(ContentBoxLookupComponent, {
+            centered: true,
+            size: 'xl'
+        });
+        modalRef.result.then((pageInfo: any): void => {
+            if (pageInfo) {
+                this.editBlogPostForm.controls['boxId'].setValue(pageInfo.id);
+            }
+        }, (): void => {
+
+        });
     }
 }

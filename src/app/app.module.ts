@@ -17,7 +17,6 @@ import {MatPaginatorIntl} from "@angular/material/paginator";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {TokenInterceptor} from "./modules/royan/shared/shared-service/token-Interceptor";
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
 import {
     MaterialPersianDateAdapter,
@@ -90,17 +89,7 @@ function appInitializer(authService: AuthService) {
     ],
     providers: [
         NgbActiveModal,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: appInitializer,
-            multi: true,
-            deps: [AuthService],
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true
-        },
+        {provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService]},
         {provide: RTL, useValue: true},
         {provide: MatPaginatorIntl, useValue: CustomPaginator()},
         {provide: DateAdapter, useClass: MaterialPersianDateAdapter, deps: [MAT_DATE_LOCALE]},

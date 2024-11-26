@@ -12,6 +12,8 @@ import {DialogComponent} from "./dialog.component";
 import {EditorComponent} from "@progress/kendo-angular-editor";
 import {fullscreenIcon} from "@progress/kendo-svg-icons";
 import {ActivatedRoute, Router} from "@angular/router";
+import {PasteCleanupSettings} from "@progress/kendo-angular-editor/common/paste-cleanup-settings";
+import {FontFamilyItem} from "@progress/kendo-angular-editor/common/font-family-item.interface";
 
 
 @Component({
@@ -36,6 +38,7 @@ export class EditContentBoxComponent implements OnInit {
     value: string = '';
     @ViewChild("upload") public dialog: DialogComponent;
     @Output() @ViewChild("editor") public editor: EditorComponent;
+    public pasteSettings: PasteCleanupSettings = {};
 
 
     constructor(public formBuilder: FormBuilder,
@@ -47,8 +50,31 @@ export class EditContentBoxComponent implements OnInit {
                 public changeDetectorRef: ChangeDetectorRef,
                 public route: ActivatedRoute,
                 public router: Router) {
-
+        this.pasteSettings = {
+            removeHtmlComments: true,
+            removeInvalidHTML: true,
+            convertMsLists: true,
+            removeMsClasses: true,
+            removeMsStyles: true,
+            removeAttributes: 'all'
+        };
     }
+
+    public fontData: FontFamilyItem[] = [
+        {fontName: 'B Nazanin', text: 'B Nazanin'},
+        {fontName: 'B Titr', text: 'B Titr'},
+        {fontName: 'Yekan Bakh FaNum Hairline', text: 'Yekan Bakh FaNum Hairline'},
+        {fontName: 'Yekan Bakh FaNum Thin', text: 'Yekan Bakh FaNum Thin'},
+        {fontName: 'Yekan Bakh FaNum Light', text: 'Yekan Bakh FaNum Light'},
+        {fontName: 'Yekan Bakh FaNum Medium', text: 'Yekan Bakh FaNum Medium'},
+        {fontName: 'Yekan Bakh FaNum Fat', text: 'Yekan Bakh FaNum Fat'},
+        {fontName: 'Yekan Bakh FaNum Heavy', text: 'Yekan Bakh FaNum Heavy'},
+        {fontName: 'Yekan Bakh Thin', text: 'Yekan Bakh En Thin'},
+        {fontName: 'Yekan Bakh Light', text: 'Yekan Bakh En Light'},
+        {fontName: 'Yekan Bakh Medium', text: 'Yekan Bakh En Medium'},
+        {fontName: 'Yekan Bakh Fat', text: 'Yekan Bakh En Fat'},
+        {fontName: 'Yekan Bakh Heavy', text: 'Yekan Bakh En Heavy'}
+    ];
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {
@@ -204,7 +230,8 @@ export class EditContentBoxComponent implements OnInit {
         this.contentBoxModel.title = this.editContentBoxForm.controls['title'].value;
         this.contentBoxModel.actionType = this.editContentBoxForm.controls['actionType'].value;
         this.contentBoxModel.action = this.editContentBoxForm.controls['action'].value;
-        this.contentBoxModel.actionUrl = this.actionUri;
+        // this.contentBoxModel.actionUrl = this.actionUri;
+        this.contentBoxModel.actionUrl = this.editContentBoxForm.controls['actionUrl'].value;
         this.contentBoxModel.summary = this.editContentBoxForm.controls['summary'].value;
         this.contentBoxModel.description = this.editContentBoxForm.controls['description'].value;
         this.contentBoxModel.boxType = this.editContentBoxForm.controls['boxType'].value;

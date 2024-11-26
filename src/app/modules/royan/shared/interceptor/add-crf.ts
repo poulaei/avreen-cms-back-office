@@ -7,7 +7,6 @@ export class AddCsrfHeaderInterceptorService implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         var requestToken = this.getCookieValue("XSRF-TOKEN");
-        console.log('XSRF-TOKEN => ', requestToken);
         return next.handle(req.clone({
             headers: req.headers.set("RequestVerificationToken", requestToken)
         }));
@@ -15,7 +14,6 @@ export class AddCsrfHeaderInterceptorService implements HttpInterceptor {
 
     private getCookieValue(cookieName: string) {
         const allCookies = decodeURIComponent(document.cookie).split("; ");
-        console.log('allCookies => ', allCookies);
         for (let i = 0; i < allCookies.length; i++) {
             const cookie = allCookies[i];
             if (cookie.startsWith(cookieName + "=")) {

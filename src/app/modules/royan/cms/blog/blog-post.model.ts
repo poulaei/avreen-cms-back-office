@@ -11,6 +11,11 @@ export class BlogPostModel {
     lastModificationTime: string;
     concurrencyStamp: string;
     status: number;
+    extraProperties: ExtraProperties = new ExtraProperties();
+}
+
+export class ExtraProperties {
+    ContentBoxId: string;
 }
 
 export class BlogPostTagModel {

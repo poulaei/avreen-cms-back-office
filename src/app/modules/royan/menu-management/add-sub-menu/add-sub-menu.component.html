@@ -34,10 +34,16 @@
                         <option value="blogView">
                             {{'blogView'}}
                         </option>
+                        <option value="aboutUsView">
+                            {{'aboutUsView'}}
+                        </option>
+                        <option value="contactUsView">
+                            {{'contactUsView'}}
+                        </option>
                     </select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 d-xs-block col-xs-6 pb-6"
-                     *ngIf="(selectedMenuType)&&(selectedMenuType=='pageView'||selectedMenuType=='instantView')">
+                     *ngIf="(selectedMenuType)&&(selectedMenuType=='pageView'||selectedMenuType=='instantView'||selectedMenuType=='aboutUsView'||selectedMenuType=='contactUsView')">
                     <div class="row">
                         <div class="col-lg-10 col-md-10 col-sm-10 d-xs-block col-xs-10">
                             <label class="form-label">باکس</label>
