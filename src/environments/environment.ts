@@ -53,9 +53,6 @@ export const environment = {
     getAllPages: '/api/cms-kit-admin/pages',
     addNewPage: '/api/cms-kit-admin/blogs',
     deletePage: '/api/cms-kit-admin/blogs/',
-    // addNewBox: '/api/app/box-admin',
-    // getBoxInfo: '/api/app/box-admin/',
-    // editBox: '/api/app/box-admin/',
     //USER SERVICES//
     getAllUsers: '/api/identity/users',
     //ROLE SERVICES//

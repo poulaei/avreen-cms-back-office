@@ -1,18 +1,18 @@
 {
   "/api": {
-    "target": "http://172.16.10.71:4000",
+    "target": "http://172.16.23.2/api",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/shared": {
-    "target": "http://172.16.10.71:4000",
+    "target": "http://172.16.23.2/api",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/Abp": {
-    "target": "http://172.16.10.71:4000",
+    "target": "http://172.16.23.2/api",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
